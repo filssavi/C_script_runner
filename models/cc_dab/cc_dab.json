@@ -1,7 +1,7 @@
 {
-  "reference_outputs" : "reference_out.csv",
+  "reference_outputs" : "cc_reference_out.csv",
   "inputs": {
-    "series_file": "plecs_data.csv",
+    "series_file": "cc_inputs.csv",
     "specs": [
       {
         "name": "v_in",
@@ -10,37 +10,46 @@
         "model_order": 0
       },
       {
+        "name": "enable",
+        "type": "series",
+        "series_order": 2,
+        "model_order": 3
+      },
+      {
         "name": "i_out",
         "type": "series",
         "model_order": 1,
         "series_order": 1
-      },
-      {
-        "name": "v_ref",
-        "type": "constant",
-        "value": 250,
-        "model_order": 2
       }
     ]
   },
   "outputs": {
     "type": "plot",
+    "plot_time_range": [0.2, 0.3],
     "specs":[
       {
         "name": "v_out",
         "model_order": 0,
-        "reference_order": 0
+        "reference_order": 0,
+        "plot_range": [
+          950,
+          1050
+        ]
       },
       {
         "name": "i_in",
         "model_order": 1,
-        "reference_order": 1
+        "reference_order": 1,
+        "plot_range": [
+          0,
+          300
+        ]
       }
     ]
   },
   "model": {
-    "target_path": "libsd_dab.so",
-    "target_name": "sd_dab",
+    "target_path": "libcc_dab.so",
+    "target_name": "cc_dab",
     "states": 6,
     "sampling_frequency": 25e3
   },

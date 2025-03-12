@@ -1,0 +1,57 @@
+{
+  "reference_outputs" : "reference_out.csv",
+  "inputs": {
+    "series_file": "plecs_data.csv",
+    "specs": [
+      {
+        "name": "v_in",
+        "type": "constant",
+        "value": 1000,
+        "model_order": 0
+      },
+      {
+        "name": "i_out",
+        "type": "series",
+        "model_order": 1,
+        "series_order": 1
+      },
+      {
+        "name": "v_ref",
+        "type": "constant",
+        "value": 250,
+        "model_order": 2
+      }
+    ]
+  },
+  "outputs": {
+    "type": "plot",
+    "plot_time_range": [0.2, 0.3],
+    "specs":[
+      {
+        "name": "v_out",
+        "model_order": 0,
+        "reference_order": 0,
+        "plot_range": [
+          240,
+          260
+        ]
+      },
+      {
+        "name": "i_in",
+        "model_order": 1,
+        "reference_order": 1,
+        "plot_range": [
+          15,
+          25
+        ]
+      }
+    ]
+  },
+  "model": {
+    "target_path": "libsd_dab.so",
+    "target_name": "sd_dab",
+    "states": 6,
+    "sampling_frequency": 25e3
+  },
+  "run_length": 25001
+}
