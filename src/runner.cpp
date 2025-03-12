@@ -3,7 +3,6 @@
 
 void runner::run_emulation() {
 
-    states = std::vector(n_states, 0.0f);
     outputs = std::vector(outputs_metatata.size(), std::vector<double>());
 
     for (int i = 0; i<n_steps; i++) {

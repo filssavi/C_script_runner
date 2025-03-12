@@ -20,9 +20,6 @@ set(SOURCES /
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)
 
-add_library(sd_dab SHARED)
-target_sources(sd_dab PUBLIC test/sd_dab.cpp)
-set_target_properties(sd_dab PROPERTIES LINKER_LANGUAGE CXX)
 
 add_executable(C_script_runner ${SOURCES})
 
@@ -32,5 +29,3 @@ target_link_libraries(C_script_runner PRIVATE
         implot::implot
         nlohmann_json::nlohmann_json
 )
-
-add_dependencies( C_script_runner sd_dab)

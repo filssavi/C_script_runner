@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <string>
 #include "metadata_types.hpp"
+#include <utility>
 #include <vector>
 #include "rapidcsv.h"
 #include <dlfcn.h>
@@ -19,7 +20,8 @@ public:
     void add_inputs(const std::vector<model_input> &in) {inputs_metatata = in;}
     void add_outputs(const std::vector<model_output> &out) {outputs_metatata = out;}
 
-    void set_n_states(const uint8_t n){n_states = n;}
+    void initialize_states(std::vector<float> s) {states = std::move(s);}
+
     void set_f_sample(const float f){f_sample = f;};
     void set_n_steps(const int n) {n_steps = n;}
     void run_emulation();
@@ -33,7 +35,6 @@ private:
 
     std::vector<model_input> inputs_metatata;
     std::vector<model_output> outputs_metatata;
-    uint8_t n_states = 0;
     uint32_t n_steps = 1e3;
 
     std::vector<std::vector<double>> outputs;

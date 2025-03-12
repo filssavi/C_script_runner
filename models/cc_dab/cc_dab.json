@@ -13,12 +13,12 @@
         "name": "enable",
         "type": "series",
         "series_order": 2,
-        "model_order": 3
+        "model_order": 1
       },
       {
         "name": "i_out",
         "type": "series",
-        "model_order": 1,
+        "model_order": 2,
         "series_order": 1
       }
     ]
@@ -47,10 +47,41 @@
       }
     ]
   },
+  "states": [
+    {
+      "name": "i_in_past",
+      "order": 0,
+      "initial_value": 0
+    },
+    {
+      "name": "mem_i_pri_prev",
+      "order": 1,
+      "initial_value": 0
+    },
+    {
+      "name": "mem_v_cap_in_past",
+      "order": 2,
+      "initial_value": 1000
+    },
+    {
+      "name": "mem_v_cap_out_past",
+      "order": 3,
+      "initial_value": 1000
+    },
+    {
+      "name": "mem_pi_state",
+      "order": 4,
+      "initial_value": 0
+    },
+    {
+      "name": "mem_i_sec_prev",
+      "order": 5,
+      "initial_value": 0
+    }
+  ],
   "model": {
     "target_path": "libcc_dab.so",
     "target_name": "cc_dab",
-    "states": 6,
     "sampling_frequency": 25e3
   },
   "run_length": 25001

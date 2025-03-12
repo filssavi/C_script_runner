@@ -41,8 +41,16 @@ void validate_specs(const nlohmann::json &specs) {
 
 }
 
+std::vector<float> get_initial_state(const nlohmann::json& states) {
+    std::vector<float> initial_states(states.size());
+    for (const auto &s : states) {
+        initial_states[s["order"]] = s["initial_value"];
+    }
+    return initial_states;
+}
+
 void compile(const std::filesystem::path &file) {
-    std::string file_path ="lib" +file.stem().string() + std::string(".so");
+    const std::string file_path ="lib" +file.stem().string() + std::string(".so");
     std::vector<std::string> compile_command_args = {
         "g++",
         "-fPIC",
@@ -74,7 +82,7 @@ void run(std::istream &spec_stream) {
     r.add_inputs(in_mgr.get_inputs());
     r.add_outputs(out_mgr.get_outputs());
 
-    r.set_n_states(specs["model"]["states"]);
+    r.initialize_states(get_initial_state(specs["states"]));
     r.set_f_sample(specs["model"]["sampling_frequency"]);
     r.set_n_steps(specs["run_length"]);
     r.run_emulation();

@@ -25,7 +25,7 @@
   },
   "outputs": {
     "type": "plot",
-    "plot_time_range": [0.2, 0.3],
+    "plot_time_range": [0, 1],
     "specs":[
       {
         "name": "v_out",
@@ -47,10 +47,42 @@
       }
     ]
   },
+
+  "states": [
+    {
+      "name": "mem_pi_state",
+      "order": 0,
+      "initial_value": 0
+    },
+    {
+      "name": "mem_i_pri_prev",
+      "order": 1,
+      "initial_value": 0
+    },
+    {
+      "name": "mem_i_sec_prev",
+      "order": 2,
+      "initial_value": 0
+    },
+    {
+      "name": "mem_v_cap_out_past",
+      "order": 3,
+      "initial_value": 250
+    },
+    {
+      "name": "mem_v_cap_in_past",
+      "order": 4,
+      "initial_value": 1000
+    },
+    {
+      "name": "mem_i_in_past",
+      "order": 5,
+      "initial_value": 0
+    }
+  ],
   "model": {
     "target_path": "libsd_dab.so",
     "target_name": "sd_dab",
-    "states": 6,
     "sampling_frequency": 25e3
   },
   "run_length": 25001
