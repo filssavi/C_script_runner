@@ -41,17 +41,24 @@ void validate_specs(const nlohmann::json &specs) {
 
 }
 
-int main(int argc, char **argv) {
+void compile(const std::filesystem::path &file) {
+    std::string file_path ="lib" +file.stem().string() + std::string(".so");
+    std::vector<std::string> compile_command_args = {
+        "g++",
+        "-fPIC",
+        "-shared",
+        file.string(),
+        "-o",
+        file_path
+    };
+    std::string command;
+    for (auto &p:compile_command_args) command += p + " ";
+    std::system(command.c_str());
+}
 
-    CLI::App app{"General purpose runner for C-script derived functions"};
-
-    std::string spec_file;
-    app.add_option("spec", spec_file, "JSON specifications file")->check(CLI::ExistingFile);
-    CLI11_PARSE(app, argc, argv);
-
+void run(std::istream &spec_stream) {
 
     nlohmann::json specs;
-    std::ifstream spec_stream(spec_file);
     spec_stream >> specs;
 
     validate_specs(specs);
@@ -80,6 +87,23 @@ int main(int argc, char **argv) {
     } else if (specs["outputs"]["type"]=="csv") {
         out_mgr.output_data();
     }
+}
+int main(int argc, char **argv) {
 
+    CLI::App app{"General purpose runner for C-script derived functions"};
+
+    std::string spec_file;
+    std::string compilation_file;
+    app.add_option("spec", spec_file, "JSON specifications file")->check(CLI::ExistingFile);
+    app.add_option("--compile" ,compilation_file, "File to compile to a dynamically loadable library");
+    CLI11_PARSE(app, argc, argv);
+
+
+    if (!compilation_file.empty()) {
+        compile(compilation_file);
+    } else {
+        std::ifstream spec_stream(spec_file);
+        run(spec_stream);
+    }
     return 0;
 }

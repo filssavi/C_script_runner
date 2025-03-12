@@ -21,7 +21,7 @@ set(SOURCES /
 include_directories(${CMAKE_SOURCE_DIR}/includes)
 
 add_library(sd_dab SHARED)
-target_sources(sd_dab PUBLIC src/sd_dab.cpp )
+target_sources(sd_dab PUBLIC test/sd_dab.cpp)
 set_target_properties(sd_dab PROPERTIES LINKER_LANGUAGE CXX)
 
 add_executable(C_script_runner ${SOURCES})
