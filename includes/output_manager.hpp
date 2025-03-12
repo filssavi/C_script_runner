@@ -15,9 +15,11 @@ public:
     void set_timebase(std::vector<double> tb) {timebase = std::move(tb);}
     void output_plot() const;
     void output_data();
-    [[nodiscard]] std::vector<model_output> get_outputs() const;
+    [[nodiscard]] std::vector<model_output> get_outputs();
 private:
 
+    std::pair<float, float> x_ranges;
+    std::vector<std::pair<float, float>> y_ranges;
 
     nlohmann::json specs;
     std::vector<double> timebase;

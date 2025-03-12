@@ -2,14 +2,21 @@
 
 #include <utility>
 
-std::vector<model_output> output_manager::get_outputs() const {
+std::vector<model_output> output_manager::get_outputs() {
     std::vector<model_output> outputs;
+    const uint8_t n_outputs = specs["outputs"]["specs"].size();
+
+    x_ranges = {specs["outputs"]["plot_time_range"][0],specs["outputs"]["plot_time_range"][1]};
+    y_ranges.reserve(n_outputs);
+
     for (auto &out:specs["outputs"]["specs"]) {
         model_output o;
         o.name = out["name"];
         o.output_index = out["model_order"];
         o.series_index = out["reference_order"];
+        y_ranges[o.output_index] = {out["plot_range"][0], out["plot_range"][1]};
         outputs.emplace_back(o);
+
     }
     return outputs;
 }
@@ -26,9 +33,6 @@ void output_manager::output_plot() const {
     std::vector<std::vector<sciplot::PlotVariant>> plots;
 
     sciplot::Vec x(timebase.data(), timebase.size());
-    std::pair<float, float> x_ranges = {0.2, 0.3};
-    std::vector<std::pair<float, float>> y_ranges = {{240, 260}, {15, 25}};
-
 
     for (int i = 0; i<outputs.size(); i++) {
         sciplot::Plot2D p;

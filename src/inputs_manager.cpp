@@ -11,7 +11,7 @@ inputs_manager::inputs_manager(const nlohmann::json &config) {
 std::vector<model_input> inputs_manager::get_inputs() {
 
     const auto inputs_file = std::filesystem::canonical(specs["inputs"]["series_file"]);
-    const auto doc = rapidcsv::Document(inputs_file, rapidcsv::LabelParams(-1, -1));
+    const auto doc = rapidcsv::Document(inputs_file, rapidcsv::LabelParams(0, -1));
 
     std::vector<model_input> ret_val;
     for (auto &in:specs["inputs"]["specs"]) {
