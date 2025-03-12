@@ -60,6 +60,14 @@ class Plot2D : public Plot
     /// Construct a default Plot object
     Plot2D();
 
+    Plot2D(const Plot2D &other) = default;
+
+    Plot2D(Plot2D &&other) noexcept = default;
+
+    Plot2D & operator=(const Plot2D &other) = default;
+
+    Plot2D & operator=(Plot2D &&other) noexcept = default;
+
     //======================================================================
     // METHODS FOR DRAWING PLOT ELEMENTS
     //======================================================================

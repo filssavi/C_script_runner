@@ -4,9 +4,7 @@
 void runner::add_inputs_file(const std::string& input_file) {
     doc = rapidcsv::Document(input_file, rapidcsv::LabelParams(-1, -1));
 
-    std::string so_path = "/home/filssavi/git/C_script_runner/cmake-build-debug/libsd_dab.so";
-    std::string target_name = "sd_dab";
-    void* handle = dlopen(so_path.c_str(), RTLD_LAZY);
+    void* handle = dlopen(target_path.c_str(), RTLD_LAZY);
     if (!handle) {
         std::cerr << "Cannot open library: " << dlerror() << '\n';
         exit(1);

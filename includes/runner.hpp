@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <string>
+#include <utility>
 #include <vector>
 #include "rapidcsv.h"
 #include <dlfcn.h>
@@ -43,9 +44,13 @@ public:
     void set_n_steps(const int n) {n_steps = n;}
     void run_emulation();
     std::vector<std::vector<double>> get_outputs() {return outputs;}
-    std::vector<double> get_timebase() const;
+    [[nodiscard]] std::vector<double> get_timebase() const;
 
+    void set_target(std::string n, std::string p){target_name = std::move(n); target_path = std::move(p);};
 private:
+    std::string target_path;
+    std::string target_name;
+
     target_cscript_t target;
     update_model_t update_fcn;
 
