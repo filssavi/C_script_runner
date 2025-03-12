@@ -1,78 +1,85 @@
 #include <string>
+#include <filesystem>
+#include <CLI/CLI.hpp>
+#include <nlohmann/json.hpp>
+
+#include "inputs_manager.hpp"
+#include "output_manager.hpp"
 #include "runner.hpp"
-#include "sd_dab.hpp"
-#include "sciplot/sciplot.hpp"
-
-int main() {
-
-    std::string input_file = "/home/filssavi/git/mea_ring_hil/plecs_data.csv";
-
-    std::string so_path = "/home/filssavi/git/C_script_runner/cmake-build-debug/libsd_dab.so";
-    std::string target_name = "sd_dab";
-
-    runner r;
-    r.set_target(target_name, so_path);
-    r.add_inputs_file(input_file);
-    r.add_constant_input("v_in",0, 1000);
-    r.add_series_input("i_out", 1, 1);
-    r.add_constant_input("v_ref",2, 250);
-
-    r.add_output("v_out", 0, 0);
-    r.add_output("i_in", 1, 1);
-
-    const update_model_t fcn = sd_dab;
-    r.add_update_fcn(fcn);
-
-    r.set_n_states(6);
-    r.set_n_steps(25001);
-    r.set_f_sample(25e3);
-    r.run_emulation();
-    auto outputs = r.get_outputs();
-
-    auto tb = r.get_timebase();
 
 
-    rapidcsv::Document ref_v = rapidcsv::Document("/home/filssavi/git/mea_ring_hil/reference_out_v.csv", rapidcsv::LabelParams(0, -1));
-    rapidcsv::Document ref_i = rapidcsv::Document("/home/filssavi/git/mea_ring_hil/reference_out_i.csv", rapidcsv::LabelParams(0, -1));
 
-    std::vector<float> rev_v_data = ref_v.GetColumn<float>(1);
-    std::vector<float> rev_i_data = ref_i.GetColumn<float>(1);
+void validate_specs(const nlohmann::json &specs) {
 
-    std::vector ref_data = {rev_v_data, rev_i_data};
-
-    std::vector<std::vector<sciplot::PlotVariant>> plots;
-
-    sciplot::Vec x(tb.data(), tb.size());
-    std::pair<float, float> x_ranges = {0.2, 0.3};
-    std::vector<std::pair<float, float>> y_ranges = {{240, 260}, {15, 25}};
-
-
-    for (int i = 0; i<outputs.size(); i++) {
-        sciplot::Plot2D p;
-
-        p.drawCurve(x, outputs[i]).lineWidth(1).label("run");
-        p.drawCurve(x, ref_data[i]).lineWidth(1).label("Reference");
-
-        p.yrange(y_ranges[i].first,y_ranges[i].second);
-        p.xrange(x_ranges.first, x_ranges.second);
-        plots.push_back({p});
+    if (!specs["model"].contains("target_name")) {
+        std::cout<<"Target name not specified"<<std::endl;
+        exit(1);
+    }
+    if (!specs["model"].contains("target_path")) {
+        std::cout<<"Target path not specified"<<std::endl;
+        exit(1);
     }
 
 
-    sciplot::Figure f(plots);
+    if (!std::filesystem::exists(specs["model"]["target_path"])) {
+        std::cerr << "Target SO file does not exist" << std::endl;
+        exit(1);
+    }
+    if (std::filesystem::is_directory(specs["model"]["target_path"])) {
+        std::cerr << "Target SO path points to a directory, not a file" << std::endl;
+        exit(1);
+    }
+
+    if (!std::filesystem::exists(specs["reference_outputs"])) {
+        std::cerr << "Reference output file does not exist" << std::endl;
+        exit(1);
+    }
+    if (std::filesystem::is_directory(specs["reference_outputs"])) {
+        std::cerr << "Reference output path points to a directory, not a file" << std::endl;
+        exit(1);
+    }
+
+}
+
+int main(int argc, char **argv) {
+
+    CLI::App app{"General purpose runner for C-script derived functions"};
+
+    std::string spec_file;
+    app.add_option("spec", spec_file, "JSON specifications file")->check(CLI::ExistingFile);
+    CLI11_PARSE(app, argc, argv);
 
 
+    nlohmann::json specs;
+    std::ifstream spec_stream(spec_file);
+    spec_stream >> specs;
 
-    sciplot::Canvas canvas = {{f}};
-    // Set color palette for all Plots that do not have a palette set (plot2) / the default palette
-    canvas.defaultPalette("set1");
-    // Set canvas output size
-    canvas.size(1720, 880);
+    validate_specs(specs);
 
-    canvas.show();
+    std::string name = specs["model"]["target_name"];
+    auto path = std::filesystem::canonical(specs["model"]["target_path"]);
 
+    inputs_manager in_mgr(specs);
+    output_manager out_mgr(specs);
 
+    runner r;
+    r.set_target(name, path);
+    r.add_inputs(in_mgr.get_inputs());
+    r.add_outputs(out_mgr.get_outputs());
 
+    r.set_n_states(specs["model"]["states"]);
+    r.set_f_sample(specs["model"]["sampling_frequency"]);
+    r.set_n_steps(specs["run_length"]);
+    r.run_emulation();
+
+    out_mgr.set_timebase(r.get_timebase());
+    out_mgr.set_outputs(r.get_outputs());
+
+    if (specs["outputs"]["type"]=="plot") {
+        out_mgr.output_plot();
+    } else if (specs["outputs"]["type"]=="csv") {
+        out_mgr.output_data();
+    }
 
     return 0;
 }

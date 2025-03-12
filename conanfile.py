@@ -14,6 +14,8 @@ class BasicConanfile(ConanFile):
     def requirements(self):
         self.requires("rapidcsv/8.84")
         self.requires("implot/0.16")
+        self.requires("nlohmann_json/3.11.3")
+        self.requires("cli11/2.3.2")
 
     def build_requirements(self):
         pass
