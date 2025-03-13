@@ -26,32 +26,27 @@ std::vector<float> cc_dab(const std::vector<float>&inputs, std::vector<float>&st
 
     float v_dab_in = dab_input(mem_i_in_past, mem_i_pri_prev, mem_v_cap_in_past, &v_cap_in);
 
-
     /// PI
 
-    float ps = dab_control(in_v_in, mem_v_cap_out_past, in_en, mem_pi_state, &pi_state_next);
+    float ps = dab_control(in_v_in, mem_v_cap_out_past, in_en, &mem_pi_state);
     /// PI
 
     dab_model(ps, v_dab_in, mem_i_pri_prev, mem_v_cap_out_past, mem_i_sec_prev, &i_sec, &i_pri);
 
-    out_v_out = dab_output(i_sec, in_i_out, mem_v_cap_out_past, in_en, &v_cap_out);
+    out_v_out = dab_output(i_sec, in_i_out, in_en, &mem_v_cap_out_past);
 
 
+    mem_i_in_past = dab_input_current(in_v_in, mem_i_in_past, mem_v_cap_in_past, mem_i_pri_prev);
 
-    out_i_in = dab_input_current(in_v_in, mem_i_in_past, mem_v_cap_in_past, mem_i_pri_prev);
-
+    out_i_in = mem_i_in_past;
 
     // UPDATE CODE
 
-    mem_pi_state = pi_state_next;
 
     mem_i_pri_prev = i_pri;
     mem_i_sec_prev = i_sec;
 
-    mem_v_cap_out_past = v_cap_out;
     mem_v_cap_in_past = v_cap_in;
-
-    mem_i_in_past = out_i_in;
 
 
 
@@ -74,21 +69,21 @@ float dab_input(float i_in_past, float i_pri_prev, float v_cap_in_past, float *v
 }
 
 
-float dab_control(float setpoint, float fb, float en, float pi_state, float *pi_state_next){
+float dab_control(float setpoint, float fb, float en, float *pi_state){
 
     float err = (setpoint-fb)*en;
 
-    *pi_state_next = pi_state + t_sw*err;
+    *pi_state = *pi_state + t_sw*err;
 
 
-    if(*pi_state_next > pi) *pi_state_next = pi;
-    if(*pi_state_next < -pi) *pi_state_next = -pi;
+    if(*pi_state > pi) *pi_state = pi;
+    if(*pi_state < -pi) *pi_state = -pi;
 
-    *pi_state_next = *pi_state_next >  pi ?   pi :  *pi_state_next;
-    *pi_state_next = *pi_state_next < -pi ?  -pi :  *pi_state_next;
+    *pi_state = *pi_state >  pi ?   pi :  *pi_state;
+    *pi_state = *pi_state < -pi ?  -pi :  *pi_state;
 
     float prop_action = kp*err;
-    float int_action = ki*(*pi_state_next);
+    float int_action = ki*(*pi_state);
 
     float ps = prop_action + int_action;
 
@@ -116,11 +111,11 @@ void dab_model(float ps, float v_dab_in, float i_pri_prev, float v_cap_out_past,
 }
 
 
-float dab_output(float i_sec, float i_out, float v_cap_out_past, float en, float *v_cap_out){
+float dab_output(float i_sec, float i_out, float en, float *v_cap_out){
 
     float i_cap_out = i_sec - i_out;
 
-    *v_cap_out = v_cap_out_past + i_cap_out*t_sw/c_out;
+    *v_cap_out = *v_cap_out + i_cap_out*t_sw/c_out;
 
 	bool overrange = en==0 && *v_cap_out  <0;
     v_cap_out = overrange ? 0: v_cap_out;

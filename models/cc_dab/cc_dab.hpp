@@ -25,9 +25,9 @@ constexpr  float t_sw = 1/f_sw;
 
 
 float dab_input(float i_in_past, float i_pri_prev, float v_cap_in_past, float *v_cap_in);
-float dab_control(float setpoint, float fb, float en, float pi_state, float *pi_state_next);
+float dab_control(float setpoint, float fb, float en, float *pi_state);
 void dab_model(float ps, float v_dab_in, float i_pri_prev, float v_cap_out_past, float i_sec_prev, float *i_sec, float *i_pri);
-float dab_output(float i_sec, float i_out, float v_cap_out_past, float en, float *v_cap_out);
+float dab_output(float i_sec, float i_out, float en, float *v_cap_out);
 float dab_input_current(float v_in, float i_in_past, float v_cap_in_past, float i_pri_prev);
 
 #endif //CC_DAB_HPP
