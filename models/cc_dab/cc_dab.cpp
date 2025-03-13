@@ -122,10 +122,8 @@ float dab_output(float i_sec, float i_out, float v_cap_out_past, float en, float
 
     *v_cap_out = v_cap_out_past + i_cap_out*t_sw/c_out;
 
-
-    if(en==0){
-        if(*v_cap_out  <0) v_cap_out = 0;
-    }
+	bool overrange = en==0 && *v_cap_out  <0;
+    v_cap_out = overrange ? 0: v_cap_out;
 
     float v_out = (*v_cap_out + r_esr*i_cap_out) - r_dc*i_out;
     return v_out;
