@@ -51,6 +51,9 @@ std::vector<float> get_initial_state(const nlohmann::json& states) {
 
 void compile(const std::filesystem::path &file) {
     const std::string file_path ="lib" +file.stem().string() + std::string(".so");
+    if (std::filesystem::exists(file_path)) {
+        std::filesystem::remove_all(file_path);
+    }
     std::vector<std::string> compile_command_args = {
         "g++",
         "-fPIC",
