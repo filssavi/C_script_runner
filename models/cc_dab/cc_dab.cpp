@@ -72,7 +72,14 @@ std::vector<float> cc_dab(const std::vector<float>&inputs, std::vector<float>&st
     return outputs;
 }
 
-
+float satn(float in, float sat){
+	if(in < sat) return sat;
+	else return in;
+};
+float satp(float in, float sat){
+	if(in > sat) return sat;
+  	else return in;
+}
 
 
 float dab_input(float i_in_past, float i_pri_prev, float v_cap_in_past, float *v_cap_in, struct model_parameters p) {
@@ -94,16 +101,16 @@ float dab_control(float setpoint, float fb, float en, float *pi_state, struct mo
 
     *pi_state = *pi_state + p.t_sw*err;
 
-    *pi_state = *pi_state >  p.pi ?   p.pi :  *pi_state;
-    *pi_state = *pi_state < -p.pi ?  -p.pi :  *pi_state;
+	*pi_state = satp(*pi_state, p.pi);
+	*pi_state = satn(*pi_state, -p.pi);
 
     float prop_action = p.kp*err;
     float int_action = p.ki*(*pi_state);
 
     float ps = prop_action + int_action;
 
-    ps = ps >  p.pi ?   p.pi :  ps;
-    ps = ps < -p.pi ?  -p.pi :  ps;
+	ps = satp(ps, p.pi);
+	ps = satn(ps, -p.pi);
 
 
     return ps;
@@ -114,7 +121,7 @@ float dab_control(float setpoint, float fb, float en, float *pi_state, struct mo
 void dab_model(float ps, float v_dab_in, float i_pri_prev, float v_cap_out_past, float i_sec_prev, float *i_sec, float *i_pri, struct model_parameters p){
     float ps_rms = ps/p.sqrt2;
 
-    float ps_factor = ps_rms*(1-2*ps_rms);
+    float ps_factor = ps_rms*(1.0-2.0*ps_rms);
 
 
     float k_dab = p.n_ps/(p.f_sw*p.l_dab);

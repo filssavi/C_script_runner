@@ -25,6 +25,8 @@ struct model_parameters{
 extern "C" std::vector<float> cc_dab(const std::vector<float>&inputs, std::vector<float>&state);
 
 
+float satn(float in, float sat);
+float satp(float in, float sat);
 
 float dab_input(float i_in_past, float i_pri_prev, float v_cap_in_past, float *v_cap_in, struct model_parameters p);
 float dab_control(float setpoint, float fb, float en, float *pi_state, struct model_parameters p);

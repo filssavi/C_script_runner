@@ -38,11 +38,11 @@ std::vector<float> sd_dab(const std::vector<float>&inputs, std::vector<float>&st
     #define mem_v_cap_in_past state[4]
     #define mem_i_in_past state[5]
 
-    float v_cap_in, pi_state_next, i_pri, i_sec,v_cap_out;
+    float v_cap_in, i_pri, i_sec,v_cap_out;
 
     const float v_dab_in = input_model(mem_i_in_past, mem_i_pri_prev,mem_v_cap_in_past, &v_cap_in, p);
 
-    const float ps = dab_control(in_v_ref, mem_v_cap_out_past, mem_pi_state, &pi_state_next, p);
+    const float ps = dab_control(in_v_ref, mem_v_cap_out_past, &mem_pi_state, p);
 
     dab_model(ps, v_dab_in, mem_v_cap_out_past, mem_i_pri_prev, mem_i_sec_prev, &i_pri, &i_sec, p);
 
@@ -53,8 +53,6 @@ std::vector<float> sd_dab(const std::vector<float>&inputs, std::vector<float>&st
 
 
     // UPDATE CODE
-
-    mem_pi_state = pi_state_next;
 
     mem_i_pri_prev = i_pri;
     mem_i_sec_prev = i_sec;
@@ -70,11 +68,11 @@ std::vector<float> sd_dab(const std::vector<float>&inputs, std::vector<float>&st
 
 
 
-float dab_control(float setpoint, float fb, float pi_state, float *pi_state_next, struct model_parameters p) {
+float dab_control(float setpoint, float fb, float *pi_state_next, struct model_parameters p) {
 
     float err = setpoint - fb;
 
-    *pi_state_next = pi_state + p.t_sw*err;
+    *pi_state_next = *pi_state_next + p.t_sw*err;
 
 
     if(*pi_state_next > p.pi) *pi_state_next = p.pi;
@@ -95,7 +93,7 @@ void dab_model(float ps, float v_dab_in, float v_cap_out_past, float i_pri_prev,
 
     float ps_rms = ps/p.sqrt2;
 
-    float ps_factor = ps_rms*(1-2*ps_rms);
+    float ps_factor = ps_rms*(1.0-2.0*ps_rms);
 
 
     float k_dab = p.n_ps/(p.f_sw*p.l_dab);
