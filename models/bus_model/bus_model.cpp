@@ -25,31 +25,37 @@ std::vector<float> bus_model(const std::vector<float>&inputs, std::vector<float>
 
     #define mem_v_cap0 state[0]
 
-    float v_cap;
+    float v_cap = mem_v_cap0;
     std::cout<< "in_fault = " << in_fault<< std::endl;
-    if(in_fault) {
 
-        v_cap = mem_v_cap0 - (in_i_out + params.i_l)*params.t_sw/params.c;
-
-        out_v_out = v_cap- params.r_esr*(in_i_out+ params.i_l);
-        if(out_v_out<0) out_v_out = 0;
-        out_i_in = 0;
-
-    } else {
-
-        float v_out_num = (params.i_l + in_i_out)*(params.t_sw/params.c - params.r_esr)*params.r_in - in_v_in*(params.t_sw/params.c - params.r_esr) + params.r_in*mem_v_cap0;
-
-        float v_out_den = params.t_sw/params.c - params.r_esr - params.r_in;
-
-        out_v_out = - v_out_num/v_out_den;
-
-        float i_cap = (out_v_out - mem_v_cap0)/(params.t_sw/params.c - params.r_esr);
-
-        v_cap = out_v_out + params.r_esr*i_cap;
-
-        out_i_in = i_cap + params.i_l + in_i_out;
-    }
+    bus(in_i_out, in_v_in, in_fault, out_v_out, out_i_in, v_cap, params);
+    mem_v_cap0 = v_cap;
 
     return outputs;
 }
 
+void bus(float i_out, float v_in, int fault, float &v_out, float &i_in, float &v_cap, struct model_parameters &params) {
+    if(fault) {
+
+        v_cap = v_cap - (i_out + params.i_l)*params.t_sw/params.c;
+
+        v_out = v_cap- params.r_esr*(i_out+ params.i_l);
+        if(v_out<0) v_out = 0;
+        i_in = 0;
+
+    } else {
+
+        float v_out_num = (params.i_l + i_out)*(params.t_sw/params.c - params.r_esr)*params.r_in - v_in*(params.t_sw/params.c - params.r_esr) + params.r_in*v_cap;
+
+        float v_out_den = params.t_sw/params.c - params.r_esr - params.r_in;
+
+        v_out = - v_out_num/v_out_den;
+
+        float i_cap = (v_out - v_cap)/(params.t_sw/params.c - params.r_esr);
+
+        v_cap = v_out + params.r_esr*i_cap;
+
+        i_in = i_cap + params.i_l + i_out;
+    }
+
+}

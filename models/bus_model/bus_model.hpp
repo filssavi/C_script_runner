@@ -14,7 +14,7 @@ struct model_parameters{
 };
 
 extern "C" std::vector<float> bus_model(const std::vector<float>&inputs, std::vector<float>&state);
-
+void bus(float i_out, float v_in, int fault, float &v_out, float &i_in, float &v_cap, struct model_parameters &params);
 
 
 
