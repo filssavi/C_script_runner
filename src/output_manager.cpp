@@ -21,9 +21,9 @@ std::vector<model_output> output_manager::get_outputs() {
     return outputs;
 }
 
-output_manager::output_manager(nlohmann::json s) {
+output_manager::output_manager(nlohmann::json s, const std::string &ref_path) {
     specs = std::move(s);
-    const auto reference_outputs_path = std::filesystem::canonical(specs["reference_outputs"]);
+    const auto reference_outputs_path = std::filesystem::canonical(ref_path);
     reference_outputs = rapidcsv::Document(reference_outputs_path, rapidcsv::LabelParams(0, -1));
 
 }

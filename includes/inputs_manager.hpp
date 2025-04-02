@@ -10,10 +10,11 @@
 
 class inputs_manager {
 public:
-    inputs_manager(const nlohmann::json &config);
+    inputs_manager(const nlohmann::json &config, const std::string &i_f);
     std::vector<model_input> get_inputs();
 private:
     nlohmann::json specs;
+    std::string inputs_file;
 };
 
 

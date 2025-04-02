@@ -10,7 +10,7 @@
 
 class output_manager {
 public:
-    explicit output_manager(nlohmann::json s);
+    explicit output_manager(nlohmann::json s,const std::string &ref_path);
     void set_outputs(std::vector<std::vector<double>> o) {outputs = std::move(o);}
     void set_timebase(std::vector<double> tb) {timebase = std::move(tb);}
     void output_plot() const;

@@ -4,13 +4,13 @@
 
 #include "../includes/inputs_manager.hpp"
 
-inputs_manager::inputs_manager(const nlohmann::json &config) {
+inputs_manager::inputs_manager(const nlohmann::json &config, const std::string &i_f) {
     specs = config;
+    inputs_file = i_f;
 }
 
 std::vector<model_input> inputs_manager::get_inputs() {
 
-    const auto inputs_file = std::filesystem::canonical(specs["inputs"]["series_file"]);
     const auto doc = rapidcsv::Document(inputs_file, rapidcsv::LabelParams(0, -1));
 
     std::vector<model_input> ret_val;
