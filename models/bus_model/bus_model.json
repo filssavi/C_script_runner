@@ -1,0 +1,63 @@
+{
+  "reference_outputs" : "ref_outputs.csv",
+  "inputs": {
+    "series_file": "plecs_inputs.csv",
+    "specs": [
+      {
+        "name": "v_in",
+        "type": "constant",
+        "model_order": 0,
+        "value": 1000
+      },
+      {
+        "name": "i_out",
+        "type": "series",
+        "series_order": 1,
+        "model_order": 1
+      },
+      {
+        "name": "fault",
+        "type": "series",
+        "model_order": 2,
+        "series_order": 2
+      }
+    ]
+  },
+  "outputs": {
+    "type": "plot",
+    "plot_time_range": [0, 1],
+    "specs":[
+      {
+        "name": "v_out",
+        "model_order": 0,
+        "reference_order": 0,
+        "plot_range": [
+          800,
+          1100
+        ]
+      },
+      {
+        "name": "i_in",
+        "model_order": 1,
+        "reference_order": 1,
+        "plot_range": [
+          500,
+          600
+        ]
+      }
+    ]
+  },
+  "states": [
+    {
+      "name": "v_cap",
+      "order": 0,
+      "initial_value": 1000
+    }
+  ],
+  "model": {
+    "target_path": "libbus_model.so",
+    "target_name": "bus_model",
+    "sampling_frequency": 25e3
+  },
+  "run_length": 25001
+}
