@@ -1,6 +1,18 @@
-#include "output_manager.hpp"
+//  Copyright 2025 Filippo Savi <filssavi@gmail.com>
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-#include <utility>
+#include "output_manager.hpp"
 
 std::vector<model_output> output_manager::get_outputs() {
     std::vector<model_output> outputs;
@@ -10,10 +22,7 @@ std::vector<model_output> output_manager::get_outputs() {
     y_ranges.reserve(n_outputs);
 
     for (auto &out:specs["outputs"]["specs"]) {
-        model_output o;
-        o.name = out["name"];
-        o.output_index = out["model_order"];
-        o.series_index = out["reference_order"];
+        model_output o(out);
         y_ranges[o.output_index] = {out["plot_range"][0], out["plot_range"][1]};
         outputs.emplace_back(o);
 

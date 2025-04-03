@@ -11,21 +11,31 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include "../includes/inputs_manager.hpp"
 
-inputs_manager::inputs_manager(const nlohmann::json &config, const std::string &i_f) {
-    specs = config;
-    inputs_file = i_f;
-}
+#ifndef METADATA_TYPES_HPP
+#define METADATA_TYPES_HPP
 
-std::vector<model_input> inputs_manager::get_inputs() {
+#include <string>
+#include <cstdint>
+#include <unordered_map>
 
-    const rapidcsv::Document doc = rapidcsv::Document(inputs_file, rapidcsv::LabelParams(0, -1));
+enum distribution_type_t {
+    normal,
+    uniform
+};
 
-    std::vector<model_input> ret_val;
-    for (auto &in:specs["inputs"]["specs"]) {
-        model_input i(in, doc);
-        ret_val.push_back(i);
-    }
-    return ret_val;
-}
+inline std::unordered_map<std::string, distribution_type_t> distribution_type_map = {
+{"normal", normal},
+{"uniform", uniform}
+};
+
+distribution_type_t name_string_to_distribution_type(std::string);
+
+enum input_type {
+    constant_input = 0,
+    series_input = 1,
+    random_input = 2
+};
+
+
+#endif //METADATA_TYPES_HPP

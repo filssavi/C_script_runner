@@ -11,26 +11,24 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-#ifndef INPUTS_MANAGER_HPP
-#define INPUTS_MANAGER_HPP
-
-#include <rapidcsv.h>
-#include <nlohmann/json.hpp>
-#include <vector>
-
 #include "data_model/model_input.hpp"
 
+model_input::model_input(nlohmann::json in, const rapidcsv::Document &doc) {
 
-class inputs_manager {
-public:
-    inputs_manager(const nlohmann::json &config, const std::string &i_f);
-    std::vector<model_input> get_inputs();
-private:
-    nlohmann::json specs;
-    std::string inputs_file;
-};
+    name = in["name"];
+    input_index = in["model_order"];
 
+    if (in["type"] == "constant") {
+        type = constant_input;
+        const_value = in["value"];
+    } else if(in["type"] == "random"){
+        type = random_input;
+        distribution_parameters = in["distribution"]["parameters"];
+        distribution_type = distribution_type_map[in["distribution"]["name"]];
+    } else {
+        type = series_input;
+        const uint8_t idx = in["series_order"];
+        series_values = doc.GetColumn<float>(idx);
+    }
 
-
-#endif //INPUTS_MANAGER_HPP
+}

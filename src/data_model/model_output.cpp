@@ -11,21 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include "../includes/inputs_manager.hpp"
+#include "data_model/model_output.hpp"
 
-inputs_manager::inputs_manager(const nlohmann::json &config, const std::string &i_f) {
-    specs = config;
-    inputs_file = i_f;
-}
-
-std::vector<model_input> inputs_manager::get_inputs() {
-
-    const rapidcsv::Document doc = rapidcsv::Document(inputs_file, rapidcsv::LabelParams(0, -1));
-
-    std::vector<model_input> ret_val;
-    for (auto &in:specs["inputs"]["specs"]) {
-        model_input i(in, doc);
-        ret_val.push_back(i);
-    }
-    return ret_val;
+model_output::model_output(const nlohmann::json &out) {
+    name = out["name"];
+    output_index = out["model_order"];
+    series_index = out["reference_order"];
 }

@@ -15,6 +15,8 @@ set(SOURCES /
         src/output_manager.cpp
         src/inputs_manager.cpp
         src/random_input_generator.cpp
+        src/data_model/model_input.cpp
+        src/data_model/model_output.cpp
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)
