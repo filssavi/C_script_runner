@@ -19,22 +19,21 @@
 #include <cstdint>
 #include <vector>
 #include <array>
-#include <rapidcsv.h>
+#include <random>
+
+#include <nlohmann/json.hpp>
 
 #include "metadata_types.hpp"
-#include <nlohmann/json.hpp>
 
 class model_input {
 
  public:
-    model_input(nlohmann::json input, const rapidcsv::Document &doc);
+    model_input(nlohmann::json input, const std::unordered_map<std::string, std::vector<float>> &d, uint32_t n);
     std::string name;
     input_type type;
     uint8_t input_index;
     float const_value;
-    std::vector<float> series_values;
-    std::array<float, 2> distribution_parameters{};
-    distribution_type_t distribution_type;
+    std::vector<float> data;
 
 };
 

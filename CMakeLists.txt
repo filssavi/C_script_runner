@@ -14,9 +14,9 @@ set(SOURCES /
         src/runner.cpp
         src/output_manager.cpp
         src/inputs_manager.cpp
-        src/random_input_generator.cpp
         src/data_model/model_input.cpp
         src/data_model/model_output.cpp
+        src/utils/csv_interface.cpp
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)

@@ -23,7 +23,6 @@
 
 #include "data_model/model_input.hpp"
 #include "data_model/model_output.hpp"
-#include "random_input_generator.hpp"
 
 typedef std::vector<float> (*target_cscript_t)(std::vector<float>, std::vector<float>&);
 typedef std::function< std::vector<float>(std::vector<float>, std::vector<float>&)> update_model_t;
@@ -45,7 +44,6 @@ public:
 
     void set_target(const std::string &n, const std::string &p);
 private:
-    random_input_generator input_generator;
 
     target_cscript_t target;
 

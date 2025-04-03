@@ -20,7 +20,7 @@
 #include <vector>
 
 #include "data_model/model_input.hpp"
-
+#include "utils/csv_interface.hpp"
 
 class inputs_manager {
 public:

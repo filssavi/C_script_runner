@@ -17,11 +17,7 @@
 
 void runner::add_inputs(const std::vector<model_input> &in) {
     inputs_metatata = in;
-    for(auto &i: inputs_metatata) {
-        if(i.type == random_input) {
-            input_generator.set_type(i.name, i.distribution_type, i.distribution_parameters);
-        }
-    }
+
 }
 
 void runner::run_emulation() {
@@ -36,10 +32,8 @@ void runner::run_emulation() {
                     inputs[in.input_index] = in.const_value;
                     break;
                 case series_input:
-                    inputs[in.input_index] = in.series_values[i];
-                    break;
                 case random_input:
-                    inputs[in.input_index] = input_generator.get_value(in.name);
+                    inputs[in.input_index] = in.data[i];
                     break;
             }
         }
