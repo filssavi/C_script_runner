@@ -14,8 +14,7 @@ set(SOURCES /
         src/runner.cpp
         src/output_manager.cpp
         src/inputs_manager.cpp
-        includes/inputs_manager.hpp
-        includes/metadata_types.hpp
+        src/random_input_generator.cpp
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)

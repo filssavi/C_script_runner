@@ -1,4 +1,5 @@
 {
+  "type": "component",
   "reference_outputs" : "cc_reference_out.csv",
   "inputs": {
     "series_file": "cc_inputs.csv",

@@ -1,0 +1,71 @@
+{
+  "type": "system",
+  "models": [
+    {
+      "name": "mv_dab",
+      "model": {
+        "target_path": "../libsd_dab.so",
+        "target_name": "sd_dab",
+        "sampling_frequency": 25e3
+      }
+    },
+    {
+      "name": "mv_bus",
+      "model": {
+        "target_path": "../libbus_model.so",
+        "target_name": "bus_model",
+        "sampling_frequency": 25e3
+      }
+    },
+    {
+      "name": "lv_dab",
+      "model": {
+        "target_path": "../libsd_dab.so",
+        "target_name": "sd_dab",
+        "sampling_frequency": 25e3
+      }
+    }
+  ],
+  "connections": [
+    {
+      "source": "mv_dab.v_out",
+      "destination": "mv_bus.v_in"
+    },
+    {
+      "source": "mv_bus.i_in",
+      "destination": "mv_dab.i_out"
+    },
+    {
+      "source": "mv_bus.v_out",
+      "destination": "lv_dab.v_in"
+    },
+    {
+      "source": "lv_dab.i_in",
+      "destination": "mv_bus.i_out"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "mv_dab.v_in",
+      "type": "constant",
+      "value": 1000
+    },
+    {
+      "name": "lv_dab.i_out",
+      "type": "random",
+      "parameters": {
+        "distribution": "gaussian",
+        "mean": 150.0,
+        "sigma": 4
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "name": "mv_dab.i_out"
+    },
+    {
+      "name": "lv_dab.v_out"
+    }
+  ]
+}

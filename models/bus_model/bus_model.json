@@ -1,4 +1,5 @@
 {
+  "type": "component",
   "reference_outputs" : "ref_outputs.csv",
   "inputs": {
     "series_file": "plecs_inputs.csv",
