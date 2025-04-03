@@ -20,6 +20,7 @@ set(SOURCES /
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)
+include_directories(${CMAKE_SOURCE_DIR}/dependencies)
 
 
 add_executable(C_script_runner ${SOURCES})
