@@ -15,7 +15,6 @@
 #ifndef INPUTS_MANAGER_HPP
 #define INPUTS_MANAGER_HPP
 
-#include <rapidcsv.h>
 #include <nlohmann/json.hpp>
 #include <vector>
 

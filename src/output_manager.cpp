@@ -14,27 +14,20 @@
 
 #include "output_manager.hpp"
 
-std::vector<model_output> output_manager::get_outputs() {
-    std::vector<model_output> outputs;
-    const uint8_t n_outputs = specs["outputs"]["specs"].size();
-
-    x_ranges = {specs["outputs"]["plot_time_range"][0],specs["outputs"]["plot_time_range"][1]};
-    y_ranges.reserve(n_outputs);
-
-    for (auto &out:specs["outputs"]["specs"]) {
-        model_output o(out);
-        y_ranges[o.output_index] = {out["plot_range"][0], out["plot_range"][1]};
-        outputs.emplace_back(o);
-
-    }
-    return outputs;
-}
+#include <iostream>
 
 output_manager::output_manager(nlohmann::json s, const std::string &ref_path) {
-    specs = std::move(s);
-    const auto reference_outputs_path = std::filesystem::canonical(ref_path);
-    reference_outputs = rapidcsv::Document(reference_outputs_path, rapidcsv::LabelParams(0, -1));
+    const uint8_t n_outputs = s["outputs"]["specs"].size();
 
+    x_ranges = {s["outputs"]["plot_time_range"][0],s["outputs"]["plot_time_range"][1]};
+    y_ranges.reserve(n_outputs);
+
+    for (auto &out:s["outputs"]["specs"]) {
+        model_output o(out);
+        y_ranges[o.output_index] = {out["plot_range"][0], out["plot_range"][1]};
+        output_specs.emplace_back(o);
+    }
+    reference_outputs = csv_interface::parse_file(ref_path);
 }
 
 void output_manager::output_plot() const {
@@ -47,8 +40,13 @@ void output_manager::output_plot() const {
         sciplot::Plot2D p;
 
         p.drawCurve(x, outputs[i]).lineWidth(1).label("run");
-        std::vector<float> ref = reference_outputs.GetColumn<float>(i+1);
-        p.drawCurve(x, ref).lineWidth(1).label("Reference");
+        std::string name = output_specs[i].name;
+        if(reference_outputs.contains(name)) {
+            auto ref = reference_outputs.at(name);
+            p.drawCurve(x, ref).lineWidth(1).label("Reference");
+        } else {
+            std::cout << "Reference data for " << name << " not found" << std::endl;
+        }
 
         p.yrange(y_ranges[i].first,y_ranges[i].second);
         p.xrange(x_ranges.first, x_ranges.second);

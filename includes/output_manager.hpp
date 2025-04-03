@@ -14,12 +14,15 @@
 #ifndef OUTPUT_MANAGER_HPP
 #define OUTPUT_MANAGER_HPP
 
+#include <utility>
+
 #include <nlohmann/json.hpp>
 #include "sciplot/sciplot.hpp"
-#include <rapidcsv.h>
-#include <utility>
+
 #include "data_model/model_output.hpp"
-#include "data_model/metadata_types.hpp"
+#include "utils/csv_interface.hpp"
+
+
 
 class output_manager {
 public:
@@ -28,16 +31,16 @@ public:
     void set_timebase(std::vector<double> tb) {timebase = std::move(tb);}
     void output_plot() const;
     void output_data();
-    [[nodiscard]] std::vector<model_output> get_outputs();
+    [[nodiscard]] std::vector<model_output> get_outputs(){return output_specs;}
 private:
 
     std::pair<float, float> x_ranges;
     std::vector<std::pair<float, float>> y_ranges;
 
-    nlohmann::json specs;
+    std::vector<model_output> output_specs;
     std::vector<double> timebase;
     std::vector<std::vector<double>> outputs;
-    rapidcsv::Document reference_outputs;
+    std::unordered_map<std::string, std::vector<float>> reference_outputs;
 };
 
 

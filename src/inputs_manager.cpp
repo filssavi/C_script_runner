@@ -20,7 +20,6 @@ inputs_manager::inputs_manager(const nlohmann::json &config, const std::string &
 
 std::vector<model_input> inputs_manager::get_inputs() {
 
-    const rapidcsv::Document doc = rapidcsv::Document(inputs_file, rapidcsv::LabelParams(0, -1));
     auto input_data = csv_interface::parse_file(inputs_file);
     std::vector<model_input> ret_val;
     for (auto &in:specs["inputs"]["specs"]) {

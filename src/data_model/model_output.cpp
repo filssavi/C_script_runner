@@ -13,7 +13,7 @@
 // limitations under the License.
 #include "data_model/model_output.hpp"
 
-model_output::model_output(const nlohmann::json &out) {
+model_output:: model_output(const nlohmann::json &out) {
     name = out["name"];
     output_index = out["model_order"];
     series_index = out["reference_order"];

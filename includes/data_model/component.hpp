@@ -11,41 +11,40 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef RUNNER_HPP
-#define RUNNER_HPP
+#ifndef COMPONENT_HPP
+#define COMPONENT_HPP
 
-#include <cstdint>
-#include <string>
-#include <utility>
 #include <vector>
+#include <cstdint>
 #include <iostream>
-#include <dlfcn.h>
+#include <nlohmann/json.hpp>
 
 #include "data_model/model_input.hpp"
 #include "data_model/model_output.hpp"
-#include "data_model/component.hpp"
-
-typedef std::vector<float> (*target_cscript_t)(std::vector<float>, std::vector<float>&);
-typedef std::function< std::vector<float>(std::vector<float>, std::vector<float>&)> update_model_t;
+#include "utils/csv_interface.hpp"
 
 
 
-class runner {
-public:
-    void set_component(const component &c){comp = c;}
-    void run_emulation();
-    std::vector<std::vector<double>> get_outputs() {return outputs;}
-    [[nodiscard]] std::vector<double> get_timebase() const;
+class component {
+  public:
+    void parse_specifications(const nlohmann::json& specs, const std::string &base_path);
 
-    void set_target(const std::string &n, const std::string &p);
-private:
-    component comp;
-    target_cscript_t target;
+    static void validate_path(const std::string &p);
+    static std::string get_full_path(const std::string &filename, const std::string &base_path);
 
-    std::vector<std::vector<double>> outputs;
+    std::string get_reference_path() {return reference_path; };
+
+
+    std::string name;
+    std::vector<model_input> inputs;
+    std::vector<model_output> outputs;
+    uint32_t n_steps;
+    uint32_t sampling_frequency;
     std::vector<float> states;
+
+    std::string reference_path;
 };
 
 
 
-#endif //RUNNER_HPP
+#endif //COMPONENT_HPP

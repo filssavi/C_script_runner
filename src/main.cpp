@@ -11,26 +11,19 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 #include <string>
 #include <filesystem>
 #include <CLI/CLI.hpp>
 #include <nlohmann/json.hpp>
 
+#include "data_model/component.hpp"
 #include "inputs_manager.hpp"
 #include "output_manager.hpp"
 #include "runner.hpp"
 
-std::string get_full_path(const std::string& filename, const std::string &base_path) {
-    std::string path;
-    if(!path.starts_with(".") || path.starts_with("/")) {
-        path =base_path + "/" + filename;
-    } else {
-        path = std::filesystem::canonical(filename);
-    }
-    return path;
-}
 
-std::tuple<std::string, std::string, std::string> validate_specs(const nlohmann::json &specs, const std::string &base_path) {
+std::string validate_specs(const nlohmann::json &specs, const std::string &base_path) {
 
     if (!specs["model"].contains("target_name")) {
         std::cout<<"Target name not specified"<<std::endl;
@@ -41,7 +34,7 @@ std::tuple<std::string, std::string, std::string> validate_specs(const nlohmann:
         exit(1);
     }
 
-    const auto target_path = get_full_path(specs["model"]["target_path"], base_path);
+    const auto target_path = component::get_full_path(specs["model"]["target_path"], base_path);
     if (!std::filesystem::exists(target_path)) {
         std::cerr << "Target SO file does not exist" << std::endl;
         exit(1);
@@ -51,28 +44,7 @@ std::tuple<std::string, std::string, std::string> validate_specs(const nlohmann:
         exit(1);
     }
 
-    const auto reference_path = get_full_path(specs["reference_outputs"], base_path);
-    if (!std::filesystem::exists(reference_path)) {
-        std::cerr << "Reference output file does not exist" << std::endl;
-        exit(1);
-    }
-    if (std::filesystem::is_directory(reference_path)) {
-        std::cerr << "Reference output path points to a directory, not a file" << std::endl;
-        exit(1);
-    }
-
-
-    const auto inputs_path = get_full_path(specs["inputs"]["series_file"], base_path);
-    if (!std::filesystem::exists(inputs_path)) {
-        std::cerr << "Inputs file does not exist" << std::endl;
-        exit(1);
-    }
-    if (std::filesystem::is_directory(inputs_path)) {
-        std::cerr << "Inputs path points to a directory, not a file" << std::endl;
-        exit(1);
-    }
-
-    return {target_path, reference_path, inputs_path};
+    return target_path;
 }
 
 std::vector<float> get_initial_state(const nlohmann::json& states) {
@@ -106,22 +78,20 @@ void run(std::istream &spec_stream,const std::string &base_path) {
     nlohmann::json specs;
     spec_stream >> specs;
 
-    auto [target_path, reference_path, inputs_path] = validate_specs(specs, base_path);
+    auto target_path = validate_specs(specs, base_path);
 
     std::string name = specs["model"]["target_name"];
     auto path = target_path;
 
-    inputs_manager in_mgr(specs, inputs_path);
-    output_manager out_mgr(specs, reference_path);
+    component comp;
+    comp.parse_specifications(specs, base_path);
+
+    output_manager out_mgr(specs, comp.get_reference_path());
 
     runner r;
     r.set_target(name, path);
-    r.add_inputs(in_mgr.get_inputs());
-    r.add_outputs(out_mgr.get_outputs());
+    r.set_component(comp);
 
-    r.initialize_states(get_initial_state(specs["states"]));
-    r.set_f_sample(specs["model"]["sampling_frequency"]);
-    r.set_n_steps(specs["run_length"]);
     r.run_emulation();
 
     out_mgr.set_timebase(r.get_timebase());

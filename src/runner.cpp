@@ -15,18 +15,14 @@
 #include "runner.hpp"
 
 
-void runner::add_inputs(const std::vector<model_input> &in) {
-    inputs_metatata = in;
-
-}
 
 void runner::run_emulation() {
 
-    outputs = std::vector(outputs_metatata.size(), std::vector<double>());
+    outputs = std::vector(comp.outputs.size(), std::vector<double>());
 
-    for (int i = 0; i<n_steps; i++) {
-        std::vector<float> inputs(inputs_metatata.size(), 0);
-        for (const auto &in:inputs_metatata) {
+    for (int i = 0; i<comp.n_steps; i++) {
+        std::vector<float> inputs(comp.inputs.size(), 0);
+        for (const auto &in:comp.inputs) {
             switch (in.type) {
                 case constant_input:
                     inputs[in.input_index] = in.const_value;
@@ -37,18 +33,20 @@ void runner::run_emulation() {
                     break;
             }
         }
+        states = comp.states;
         auto step_out = target(inputs, states);
 
-        for (const auto &out:outputs_metatata) {
+        for (const auto &out:comp.outputs) {
             outputs[out.series_index].push_back(step_out[out.output_index]);
         }
     }
 }
 
 std::vector<double> runner::get_timebase() const {
-    std::vector<double> timebase(n_steps, 0);
-    for (int i = 0; i<n_steps; i++) {
-        timebase[i] = i/f_sample;
+    std::vector<double> timebase(comp.n_steps, 0);
+    float sampling_time = 1.f/comp.sampling_frequency;
+    for (int i = 0; i<comp.n_steps; i++) {
+        timebase[i] = i*sampling_time;
     }
     return timebase;
 }
