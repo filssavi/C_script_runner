@@ -130,7 +130,15 @@ int main(int argc, char **argv) {
     app.add_flag("--compile" ,build, "File to compile to a dynamically loadable library");
     CLI11_PARSE(app, argc, argv);
 
-    auto parent = absolute(std::filesystem::path(spec_file).parent_path());
+    auto path = std::filesystem::path(spec_file);
+    std::filesystem::path parent;
+
+    if(path.is_relative()) {
+        parent = absolute(path).parent_path();
+    } else if(path.is_absolute()) {
+        parent = path.parent_path();
+    }
+
 
     if (build) {
         std::string current_dir = std::filesystem::current_path().string();

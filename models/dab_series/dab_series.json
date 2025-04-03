@@ -53,10 +53,9 @@
     {
       "name": "lv_dab.i_out",
       "type": "random",
-      "parameters": {
-        "distribution": "gaussian",
-        "mean": 150.0,
-        "sigma": 4
+      "distribution": {
+        "name": "gaussian",
+        "parameters": [150.0, 4]
       }
     }
   ],

@@ -22,6 +22,10 @@ std::vector<model_input> inputs_manager::get_inputs() {
         if (in["type"] == "constant") {
             i.type = constant_input;
             i.const_value = in["value"];
+        } else if(in["type"] == "random"){
+            i.type = random_input;
+            i.distribution_parameters = in["distribution"]["parameters"];
+            i.distribution_type = distribution_type_map[in["distribution"]["name"]];
         } else {
             i.type = series_input;
             const uint8_t idx = in["series_order"];

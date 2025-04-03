@@ -3,12 +3,13 @@
 
 #include <cstdint>
 #include <string>
-#include "metadata_types.hpp"
 #include <utility>
 #include <vector>
 #include "rapidcsv.h"
 #include <dlfcn.h>
 
+#include "metadata_types.hpp"
+#include "random_input_generator.hpp"
 
 typedef std::vector<float> (*target_cscript_t)(std::vector<float>, std::vector<float>&);
 typedef std::function< std::vector<float>(std::vector<float>, std::vector<float>&)> update_model_t;
@@ -17,7 +18,7 @@ typedef std::function< std::vector<float>(std::vector<float>, std::vector<float>
 
 class runner {
 public:
-    void add_inputs(const std::vector<model_input> &in) {inputs_metatata = in;}
+    void add_inputs(const std::vector<model_input> &in);
     void add_outputs(const std::vector<model_output> &out) {outputs_metatata = out;}
 
     void initialize_states(std::vector<float> s) {states = std::move(s);}
@@ -30,6 +31,7 @@ public:
 
     void set_target(const std::string &n, const std::string &p);
 private:
+    random_input_generator input_generator;
 
     target_cscript_t target;
 
