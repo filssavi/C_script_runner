@@ -17,7 +17,7 @@
 
 
 void runner::run_emulation() {
-
+    load_target();
     outputs = std::vector(comp.outputs.size(), std::vector<double>());
 
     for (int i = 0; i<comp.n_steps; i++) {
@@ -51,15 +51,15 @@ std::vector<double> runner::get_timebase() const {
     return timebase;
 }
 
-void runner::set_target(const std::string &target_name, const std::string &target_path) {
-    void* handle = dlopen(target_path.c_str(), RTLD_LAZY);
+void runner::load_target() {
+    void* handle = dlopen(comp.model.path.c_str(), RTLD_LAZY);
     if (!handle) {
         std::cerr << "Cannot open library: " << dlerror() << '\n';
         exit(1);
     }
     dlerror();  // Clear any existing error
 
-    target = (target_cscript_t) dlsym(handle, target_name.c_str());
+    target = (target_cscript_t) dlsym(handle, comp.model.name.c_str());
 
     if (const char* dlsym_error = dlerror()) {
         std::cerr << "Cannot load symbol: " << dlsym_error << '\n';

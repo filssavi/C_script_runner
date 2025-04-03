@@ -16,6 +16,7 @@ set(SOURCES /
         src/data_model/model_input.cpp
         src/data_model/model_output.cpp
         src/data_model/component.cpp
+        src/data_model/system.cpp
         src/utils/csv_interface.cpp
 )
 

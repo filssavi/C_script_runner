@@ -37,7 +37,7 @@ public:
     std::vector<std::vector<double>> get_outputs() {return outputs;}
     [[nodiscard]] std::vector<double> get_timebase() const;
 
-    void set_target(const std::string &n, const std::string &p);
+    void load_target();
 private:
     component comp;
     target_cscript_t target;

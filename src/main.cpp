@@ -22,31 +22,6 @@
 #include "output_manager.hpp"
 #include "runner.hpp"
 
-
-std::string validate_specs(const nlohmann::json &specs, const std::string &base_path) {
-
-    if (!specs["model"].contains("target_name")) {
-        std::cout<<"Target name not specified"<<std::endl;
-        exit(1);
-    }
-    if (!specs["model"].contains("target_path")) {
-        std::cout<<"Target path not specified"<<std::endl;
-        exit(1);
-    }
-
-    const auto target_path = component::get_full_path(specs["model"]["target_path"], base_path);
-    if (!std::filesystem::exists(target_path)) {
-        std::cerr << "Target SO file does not exist" << std::endl;
-        exit(1);
-    }
-    if (std::filesystem::is_directory(target_path)) {
-        std::cerr << "Target SO path points to a directory, not a file" << std::endl;
-        exit(1);
-    }
-
-    return target_path;
-}
-
 std::vector<float> get_initial_state(const nlohmann::json& states) {
     std::vector<float> initial_states(states.size());
     for (const auto &s : states) {
@@ -78,18 +53,12 @@ void run(std::istream &spec_stream,const std::string &base_path) {
     nlohmann::json specs;
     spec_stream >> specs;
 
-    auto target_path = validate_specs(specs, base_path);
-
-    std::string name = specs["model"]["target_name"];
-    auto path = target_path;
-
     component comp;
     comp.parse_specifications(specs, base_path);
 
     output_manager out_mgr(specs, comp.get_reference_path());
 
     runner r;
-    r.set_target(name, path);
     r.set_component(comp);
 
     r.run_emulation();
@@ -112,6 +81,7 @@ int main(int argc, char **argv) {
     app.add_option("spec", spec_file, "specifications file");
     app.add_flag("--compile" ,build, "File to compile to a dynamically loadable library");
     CLI11_PARSE(app, argc, argv);
+
 
     auto path = std::filesystem::path(spec_file);
     std::filesystem::path parent;

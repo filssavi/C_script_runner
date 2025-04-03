@@ -14,6 +14,21 @@
 #include "data_model/component.hpp"
 
 void component::parse_specifications(const nlohmann::json &specs, const std::string &base_path) {
+
+    if (!specs["model"].contains("target_name")) {
+        std::cout<<"Target name not specified"<<std::endl;
+        exit(1);
+    }
+    if (!specs["model"].contains("target_path")) {
+        std::cout<<"Target path not specified"<<std::endl;
+        exit(1);
+    }
+
+    model.path = get_full_path(specs["model"]["target_path"], base_path);
+    validate_path(model.path);
+
+    model.name = specs["model"]["target_name"];
+
     name = specs["model"]["target_name"];
     sampling_frequency = specs["model"]["sampling_frequency"];
     n_steps = specs["run_length"];
@@ -25,7 +40,7 @@ void component::parse_specifications(const nlohmann::json &specs, const std::str
     }
 
     const auto inputs_path = get_full_path(specs["inputs"]["series_file"], base_path);
-
+    validate_path(inputs_path);
 
     auto input_data = csv_interface::parse_file(inputs_path);
     for (auto &in:specs["inputs"]["specs"]) {
@@ -35,7 +50,7 @@ void component::parse_specifications(const nlohmann::json &specs, const std::str
 
 
     reference_path = get_full_path(specs["reference_outputs"], base_path);
-
+    validate_path(reference_path);
     for (auto &out:specs["outputs"]["specs"]) {
         model_output o(out);
         outputs.emplace_back(o);

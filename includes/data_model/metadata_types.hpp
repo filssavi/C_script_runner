@@ -19,6 +19,13 @@
 #include <cstdint>
 #include <unordered_map>
 
+
+struct port_metadata {
+    std::string core;
+    std::string name;
+};
+
+
 enum distribution_type_t {
     normal,
     uniform

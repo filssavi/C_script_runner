@@ -23,6 +23,10 @@
 #include "data_model/model_output.hpp"
 #include "utils/csv_interface.hpp"
 
+struct target {
+    std::string name;
+    std::string path;
+};
 
 
 class component {
@@ -42,6 +46,7 @@ class component {
     uint32_t sampling_frequency;
     std::vector<float> states;
 
+    target model;
     std::string reference_path;
 };
 
