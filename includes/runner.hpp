@@ -24,6 +24,7 @@
 #include "data_model/model_input.hpp"
 #include "data_model/model_output.hpp"
 #include "data_model/component.hpp"
+#include "output_manager.hpp"
 
 typedef std::vector<float> (*target_cscript_t)(std::vector<float>, std::vector<float>&);
 typedef std::function< std::vector<float>(std::vector<float>, std::vector<float>&)> update_model_t;
@@ -32,18 +33,18 @@ typedef std::function< std::vector<float>(std::vector<float>, std::vector<float>
 
 class runner {
 public:
-    void set_component(const component &c){comp = c;}
+    explicit runner(const component &c);
     void run_emulation();
-    std::vector<std::vector<double>> get_outputs() {return outputs;}
     [[nodiscard]] std::vector<double> get_timebase() const;
-
     void load_target();
+    void process_output();
 private:
     component comp;
     target_cscript_t target;
 
     std::vector<std::vector<double>> outputs;
     std::vector<float> states;
+    output_manager out_mgr;
 };
 
 

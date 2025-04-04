@@ -15,6 +15,9 @@
 #include "runner.hpp"
 
 
+runner::runner(const component &c) : out_mgr(c){
+    comp = c;
+}
 
 void runner::run_emulation() {
     load_target();
@@ -40,6 +43,9 @@ void runner::run_emulation() {
             outputs[out.series_index].push_back(step_out[out.output_index]);
         }
     }
+
+    out_mgr.set_timebase(get_timebase());
+    out_mgr.set_outputs(outputs);
 }
 
 std::vector<double> runner::get_timebase() const {
@@ -65,5 +71,13 @@ void runner::load_target() {
         std::cerr << "Cannot load symbol: " << dlsym_error << '\n';
         dlclose(handle);
         exit(1);
+    }
+}
+
+void runner::process_output() {
+    if (comp.out_type == plot) {
+        out_mgr.output_plot();
+    } else if (comp.out_type == csv) {
+        out_mgr.output_data();
     }
 }

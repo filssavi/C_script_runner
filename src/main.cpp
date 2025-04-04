@@ -18,8 +18,6 @@
 #include <nlohmann/json.hpp>
 
 #include "data_model/component.hpp"
-#include "inputs_manager.hpp"
-#include "output_manager.hpp"
 #include "runner.hpp"
 
 std::vector<float> get_initial_state(const nlohmann::json& states) {
@@ -56,21 +54,10 @@ void run(std::istream &spec_stream,const std::string &base_path) {
     component comp;
     comp.parse_specifications(specs, base_path);
 
-    output_manager out_mgr(specs, comp.get_reference_path());
-
-    runner r;
-    r.set_component(comp);
-
+    runner r(comp);
     r.run_emulation();
+    r.process_output();
 
-    out_mgr.set_timebase(r.get_timebase());
-    out_mgr.set_outputs(r.get_outputs());
-
-    if (specs["outputs"]["type"]=="plot") {
-        out_mgr.output_plot();
-    } else if (specs["outputs"]["type"]=="csv") {
-        out_mgr.output_data();
-    }
 }
 int main(int argc, char **argv) {
 

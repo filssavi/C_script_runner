@@ -19,6 +19,7 @@
 #include <nlohmann/json.hpp>
 #include "sciplot/sciplot.hpp"
 
+#include "data_model/component.hpp"
 #include "data_model/model_output.hpp"
 #include "utils/csv_interface.hpp"
 
@@ -26,18 +27,13 @@
 
 class output_manager {
 public:
-    explicit output_manager(nlohmann::json s,const std::string &ref_path);
+    explicit output_manager(const component &c);
     void set_outputs(std::vector<std::vector<double>> o) {outputs = std::move(o);}
     void set_timebase(std::vector<double> tb) {timebase = std::move(tb);}
     void output_plot() const;
     void output_data();
-    [[nodiscard]] std::vector<model_output> get_outputs(){return output_specs;}
 private:
-
-    std::pair<float, float> x_ranges;
-    std::vector<std::pair<float, float>> y_ranges;
-
-    std::vector<model_output> output_specs;
+    component comp;
     std::vector<double> timebase;
     std::vector<std::vector<double>> outputs;
     std::unordered_map<std::string, std::vector<float>> reference_outputs;

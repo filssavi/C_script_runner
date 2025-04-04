@@ -57,6 +57,14 @@ void component::parse_specifications(const nlohmann::json &specs, const std::str
 
     }
 
+    plot_interval = {specs["plot_interval"][0],specs["plot_interval"][1]};
+
+    if(specs["outputs"]["type"] == "plot") {
+        out_type = plot;
+    } else if(specs["outputs"]["type"] == "csv") {
+        out_type = csv;
+    }
+
 
 }
 

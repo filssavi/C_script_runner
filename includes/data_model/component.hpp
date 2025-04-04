@@ -28,6 +28,11 @@ struct target {
     std::string path;
 };
 
+enum output_type {
+    plot,
+    csv
+};
+
 
 class component {
   public:
@@ -42,12 +47,14 @@ class component {
     std::string name;
     std::vector<model_input> inputs;
     std::vector<model_output> outputs;
+    std::pair<float, float> plot_interval;
     uint32_t n_steps;
     uint32_t sampling_frequency;
     std::vector<float> states;
 
     target model;
     std::string reference_path;
+    output_type out_type;
 };
 
 

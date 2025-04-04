@@ -21,10 +21,11 @@
 
 class model_output {
     public:
-    explicit model_output(const nlohmann::json &j);
+    explicit model_output(const nlohmann::json &out);
     std::string name;
     uint8_t output_index;
     uint8_t series_index;
+    std::pair<float, float> y_range;
 
 };
 

@@ -26,7 +26,6 @@
   },
   "outputs": {
     "type": "plot",
-    "plot_time_range": [0, 1],
     "specs":[
       {
         "name": "v_out",
@@ -85,5 +84,6 @@
     "target_name": "sd_dab",
     "sampling_frequency": 25e3
   },
+  "plot_interval": [0, 1],
   "run_length": 25001
 }
