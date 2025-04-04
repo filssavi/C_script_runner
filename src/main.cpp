@@ -18,6 +18,7 @@
 #include <nlohmann/json.hpp>
 
 #include "data_model/component.hpp"
+#include "utils/settings_store.hpp"
 #include "runner.hpp"
 
 std::vector<float> get_initial_state(const nlohmann::json& states) {
@@ -69,25 +70,30 @@ int main(int argc, char **argv) {
     app.add_flag("--compile" ,build, "File to compile to a dynamically loadable library");
     CLI11_PARSE(app, argc, argv);
 
+    settings_store settings;
+    std::cout << settings.get_path("modules").string() << std::endl;
 
-    auto path = std::filesystem::path(spec_file);
-    std::filesystem::path parent;
+    if(!spec_file.empty()) {
+        auto path = std::filesystem::path(spec_file);
+        std::filesystem::path parent;
 
-    if(path.is_relative()) {
-        parent = absolute(path).parent_path();
-    } else if(path.is_absolute()) {
-        parent = path.parent_path();
+        if(path.is_relative()) {
+            parent = absolute(path).parent_path();
+        } else if(path.is_absolute()) {
+            parent = path.parent_path();
+        }
+
+
+        if (build) {
+            std::string current_dir = std::filesystem::current_path().string();
+            current_path(parent);
+            compile(std::filesystem::path(spec_file).filename());
+            std::filesystem::current_path(current_dir);
+        } else {
+            std::ifstream spec_stream(spec_file);
+            run(spec_stream, parent);
+        }
     }
 
-
-    if (build) {
-        std::string current_dir = std::filesystem::current_path().string();
-        current_path(parent);
-        compile(std::filesystem::path(spec_file).filename());
-        std::filesystem::current_path(current_dir);
-    } else {
-        std::ifstream spec_stream(spec_file);
-        run(spec_stream, parent);
-    }
     return 0;
 }

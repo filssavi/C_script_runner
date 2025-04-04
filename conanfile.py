@@ -16,6 +16,7 @@ class BasicConanfile(ConanFile):
         self.requires("implot/0.16")
         self.requires("nlohmann_json/3.11.3")
         self.requires("cli11/2.3.2")
+        self.requires("tomlplusplus/3.4.0")
 
     def build_requirements(self):
         pass

@@ -3,8 +3,8 @@ project(C_script_runner)
 
 set(CMAKE_CXX_STANDARD 23)
 
-find_package(implot REQUIRED)
 find_package(nlohmann_json REQUIRED)
+find_package(tomlplusplus REQUIRED)
 find_package(CLI11 REQUIRED)
 
 
@@ -18,6 +18,8 @@ set(SOURCES /
         src/data_model/component.cpp
         src/data_model/system.cpp
         src/utils/csv_interface.cpp
+        src/utils/settings_store.cpp
+        src/utils/settings_store.hpp
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)
@@ -28,6 +30,6 @@ add_executable(C_script_runner ${SOURCES})
 
 target_link_libraries(C_script_runner PRIVATE
         CLI11::CLI11
-        implot::implot
+        tomlplusplus::tomlplusplus
         nlohmann_json::nlohmann_json
 )
