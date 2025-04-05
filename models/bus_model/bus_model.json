@@ -12,12 +12,9 @@
       },
       {
         "name": "i_out",
-        "type": "random",
+        "type": "series",
         "model_order": 1,
-        "distribution": {
-          "name": "gaussian",
-          "parameters": [150.0, 4]
-        }
+        "series_order": 1
       },
       {
         "name": "fault",
