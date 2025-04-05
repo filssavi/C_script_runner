@@ -63,8 +63,12 @@ void modules_cache::process_module(const std::string &module_path) {
 std::optional<std::string> modules_cache::check_cache(const nlohmann::json &module, const std::string &base_path) {
 
     std::string target_path = get_full_path(module["model"]["target_path"], base_path);
-
+    auto name = std::filesystem::path(module["model"]["target_path"]).stem().string();
     auto on_disk_hash = hash_file(target_path);
+
+    if(!std::filesystem::exists("lib" + name + ".so")) {
+        return on_disk_hash;
+    }
     if(modules[module["model"]["target_name"]].hash != on_disk_hash) return on_disk_hash;
     return {};
 }
