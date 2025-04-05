@@ -18,6 +18,7 @@
 #include <nlohmann/json.hpp>
 
 #include "data_model/component.hpp"
+#include "data_model/modules_cache.hpp"
 #include "utils/settings_store.hpp"
 #include "runner.hpp"
 
@@ -64,35 +65,34 @@ int main(int argc, char **argv) {
 
     CLI::App app{"General purpose runner for C-script derived functions"};
 
-    std::string spec_file;
-    bool build = false;
-    app.add_option("spec", spec_file, "specifications file");
-    app.add_flag("--compile" ,build, "File to compile to a dynamically loadable library");
+    std::string target;
+    app.add_option("Module", target, "Component or System name");
     CLI11_PARSE(app, argc, argv);
 
-    settings_store settings;
-    std::cout << settings.get_path("modules").string() << std::endl;
+    modules_cache cache;
 
-    if(!spec_file.empty()) {
-        auto path = std::filesystem::path(spec_file);
-        std::filesystem::path parent;
+    if(!cache.contains(target)) {
+        std::cout << "Module " << target << " not found" << std::endl;
+        exit(1);
+    }
 
-        if(path.is_relative()) {
-            parent = absolute(path).parent_path();
-        } else if(path.is_absolute()) {
-            parent = path.parent_path();
+    auto module = cache.get_module(target);
+
+    if(!target.empty()) {
+
+        auto parent = std::filesystem::path(module.specs_path).parent_path().string();
+
+        std::string current_dir = std::filesystem::current_path().string();
+        std::filesystem::current_path(parent);
+
+        if (module.needs_rebuilding) {
+            compile(std::filesystem::path(module.target_path));
         }
 
+        std::ifstream spec_stream(module.specs_path);
+        run(spec_stream, parent);
 
-        if (build) {
-            std::string current_dir = std::filesystem::current_path().string();
-            current_path(parent);
-            compile(std::filesystem::path(spec_file).filename());
-            std::filesystem::current_path(current_dir);
-        } else {
-            std::ifstream spec_stream(spec_file);
-            run(spec_stream, parent);
-        }
+        std::filesystem::current_path(current_dir);
     }
 
     return 0;

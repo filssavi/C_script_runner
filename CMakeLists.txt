@@ -3,6 +3,7 @@ project(C_script_runner)
 
 set(CMAKE_CXX_STANDARD 23)
 
+find_package(OpenSSL REQUIRED)
 find_package(nlohmann_json REQUIRED)
 find_package(tomlplusplus REQUIRED)
 find_package(CLI11 REQUIRED)
@@ -19,7 +20,7 @@ set(SOURCES /
         src/data_model/system.cpp
         src/utils/csv_interface.cpp
         src/utils/settings_store.cpp
-        src/utils/settings_store.hpp
+        src/data_model/modules_cache.cpp
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)
@@ -29,6 +30,7 @@ include_directories(${CMAKE_SOURCE_DIR}/dependencies)
 add_executable(C_script_runner ${SOURCES})
 
 target_link_libraries(C_script_runner PRIVATE
+        openssl::openssl
         CLI11::CLI11
         tomlplusplus::tomlplusplus
         nlohmann_json::nlohmann_json

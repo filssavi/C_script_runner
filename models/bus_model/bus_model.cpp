@@ -29,7 +29,6 @@ std::vector<float> bus_model(const std::vector<float>&inputs, std::vector<float>
 
     bus(in_i_out, in_v_in, in_fault, out_v_out, out_i_in, v_cap, params);
     mem_v_cap0 = v_cap;
-
     return outputs;
 }
 

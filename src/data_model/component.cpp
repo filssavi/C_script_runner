@@ -24,7 +24,7 @@ void component::parse_specifications(const nlohmann::json &specs, const std::str
         exit(1);
     }
 
-    model.path = get_full_path(specs["model"]["target_path"], base_path);
+    model.path = base_path + "/lib" + std::filesystem::path(specs["model"]["target_path"]).replace_extension().string() + ".so";
     validate_path(model.path);
 
     model.name = specs["model"]["target_name"];

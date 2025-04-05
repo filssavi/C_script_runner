@@ -58,7 +58,7 @@
     }
   ],
   "model": {
-    "target_path": "libbus_model.so",
+    "target_path": "bus_model.cpp",
     "target_name": "bus_model",
     "sampling_frequency": 25e3
   },

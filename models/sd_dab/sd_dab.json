@@ -80,7 +80,7 @@
     }
   ],
   "model": {
-    "target_path": "libsd_dab.so",
+    "target_path": "sd_dab.cpp",
     "target_name": "sd_dab",
     "sampling_frequency": 25e3
   },

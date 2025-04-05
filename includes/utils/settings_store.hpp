@@ -18,17 +18,36 @@
 #include <toml++/toml.hpp>
 #include <iostream>
 #include <filesystem>
+#include <unordered_map>
 
 class settings_store {
     public:
-    settings_store();
+
+    static settings_store& instance() {
+        static settings_store instance; // Guaranteed to be thread-safe in C++11 and later
+        return instance;
+    }
+
+    // Delete copy constructor and assignment operator to prevent creating multiple instances
+    settings_store(const settings_store&) = delete;
+    settings_store& operator=(const settings_store&) = delete;
+
+
     void create_defaults();
     std::filesystem::path get_path(const std::string & name);
 
-    ~settings_store();
 private:
+    settings_store();
+    ~settings_store();
+
+
+    std::unordered_map<std::string, std::string> paths_default={
+        {"modules", "modules"},
+        {"modules_cache", "modules_cache.json"}
+    };
     toml::table config;
     std::string settings_file;
+    std::string settings_path;
 };
 
 

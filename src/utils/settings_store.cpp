@@ -22,7 +22,9 @@ settings_store::settings_store() {
     } else {
         settings_file = std::getenv("HOME");
         settings_file += "/.config/c_script_runner/settings.toml";
+
     }
+    settings_path = std::filesystem::path(settings_file).parent_path();
 
 
     if(!std::filesystem::exists(settings_file)) {
@@ -41,14 +43,16 @@ void settings_store::create_defaults() {
     create_directories(dir);
     std::ofstream file(settings_file);
     std::string home =  std::getenv("HOME");
-    auto modules_path = home + "/.config/c_script_runner/modules";
+    auto modules_path = settings_path + "/modules";
 
     if(!std::filesystem::exists(modules_path)) std::filesystem::create_directory(modules_path);
     toml::table dfl_settings{
-        {"paths",toml::table{
-                {"modules",modules_path}
-        }}
+            {"paths",toml::table{}}
     };
+
+    for(auto  &[name, value]: paths_default) {
+        dfl_settings["paths"].as_table()->insert_or_assign(name, toml::value{settings_path + "/" + value});
+    }
     file << dfl_settings;
     file.close();
 }
@@ -62,6 +66,8 @@ std::filesystem::path settings_store::get_path(const std::string &name) {
     }
     return {res.value()};
 }
+
+
 
 settings_store::~settings_store() {
     std::fstream file(settings_file);

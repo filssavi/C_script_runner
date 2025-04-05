@@ -80,10 +80,11 @@
     }
   ],
   "model": {
-    "target_path": "libcc_dab.so",
+    "target_path": "cc_dab.cpp",
     "target_name": "cc_dab",
     "sampling_frequency": 25e3
   },
+
   "plot_interval": [0.2, 1],
   "run_length": 25001
 }
