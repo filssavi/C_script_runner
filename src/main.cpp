@@ -87,6 +87,7 @@ int main(int argc, char **argv) {
 
         if (module.needs_rebuilding) {
             compile(std::filesystem::path(module.target_path));
+            cache.clear_rebuild_flag(target);
         }
 
         std::ifstream spec_stream(module.specs_path);

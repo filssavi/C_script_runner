@@ -32,7 +32,7 @@ struct module_metadata {
     bool needs_rebuilding = true;
 };
 
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(module_metadata, name, specs_path, target_path, hash);
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(module_metadata, name, specs_path, target_path, hash, needs_rebuilding);
 
 class modules_cache {
 public:
@@ -47,6 +47,8 @@ public:
     std::string hash_file(std::string filename);
 
     bool contains(const std::string& name) {return modules.contains(name);};
+
+    void clear_rebuild_flag(const std::string& name) {modules[name].needs_rebuilding = false;};
     module_metadata get_module(const std::string& name) {return modules[name];};
 
     ~modules_cache();

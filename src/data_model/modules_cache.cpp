@@ -53,7 +53,7 @@ void modules_cache::process_module(const std::string &module_path) {
             data.needs_rebuilding = true;
             data.hash = hash.value();
         } else {
-            data.needs_rebuilding = false;
+            data.needs_rebuilding = modules[module_spec["model"]["target_name"]].needs_rebuilding;
             data.hash = modules[module_spec["model"]["target_name"]].hash;
         }
         modules[data.name] = data;
