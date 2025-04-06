@@ -44,8 +44,6 @@ void runner::run_emulation() {
         }
     }
 
-    out_mgr.set_timebase(get_timebase());
-    out_mgr.set_outputs(outputs);
 }
 
 std::vector<double> runner::get_timebase() const {
@@ -76,8 +74,8 @@ void runner::load_target() {
 
 void runner::process_output() {
     if (comp.out_type == plot) {
-        out_mgr.output_plot();
+        out_mgr.output_plot(get_timebase(), outputs);
     } else if (comp.out_type == csv) {
-        out_mgr.output_data();
+        out_mgr.output_data(get_timebase(), outputs);
     }
 }

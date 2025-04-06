@@ -28,14 +28,10 @@
 class output_manager {
 public:
     explicit output_manager(const component &c);
-    void set_outputs(std::vector<std::vector<double>> o) {outputs = std::move(o);}
-    void set_timebase(std::vector<double> tb) {timebase = std::move(tb);}
-    void output_plot() const;
-    void output_data();
+    void output_plot(std::vector<double> timebase, std::vector<std::vector<double>> outputs) const;
+    void output_data(std::vector<double> timebase, std::vector<std::vector<double>> outputs);
 private:
     component comp;
-    std::vector<double> timebase;
-    std::vector<std::vector<double>> outputs;
     std::unordered_map<std::string, std::vector<float>> reference_outputs;
 };
 

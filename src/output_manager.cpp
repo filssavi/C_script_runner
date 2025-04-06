@@ -21,7 +21,7 @@ output_manager::output_manager(const component &c) {
     reference_outputs = csv_interface::parse_file(comp.get_reference_path());
 }
 
-void output_manager::output_plot() const {
+void output_manager::output_plot(std::vector<double> timebase, std::vector<std::vector<double>> outputs) const {
 
     std::vector<std::vector<sciplot::PlotVariant>> plots;
 
@@ -59,6 +59,7 @@ void output_manager::output_plot() const {
 
 }
 
-void output_manager::output_data() {
+void output_manager::output_data(std::vector<double> timebase, std::vector<std::vector<double>> outputs) {
+
 }
 
