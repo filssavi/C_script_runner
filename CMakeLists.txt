@@ -13,7 +13,6 @@ set(SOURCES /
         src/main.cpp
         src/runner.cpp
         src/output_manager.cpp
-        src/inputs_manager.cpp
         src/data_model/model_input.cpp
         src/data_model/model_output.cpp
         src/data_model/component.cpp
