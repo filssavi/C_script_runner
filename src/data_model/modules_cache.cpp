@@ -21,7 +21,10 @@ modules_cache::modules_cache() {
     auto modules_path = settings_store::instance().get_path("modules");
 
     if(exists(cache_path)) {
-        modules = nlohmann::json::parse(std::ifstream(cache_path));
+
+        nlohmann::json cache = nlohmann::json::parse(std::ifstream(cache_path));
+        components = cache["modules"];
+        systems = cache["systems"];
     }
     index_modules(modules_path);
 }
@@ -44,7 +47,7 @@ void modules_cache::process_module(const std::string &module_path) {
 
     auto module_spec = nlohmann::json::parse(std::ifstream(module_path));
     if(module_spec["type"] == "component") {
-        module_metadata data;
+        component_metadata data;
         data.specs_path = module_path;
         data.name = module_spec["model"]["target_name"];
         auto path_base =std::filesystem::path(module_path).parent_path();
@@ -53,10 +56,16 @@ void modules_cache::process_module(const std::string &module_path) {
             data.needs_rebuilding = true;
             data.hash = hash.value();
         } else {
-            data.needs_rebuilding = modules[module_spec["model"]["target_name"]].needs_rebuilding;
-            data.hash = modules[module_spec["model"]["target_name"]].hash;
+            data.needs_rebuilding = components[module_spec["model"]["target_name"]].needs_rebuilding;
+            data.hash = components[module_spec["model"]["target_name"]].hash;
         }
-        modules[data.name] = data;
+        components[data.name] = data;
+    } else if(module_spec["type"] == "system") {
+        system_metadata data;
+        data.specs_path = module_path;
+        data.name = module_spec["name"];
+
+        systems[data.name] = data;
     }
 }
 
@@ -69,7 +78,7 @@ std::optional<std::string> modules_cache::check_cache(const nlohmann::json &modu
     if(!std::filesystem::exists("lib" + name + ".so")) {
         return on_disk_hash;
     }
-    if(modules[module["model"]["target_name"]].hash != on_disk_hash) return on_disk_hash;
+    if(components[module["model"]["target_name"]].hash != on_disk_hash) return on_disk_hash;
     return {};
 }
 
@@ -120,5 +129,8 @@ modules_cache::~modules_cache() {
 
     auto cache_path = settings_store::instance().get_path("modules_cache");
     std::ofstream ofs(cache_path);
-    ofs << nlohmann::json(modules);
+    nlohmann::json cache;
+    cache["modules"] = components;
+    cache["systems"] = systems;
+    ofs << nlohmann::json(cache);
 }

@@ -24,7 +24,7 @@
 
 #include "utils/settings_store.hpp"
 
-struct module_metadata {
+struct component_metadata {
     std::string name;
     std::string specs_path;
     std::string target_path;
@@ -32,7 +32,15 @@ struct module_metadata {
     bool needs_rebuilding = true;
 };
 
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(module_metadata, name, specs_path, target_path, hash, needs_rebuilding);
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(component_metadata, name, specs_path, target_path, hash, needs_rebuilding);
+
+struct system_metadata {
+    std::string name;
+    std::string specs_path;
+};
+
+NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(system_metadata, name, specs_path);
+
 
 class modules_cache {
 public:
@@ -46,15 +54,16 @@ public:
 
     std::string hash_file(std::string filename);
 
-    bool contains(const std::string& name) {return modules.contains(name);};
+    bool contains(const std::string& name) const {return components.contains(name);}
 
-    void clear_rebuild_flag(const std::string& name) {modules[name].needs_rebuilding = false;};
-    module_metadata get_module(const std::string& name) {return modules[name];};
+    void clear_rebuild_flag(const std::string& name) {components[name].needs_rebuilding = false;};
+    component_metadata get_module(const std::string& name) const {return components.at(name);};
 
     ~modules_cache();
 private:
 
-    std::unordered_map<std::string, module_metadata> modules;
+    std::unordered_map<std::string, component_metadata> components;
+    std::unordered_map<std::string, system_metadata> systems;
 };
 
 

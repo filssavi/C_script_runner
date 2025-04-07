@@ -1,29 +1,21 @@
 {
   "type": "system",
+  "name": "dab_series",
   "models": [
     {
       "name": "mv_dab",
-      "model": {
-        "target_path": "../libsd_dab.so",
-        "target_name": "sd_dab",
-        "sampling_frequency": 25e3
-      }
+      "type": "sd_dab",
+      "sampling_frequency": 25e3
     },
     {
       "name": "mv_bus",
-      "model": {
-        "target_path": "../libbus_model.so",
-        "target_name": "bus_model",
-        "sampling_frequency": 25e3
-      }
+      "type": "bus_model",
+      "sampling_frequency": 25e3
     },
     {
       "name": "lv_dab",
-      "model": {
-        "target_path": "../libsd_dab.so",
-        "target_name": "sd_dab",
-        "sampling_frequency": 25e3
-      }
+      "type": "sd_dab",
+      "sampling_frequency": 25e3
     }
   ],
   "connections": [
@@ -60,11 +52,7 @@
     }
   ],
   "outputs": [
-    {
-      "name": "mv_dab.i_out"
-    },
-    {
-      "name": "lv_dab.v_out"
-    }
+    "mv_dab.i_out",
+    "lv_dab.v_out"
   ]
 }
