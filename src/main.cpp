@@ -59,6 +59,7 @@ int main(int argc, char **argv) {
             spec_stream >> specs;
 
             multi_component_system sys(specs);
+            execution_model = sys;
 
         } else {
 

@@ -19,20 +19,19 @@
 system_runner::system_runner(const multi_component_system &sys, modules_cache &cache) {
 
     for(auto &c:sys.components) {
-        if(!cache.contains(c.name)) {
-            std::cout << "Error: component "<< c.name << "not found" <<std::endl;
+        if(!cache.contains(c.type)) {
+            std::cout << "Error: component "<< c.type << "not found" <<std::endl;
         }
-        auto component_metadata = cache.get_module(c.name);
+        auto component_metadata = cache.get_module(c.type);
         components[c.name] = component_metadata;
         if (component_metadata.needs_rebuilding) {
             builder::build_module(component_metadata);
             cache.clear_rebuild_flag(component_metadata.name);
         }
-        targets[c.name] = load_dll(component_metadata.target_path, component_metadata.name);
-
-
+        auto base_path = std::filesystem::path(component_metadata.target_path).parent_path().string();
+        auto exec_path = base_path + "/lib" + component_metadata.name + ".so";
+        targets[c.name] = load_dll(exec_path, component_metadata.name);
     }
-    int i = 0;
 }
 
 void system_runner::run_emulation() {
