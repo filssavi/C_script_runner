@@ -54,30 +54,20 @@ int main(int argc, char **argv) {
 
             auto module = cache.get_system(target);
 
-            nlohmann::json specs;
-            std::ifstream spec_stream(module.specs_path);
-            spec_stream >> specs;
 
-            multi_component_system sys(specs);
+            multi_component_system sys(module.specs_path);
             execution_model = sys;
 
         } else {
 
             auto module = cache.get_module(target);
 
-            auto parent = std::filesystem::path(module.specs_path).parent_path().string();
             if (module.needs_rebuilding) {
                 builder::build_module(module);
                 cache.clear_rebuild_flag(target);
             }
 
-            std::ifstream spec_stream(module.specs_path);
-
-            nlohmann::json specs;
-            spec_stream >> specs;
-
-            component comp;
-            comp.parse_specifications(specs, parent);
+            component comp(module.specs_path);
             execution_model = comp;
 
         }

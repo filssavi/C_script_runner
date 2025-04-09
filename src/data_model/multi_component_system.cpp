@@ -2,7 +2,13 @@
 
 #include "data_model/multi_component_system.hpp"
 
-multi_component_system::multi_component_system(const nlohmann::json &spec) {
+multi_component_system::multi_component_system(const std::filesystem::path &path) {
+
+
+    nlohmann::json spec;
+    std::ifstream spec_stream(path);
+    spec_stream >> spec;
+
     name = spec["name"];
     n_steps = spec["run_length"];
 

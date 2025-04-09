@@ -28,6 +28,7 @@ system_runner::system_runner(const multi_component_system &sys, modules_cache &c
             builder::build_module(component_metadata);
             cache.clear_rebuild_flag(component_metadata.name);
         }
+
         auto base_path = std::filesystem::path(component_metadata.target_path).parent_path().string();
         auto exec_path = base_path + "/lib" + component_metadata.name + ".so";
         targets[c.name] = load_dll(exec_path, component_metadata.name);

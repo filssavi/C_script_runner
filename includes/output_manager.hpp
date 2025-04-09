@@ -27,7 +27,7 @@
 
 class output_manager {
 public:
-    explicit output_manager(const component &c);
+    void set_component(const component &c);
     void output_plot(std::vector<double> timebase, std::vector<std::vector<double>> outputs) const;
     void output_data(std::vector<double> timebase, std::vector<std::vector<double>> outputs);
 private:

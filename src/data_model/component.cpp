@@ -13,60 +13,68 @@
 // limitations under the License.
 #include "data_model/component.hpp"
 
-void component::parse_specifications(const nlohmann::json &specs, const std::string &base_path) {
+component::component(const std::filesystem::path &path) {
 
-    if (!specs["model"].contains("target_name")) {
+
+    std::ifstream spec_stream(path);
+
+    nlohmann::json comp;
+    spec_stream >> comp;
+
+    if (!comp["model"].contains("target_name")) {
         std::cout<<"Target name not specified"<<std::endl;
         exit(1);
     }
-    if (!specs["model"].contains("target_path")) {
+    if (!comp["model"].contains("target_path")) {
         std::cout<<"Target path not specified"<<std::endl;
         exit(1);
     }
 
-    model.path = base_path + "/lib" + std::filesystem::path(specs["model"]["target_path"]).replace_extension().string() + ".so";
+    std::string target_path = comp["model"]["target_path"];
+
+    auto base_path = path.parent_path().string();
+    model.path = base_path + "/lib" + std::filesystem::path(comp["model"]["target_path"]).replace_extension().string() + ".so";
     validate_path(model.path);
 
-    model.name = specs["model"]["target_name"];
+    model.name = comp["model"]["target_name"];
 
-    name = specs["model"]["target_name"];
-    sampling_frequency = specs["model"]["sampling_frequency"];
-    n_steps = specs["run_length"];
+    name = comp["model"]["target_name"];
+    sampling_frequency = comp["model"]["sampling_frequency"];
+    n_steps = comp["run_length"];
 
-    states = std::vector<float>(specs["states"].size());
+    states = std::vector<float>(comp["states"].size());
 
-    for (const auto &s : specs["states"]) {
+    for (const auto &s : comp["states"]) {
         states[s["order"]] = s["initial_value"];
     }
 
-    const auto inputs_path = get_full_path(specs["inputs"]["series_file"], base_path);
+    const auto inputs_path = get_full_path(comp["inputs"]["series_file"], base_path);
     validate_path(inputs_path);
 
     auto input_data = csv_interface::parse_file(inputs_path);
-    for (auto &in:specs["inputs"]["specs"]) {
-        model_input i(in, input_data, specs["run_length"]);
+    for (auto &in:comp["inputs"]["specs"]) {
+        model_input i(in, input_data, comp["run_length"]);
         inputs.push_back(i);
     }
 
 
-    reference_path = get_full_path(specs["reference_outputs"], base_path);
+    reference_path = get_full_path(comp["reference_outputs"], base_path);
     validate_path(reference_path);
-    for (auto &out:specs["outputs"]["specs"]) {
+    for (auto &out:comp["outputs"]["specs"]) {
         model_output o(out);
         outputs.emplace_back(o);
 
     }
 
-    plot_interval = {specs["plot_interval"][0],specs["plot_interval"][1]};
+    plot_interval = {comp["plot_interval"][0],comp["plot_interval"][1]};
 
-    if(specs["outputs"]["type"] == "plot") {
+    if(comp["outputs"]["type"] == "plot") {
         out_type = plot;
-    } else if(specs["outputs"]["type"] == "csv") {
+    } else if(comp["outputs"]["type"] == "csv") {
         out_type = csv;
     }
-
-
 }
+
 
 void component::validate_path(const std::string &p) {
     if (!std::filesystem::exists(p)) {

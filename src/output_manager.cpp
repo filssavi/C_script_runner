@@ -16,7 +16,7 @@
 
 #include <iostream>
 
-output_manager::output_manager(const component &c) {
+void output_manager::set_component(const component &c) {
     comp = c;
     reference_outputs = csv_interface::parse_file(comp.get_reference_path());
 }

@@ -15,8 +15,9 @@
 #include "execution/component_runner.hpp"
 
 
-component_runner::component_runner(const component &c) : out_mgr(c){
+component_runner::component_runner(const component &c) {
     comp = c;
+    out_mgr.set_component(c);
 }
 
 void component_runner::run_emulation() {

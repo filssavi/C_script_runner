@@ -31,7 +31,7 @@ struct system_component {
 
 class multi_component_system {
 public:
-    explicit multi_component_system(const nlohmann::json &spec);
+    explicit multi_component_system(const std::filesystem::path &path);
     std::string name;
     std::vector<system_component> components;
     std::vector<system_connection> connections;

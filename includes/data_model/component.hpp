@@ -36,6 +36,8 @@ enum output_type {
 
 class component {
   public:
+    component() = default;
+    component(const std::filesystem::path &path);
     void parse_specifications(const nlohmann::json& specs, const std::string &base_path);
 
     static void validate_path(const std::string &p);
