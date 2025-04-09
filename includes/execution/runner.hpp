@@ -14,19 +14,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SYSTEM_RUNNER_HPP
-#define SYSTEM_RUNNER_HPP
+#ifndef RUNNER_HPP
+#define RUNNER_HPP
 
-#include "data_model/multi_component_system.hpp"
-
-class system_runner {
-public:
-    system_runner(const multi_component_system &sys);
-    void run_emulation();
-    void process_output();
-
-};
+#include <variant>
 
 
+#include "execution/component_runner.hpp"
+#include "execution/system_runner.hpp"
 
-#endif //SYSTEM_RUNNER_HPP
+#include "data_model/component.hpp"
+#include"data_model/multi_component_system.hpp"
+
+void run(const std::variant<component, multi_component_system>&model);
+
+
+#endif //RUNNER_HPP

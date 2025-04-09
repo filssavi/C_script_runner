@@ -21,6 +21,7 @@ set(SOURCES /
         src/utils/settings_store.cpp
         src/data_model/modules_cache.cpp
         src/execution/system_runner.cpp
+        src/execution/runner.cpp
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)

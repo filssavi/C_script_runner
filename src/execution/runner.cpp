@@ -1,5 +1,3 @@
-
-
 // Copyright 2025 Filippo Savi <filssavi@gmail.com>
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,19 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SYSTEM_RUNNER_HPP
-#define SYSTEM_RUNNER_HPP
+#include "execution/runner.hpp"
 
-#include "data_model/multi_component_system.hpp"
+void run(const std::variant<component, multi_component_system> &model) {
 
-class system_runner {
-public:
-    system_runner(const multi_component_system &sys);
-    void run_emulation();
-    void process_output();
-
-};
-
-
-
-#endif //SYSTEM_RUNNER_HPP
+    if(std::holds_alternative<component>(model)) {
+        component_runner c(std::get<component>(model));
+        c.run_emulation();
+        c.process_output();
+    } else {
+        system_runner s(std::get<multi_component_system>(model));
+        s.run_emulation();
+        s.process_output();
+    }
+}

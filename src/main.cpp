@@ -20,7 +20,7 @@
 #include "data_model/component.hpp"
 #include "data_model/multi_component_system.hpp"
 #include "data_model/modules_cache.hpp"
-#include "execution/component_runner.hpp"
+#include "execution/runner.hpp"
 #include "utils/settings_store.hpp"
 
 std::vector<float> get_initial_state(const nlohmann::json& states) {
@@ -66,6 +66,7 @@ int main(int argc, char **argv) {
 
 
     if(!target.empty()) {
+        std::variant<component, multi_component_system> execution_model;
         if(cache.is_system(target)) {
 
             auto module = cache.get_system(target);
@@ -79,14 +80,18 @@ int main(int argc, char **argv) {
         } else {
 
             auto module = cache.get_module(target);
+
             auto parent = std::filesystem::path(module.specs_path).parent_path().string();
-
-            std::string current_dir = std::filesystem::current_path().string();
-            std::filesystem::current_path(parent);
-
             if (module.needs_rebuilding) {
+
+
+                std::string current_dir = std::filesystem::current_path().string();
+                std::filesystem::current_path(parent);
+
                 compile(std::filesystem::path(module.target_path));
                 cache.clear_rebuild_flag(target);
+
+                std::filesystem::current_path(current_dir);
             }
 
             std::ifstream spec_stream(module.specs_path);
@@ -96,13 +101,11 @@ int main(int argc, char **argv) {
 
             component comp;
             comp.parse_specifications(specs, parent);
+            execution_model = comp;
 
-            component_runner r(comp);
-            r.run_emulation();
-            r.process_output();
-
-            std::filesystem::current_path(current_dir);
         }
+         run(execution_model);
+
     }
 
     return 0;

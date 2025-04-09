@@ -15,3 +15,13 @@
 // limitations under the License.
 
 #include "execution/system_runner.hpp"
+
+system_runner::system_runner(const multi_component_system &sys) {
+
+}
+
+void system_runner::run_emulation() {
+}
+
+void system_runner::process_output() {
+}

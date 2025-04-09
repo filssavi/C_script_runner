@@ -11,8 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#ifndef RUNNER_HPP
-#define RUNNER_HPP
+#ifndef COMPONENT_RUNNER_HPP
+#define COMPONENT_RUNNER_HPP
 
 #include <cstdint>
 #include <string>
@@ -49,4 +49,4 @@ private:
 
 
 
-#endif //RUNNER_HPP
+#endif //COMPONENT_RUNNER_HPP
