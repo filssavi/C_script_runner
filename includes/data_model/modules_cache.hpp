@@ -24,11 +24,17 @@
 
 #include "utils/settings_store.hpp"
 
+enum module_type {
+    component_module,
+    system_module
+};
+
 struct component_metadata {
     std::string name;
     std::string specs_path;
     std::string target_path;
     std::string hash;
+    module_type type=component_module;
     bool needs_rebuilding = true;
 };
 
@@ -54,10 +60,13 @@ public:
 
     std::string hash_file(std::string filename);
 
-    bool contains(const std::string& name) const {return components.contains(name);}
+    bool contains(const std::string& name) const {return components.contains(name) || systems.contains(name);}
 
     void clear_rebuild_flag(const std::string& name) {components[name].needs_rebuilding = false;};
     component_metadata get_module(const std::string& name) const {return components.at(name);};
+    system_metadata get_system(const std::string& name) const {return systems.at(name);};
+
+    bool is_system(const std::string& name) const {return systems.contains(name);};
 
     ~modules_cache();
 private:

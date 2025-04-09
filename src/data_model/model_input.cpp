@@ -16,7 +16,12 @@
 model_input::model_input(nlohmann::json in, const std::unordered_map<std::string, std::vector<float>>  &d, uint32_t n_steps) {
 
     name = in["name"];
-    input_index = in["model_order"];
+    if(!in.contains("model_order")) {
+        is_overload = true;
+    } else {
+        input_index = in["model_order"];
+    }
+
 
     if (in["type"] == "constant") {
         type = constant_input;

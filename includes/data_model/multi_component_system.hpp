@@ -12,9 +12,14 @@
 #include "data_model/modules_cache.hpp"
 
 
+struct endpoint_descriptor {
+    std::string component;
+    std::string port;
+};
+
 struct system_connection {
-    std::string source;
-    std::string destination;
+    endpoint_descriptor source;
+    endpoint_descriptor destination;
 };
 
 struct system_component {
@@ -25,13 +30,16 @@ struct system_component {
 
 
 class multi_component_system {
-    explicit multi_component_system(nlohmann::json &spec, const modules_cache &cache);
+public:
+    explicit multi_component_system(const nlohmann::json &spec);
     std::string name;
     std::vector<system_component> components;
     std::vector<system_connection> connections;
     std::vector<model_input> inputs_overloads;
-    std::vector<std::string> outputs_overloads;
-
+    std::vector<endpoint_descriptor> outputs_overloads;
+    uint32_t n_steps;
+private:
+    static endpoint_descriptor parse_endpoint(const std::string &s);
 };
 
 

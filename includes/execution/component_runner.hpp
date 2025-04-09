@@ -31,9 +31,9 @@ typedef std::function< std::vector<float>(std::vector<float>, std::vector<float>
 
 
 
-class runner {
+class component_runner {
 public:
-    explicit runner(const component &c);
+    explicit component_runner(const component &c);
     void run_emulation();
     [[nodiscard]] std::vector<double> get_timebase() const;
     void load_target();

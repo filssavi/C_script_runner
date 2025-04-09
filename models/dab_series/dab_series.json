@@ -54,5 +54,6 @@
   "outputs": [
     "mv_dab.i_out",
     "lv_dab.v_out"
-  ]
+  ],
+  "run_length": 25001
 }

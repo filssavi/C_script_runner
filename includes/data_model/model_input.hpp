@@ -34,6 +34,7 @@ class model_input {
     uint8_t input_index;
     float const_value;
     std::vector<float> data;
+    bool is_overload;
 
 };
 
