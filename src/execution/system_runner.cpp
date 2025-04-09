@@ -16,12 +16,45 @@
 
 #include "execution/system_runner.hpp"
 
-system_runner::system_runner(const multi_component_system &sys) {
+system_runner::system_runner(const multi_component_system &sys, modules_cache &cache) {
 
+    for(auto &c:sys.components) {
+        if(!cache.contains(c.name)) {
+            std::cout << "Error: component "<< c.name << "not found" <<std::endl;
+        }
+        auto component_metadata = cache.get_module(c.name);
+        components[c.name] = component_metadata;
+        if (component_metadata.needs_rebuilding) {
+            builder::build_module(component_metadata);
+            cache.clear_rebuild_flag(component_metadata.name);
+        }
+        targets[c.name] = load_dll(component_metadata.target_path, component_metadata.name);
+
+
+    }
+    int i = 0;
 }
 
 void system_runner::run_emulation() {
 }
 
 void system_runner::process_output() {
+}
+
+target_cscript_t system_runner::load_dll(const std::string &path, const std::string &module_name) {
+    void* handle = dlopen(path.c_str(), RTLD_LAZY);
+    if (!handle) {
+        std::cerr << "Cannot open library: " << dlerror() << '\n';
+        exit(1);
+    }
+    dlerror();  // Clear any existing error
+
+    target_cscript_t t = (target_cscript_t) dlsym(handle, module_name.c_str());
+
+    if (const char* dlsym_error = dlerror()) {
+        std::cerr << "Cannot load symbol: " << dlsym_error << '\n';
+        dlclose(handle);
+        exit(1);
+    }
+    return t;
 }

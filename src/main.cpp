@@ -22,6 +22,7 @@
 #include "data_model/modules_cache.hpp"
 #include "execution/runner.hpp"
 #include "utils/settings_store.hpp"
+#include "utils/builder.hpp"
 
 std::vector<float> get_initial_state(const nlohmann::json& states) {
     std::vector<float> initial_states(states.size());
@@ -29,24 +30,6 @@ std::vector<float> get_initial_state(const nlohmann::json& states) {
         initial_states[s["order"]] = s["initial_value"];
     }
     return initial_states;
-}
-
-void compile(const std::filesystem::path &file) {
-    const std::string file_path ="lib" +file.stem().string() + std::string(".so");
-    if (std::filesystem::exists(file_path)) {
-        std::filesystem::remove_all(file_path);
-    }
-    std::vector<std::string> compile_command_args = {
-        "g++",
-        "-fPIC",
-        "-shared",
-        file.string(),
-        "-o",
-        file_path
-    };
-    std::string command;
-    for (auto &p:compile_command_args) command += p + " ";
-    std::system(command.c_str());
 }
 
 int main(int argc, char **argv) {
@@ -83,15 +66,8 @@ int main(int argc, char **argv) {
 
             auto parent = std::filesystem::path(module.specs_path).parent_path().string();
             if (module.needs_rebuilding) {
-
-
-                std::string current_dir = std::filesystem::current_path().string();
-                std::filesystem::current_path(parent);
-
-                compile(std::filesystem::path(module.target_path));
+                builder::build_module(module);
                 cache.clear_rebuild_flag(target);
-
-                std::filesystem::current_path(current_dir);
             }
 
             std::ifstream spec_stream(module.specs_path);
@@ -104,7 +80,7 @@ int main(int argc, char **argv) {
             execution_model = comp;
 
         }
-         run(execution_model);
+         run(execution_model, cache);
 
     }
 

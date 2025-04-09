@@ -17,14 +17,22 @@
 #ifndef SYSTEM_RUNNER_HPP
 #define SYSTEM_RUNNER_HPP
 
+#include <dlfcn.h>
+
+#include "utils/builder.hpp"
 #include "data_model/multi_component_system.hpp"
+#include "execution/runner_target.hpp"
+#include "data_model/modules_cache.hpp"
 
 class system_runner {
 public:
-    system_runner(const multi_component_system &sys);
+    system_runner(const multi_component_system &sys, modules_cache &cache);
     void run_emulation();
     void process_output();
+    target_cscript_t load_dll(const std::string &path, const std::string &);
 
+    std::unordered_map<std::string, target_cscript_t> targets;
+    std::unordered_map<std::string, component_metadata> components;
 };
 
 

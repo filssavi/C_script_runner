@@ -14,14 +14,14 @@
 
 #include "execution/runner.hpp"
 
-void run(const std::variant<component, multi_component_system> &model) {
+void run(const std::variant<component, multi_component_system> &model, modules_cache &cache) {
 
     if(std::holds_alternative<component>(model)) {
         component_runner c(std::get<component>(model));
         c.run_emulation();
         c.process_output();
     } else {
-        system_runner s(std::get<multi_component_system>(model));
+        system_runner s(std::get<multi_component_system>(model), cache);
         s.run_emulation();
         s.process_output();
     }

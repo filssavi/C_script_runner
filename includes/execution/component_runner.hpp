@@ -23,11 +23,9 @@
 
 #include "data_model/model_input.hpp"
 #include "data_model/model_output.hpp"
+#include "execution/runner_target.hpp"
 #include "data_model/component.hpp"
 #include "output_manager.hpp"
-
-typedef std::vector<float> (*target_cscript_t)(std::vector<float>, std::vector<float>&);
-typedef std::function< std::vector<float>(std::vector<float>, std::vector<float>&)> update_model_t;
 
 
 

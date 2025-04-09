@@ -14,20 +14,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RUNNER_HPP
-#define RUNNER_HPP
+#ifndef BUILDER_HPP
+#define BUILDER_HPP
 
-#include <variant>
-
-
-#include "execution/component_runner.hpp"
-#include "execution/system_runner.hpp"
-
-#include "data_model/component.hpp"
-#include "data_model/modules_cache.hpp"
-#include"data_model/multi_component_system.hpp"
-
-void run(const std::variant<component, multi_component_system>&model, modules_cache &cache);
+#include <data_model/modules_cache.hpp>
 
 
-#endif //RUNNER_HPP
+class builder {
+public:
+    static void build_module(const component_metadata &md);
+private:
+    static void compile(std::filesystem::path path);
+
+};
+
+
+
+#endif //BUILDER_HPP
