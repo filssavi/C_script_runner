@@ -15,12 +15,20 @@
 #include "execution/component_runner.hpp"
 
 
-component_runner::component_runner(const component &c) {
+component_runner::component_runner(const component &c, modules_cache &cache) {
     comp = c;
     out_mgr.set_component(c);
+
+    auto metadata = cache.get_module(comp.name);
+    if (metadata.needs_rebuilding) {
+        builder::build_module(metadata);
+        cache.clear_rebuild_flag(comp.name);
+    }
+
 }
 
 void component_runner::run_emulation() {
+
     load_target();
     outputs = std::vector(comp.outputs.size(), std::vector<double>());
 

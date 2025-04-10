@@ -24,14 +24,6 @@
 #include "utils/settings_store.hpp"
 #include "utils/builder.hpp"
 
-std::vector<float> get_initial_state(const nlohmann::json& states) {
-    std::vector<float> initial_states(states.size());
-    for (const auto &s : states) {
-        initial_states[s["order"]] = s["initial_value"];
-    }
-    return initial_states;
-}
-
 int main(int argc, char **argv) {
 
     CLI::App app{"General purpose runner for C-script derived functions"};
@@ -61,11 +53,6 @@ int main(int argc, char **argv) {
         } else {
 
             auto module = cache.get_module(target);
-
-            if (module.needs_rebuilding) {
-                builder::build_module(module);
-                cache.clear_rebuild_flag(target);
-            }
 
             component comp(module.specs_path);
             execution_model = comp;

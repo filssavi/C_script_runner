@@ -34,7 +34,7 @@ component::component(const std::filesystem::path &path) {
 
     auto base_path = path.parent_path().string();
     model.path = base_path + "/lib" + std::filesystem::path(comp["model"]["target_path"]).replace_extension().string() + ".so";
-    validate_path(model.path);
+
 
     model.name = comp["model"]["target_name"];
 

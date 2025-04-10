@@ -21,6 +21,7 @@
 #include <iostream>
 #include <dlfcn.h>
 
+#include "utils/builder.hpp"
 #include "data_model/model_input.hpp"
 #include "data_model/model_output.hpp"
 #include "execution/runner_target.hpp"
@@ -31,7 +32,7 @@
 
 class component_runner {
 public:
-    explicit component_runner(const component &c);
+    explicit component_runner(const component &c, modules_cache &cache);
     void run_emulation();
     [[nodiscard]] std::vector<double> get_timebase() const;
     void load_target();
