@@ -32,6 +32,8 @@ struct system_component {
 class multi_component_system {
 public:
     explicit multi_component_system(const std::filesystem::path &path);
+    multi_component_system(const multi_component_system &other);
+
     std::string name;
     std::vector<system_component> components;
     std::vector<system_connection> connections;

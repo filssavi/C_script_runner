@@ -21,6 +21,7 @@
 
 #include "utils/builder.hpp"
 #include "data_model/multi_component_system.hpp"
+#include "data_model/component.hpp"
 #include "execution/runner_target.hpp"
 #include "data_model/modules_cache.hpp"
 
@@ -33,6 +34,10 @@ public:
 
     std::unordered_map<std::string, target_cscript_t> targets;
     std::unordered_map<std::string, component_metadata> components;
+    multi_component_system system;
+
+    std::unordered_map<std::string, std::vector<float>> states;
+    std::unordered_map<std::string, std::vector<double>> inputs;
 };
 
 

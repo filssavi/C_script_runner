@@ -16,7 +16,7 @@
 
 #include "execution/system_runner.hpp"
 
-system_runner::system_runner(const multi_component_system &sys, modules_cache &cache) {
+system_runner::system_runner(const multi_component_system &sys, modules_cache &cache) : system(sys){
 
     for(auto &c:sys.components) {
         if(!cache.contains(c.type)) {
@@ -29,16 +29,32 @@ system_runner::system_runner(const multi_component_system &sys, modules_cache &c
             cache.clear_rebuild_flag(component_metadata.name);
         }
 
-        auto base_path = std::filesystem::path(component_metadata.target_path).parent_path().string();
-        auto exec_path = base_path + "/lib" + component_metadata.name + ".so";
+        auto path =  std::filesystem::path(component_metadata.target_path);
+        auto base_path = path.parent_path().string();
+        auto exec_path = base_path + "/lib" + path.filename().replace_extension().string() + ".so";
         targets[c.name] = load_dll(exec_path, component_metadata.name);
+
+        component comp(component_metadata.specs_path);
+        for(auto s:comp.states){
+            states[c.name].push_back(s);
+        }
+
     }
+    system = sys;
 }
 
 void system_runner::run_emulation() {
+    int i  = 0;
+
+    //TODO: SETUP STATES
+    // LOOP
+        //TODO: INPUTS PHASE
+        //TODO: EMULATION PHASE
+        //TODO: OUTPUT PHASE
 }
 
 void system_runner::process_output() {
+
 }
 
 target_cscript_t system_runner::load_dll(const std::string &path, const std::string &module_name) {

@@ -35,6 +35,15 @@ multi_component_system::multi_component_system(const std::filesystem::path &path
     }
 }
 
+multi_component_system::multi_component_system(const multi_component_system &other) {
+    components = other.components;
+    name = other.name;
+    n_steps = other.n_steps;
+    inputs_overloads = other.inputs_overloads;
+    outputs_overloads = other.outputs_overloads;
+    connections = other.connections;
+}
+
 endpoint_descriptor multi_component_system::parse_endpoint(const std::string &s) {
     auto split_point = s.find('.');
     return {s.substr(0, split_point), s.substr(split_point + 1)};

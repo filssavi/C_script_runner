@@ -49,7 +49,6 @@ component::component(const std::filesystem::path &path) {
     }
 
     const auto inputs_path = get_full_path(comp["inputs"]["series_file"], base_path);
-    validate_path(inputs_path);
 
     auto input_data = csv_interface::parse_file(inputs_path);
     for (auto &in:comp["inputs"]["specs"]) {
@@ -59,7 +58,6 @@ component::component(const std::filesystem::path &path) {
 
 
     reference_path = get_full_path(comp["reference_outputs"], base_path);
-    validate_path(reference_path);
     for (auto &out:comp["outputs"]["specs"]) {
         model_output o(out);
         outputs.emplace_back(o);
