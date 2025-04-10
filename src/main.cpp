@@ -46,7 +46,6 @@ int main(int argc, char **argv) {
 
             auto module = cache.get_system(target);
 
-
             multi_component_system sys(module.specs_path);
             execution_model = sys;
 

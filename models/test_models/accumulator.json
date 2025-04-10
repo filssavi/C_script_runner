@@ -1,0 +1,43 @@
+{
+  "type": "component",
+  "reference_outputs" : "",
+  "inputs": {
+    "series_file": "",
+    "specs": [
+      {
+        "name": "v_in",
+        "type": "constant",
+        "model_order": 0,
+        "value": 1000
+      }
+    ]
+  },
+  "outputs": {
+    "type": "plot",
+    "specs":[
+      {
+        "name": "v_out",
+        "model_order": 0,
+        "reference_order": 0,
+        "plot_range": [
+          800,
+          1100
+        ]
+      }
+    ]
+  },
+  "states": [
+    {
+      "name": "mem",
+      "order": 0,
+      "initial_value": 0
+    }
+  ],
+  "model": {
+    "target_path": "accumulator.cpp",
+    "target_name": "accumulator",
+    "sampling_frequency": 25e3
+  },
+  "plot_interval": [0, 1],
+  "run_length": 25001
+}

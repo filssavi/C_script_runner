@@ -1,0 +1,37 @@
+{
+  "type": "component",
+  "reference_outputs" : "ref_outputs.csv",
+  "inputs": {
+    "series_file": "plecs_inputs.csv",
+    "specs": [
+      {
+        "name": "v_in",
+        "type": "constant",
+        "model_order": 0,
+        "value": 1000
+      }
+    ]
+  },
+  "outputs": {
+    "type": "plot",
+    "specs":[
+      {
+        "name": "v_out",
+        "model_order": 0,
+        "reference_order": 0,
+        "plot_range": [
+          0,
+          5000
+        ]
+      }
+    ]
+  },
+  "states": [],
+  "model": {
+    "target_path": "multiplyByConstant.cpp",
+    "target_name": "multiply_by_constant",
+    "sampling_frequency": 25e3
+  },
+  "plot_interval": [0, 1],
+  "run_length": 25001
+}
