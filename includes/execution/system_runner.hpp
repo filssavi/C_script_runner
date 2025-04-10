@@ -37,7 +37,7 @@ public:
     multi_component_system system;
 
     std::unordered_map<std::string, std::vector<float>> states;
-    std::unordered_map<std::string, std::vector<double>> inputs;
+    std::unordered_map<std::string, std::vector<std::vector<double>>> inputs;
 };
 
 

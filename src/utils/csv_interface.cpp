@@ -15,10 +15,10 @@
 
 #include <iostream>
 
-    std::unordered_map<std::string, std::vector<float>> csv_interface::parse_file(std::string filename) {
+    std::unordered_map<std::string, std::vector<double>> csv_interface::parse_file(std::string filename) {
     std::ifstream file(filename);
     std::vector<std::string> columns;
-    std::vector<std::vector<float>> raw_data;
+    std::vector<std::vector<double>> raw_data;
 
     std::string header;
     std::getline(file, header, '\n');
@@ -31,7 +31,7 @@
     std::istringstream iss(header);
     for (std::string val_s; std::getline(iss, val_s, ',');) {
         columns.push_back(val_s);
-        raw_data.push_back(std::vector<float>());
+        raw_data.push_back(std::vector<double>());
     }
 
 
@@ -45,7 +45,7 @@
 
     }
 
-    std::unordered_map<std::string, std::vector<float>> ret_val;
+    std::unordered_map<std::string, std::vector<double>> ret_val;
     for(int i = 0; i < columns.size(); ++i) {
         ret_val[columns[i]] = raw_data[i];
     }

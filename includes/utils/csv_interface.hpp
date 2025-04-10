@@ -23,7 +23,7 @@
 class csv_interface {
 
   public:
-    static std::unordered_map<std::string, std::vector<float>> parse_file(std::string filename);
+    static std::unordered_map<std::string, std::vector<double>> parse_file(std::string filename);
     static void write_file(std::string filename, std::unordered_map<std::string, std::vector<float>> data);
 };
 

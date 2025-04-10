@@ -35,15 +35,7 @@ void component_runner::run_emulation() {
     for (int i = 0; i<comp.n_steps; i++) {
         std::vector<float> inputs(comp.inputs.size(), 0);
         for (const auto &in:comp.inputs) {
-            switch (in.type) {
-                case constant_input:
-                    inputs[in.input_index] = in.const_value;
-                    break;
-                case series_input:
-                case random_input:
-                    inputs[in.input_index] = in.data[i];
-                    break;
-            }
+            inputs[in.input_index] = in.data[i];
         }
 
         auto step_out = target(inputs, comp.states);

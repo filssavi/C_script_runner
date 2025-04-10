@@ -32,7 +32,7 @@ public:
     void output_data(std::vector<double> timebase, std::vector<std::vector<double>> outputs);
 private:
     component comp;
-    std::unordered_map<std::string, std::vector<float>> reference_outputs;
+    std::unordered_map<std::string, std::vector<double>> reference_outputs;
 };
 
 

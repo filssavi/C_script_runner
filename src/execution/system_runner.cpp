@@ -39,14 +39,23 @@ system_runner::system_runner(const multi_component_system &sys, modules_cache &c
             states[c.name].push_back(s);
         }
 
+        for(auto &i:comp.inputs) {
+            for(auto &ov:sys.inputs_overloads) {
+                if(i.name== ov.name) {
+                    inputs[c.name].push_back(ov.data);
+                }else {
+                    inputs[c.name].push_back(i.data);
+                }
+            }
+        }
+
     }
     system = sys;
 }
 
 void system_runner::run_emulation() {
-    int i  = 0;
 
-    //TODO: SETUP STATES
+
     // LOOP
         //TODO: INPUTS PHASE
         //TODO: EMULATION PHASE

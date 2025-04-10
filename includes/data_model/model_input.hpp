@@ -28,12 +28,11 @@
 class model_input {
 
  public:
-    model_input(nlohmann::json input, const std::unordered_map<std::string, std::vector<float>> &d, uint32_t n);
+    model_input(nlohmann::json input, const std::unordered_map<std::string, std::vector<double>> &d, uint32_t n);
     std::string name;
     input_type type;
     uint8_t input_index;
-    float const_value;
-    std::vector<float> data;
+    std::vector<double> data;
     bool is_overload;
 
 };
