@@ -15,6 +15,7 @@
 // limitations under the License.
 
 #include "data_model/modules_cache.hpp"
+#include "data_model/component.hpp"
 
 modules_cache::modules_cache() {
     auto cache_path = settings_store::instance().get_path("modules_cache");
@@ -123,6 +124,10 @@ std::string modules_cache::hash_file(std::string target_path) {
 
     // If I get here there must have been some error with the hash calculation, throw an exception
     throw std::runtime_error("ERROR: could not calculate file hash");
+}
+
+component modules_cache::get_component(const std::string &name) const {
+    return component(components.at(name).specs_path);
 }
 
 modules_cache::~modules_cache() {

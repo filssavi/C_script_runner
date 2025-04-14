@@ -23,6 +23,7 @@ set(SOURCES /
         src/execution/system_runner.cpp
         src/execution/runner.cpp
         src/utils/builder.cpp
+        src/execution/interconnect_manger.cpp
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)

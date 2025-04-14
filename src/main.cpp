@@ -44,14 +44,14 @@ int main(int argc, char **argv) {
         std::variant<component, multi_component_system> execution_model;
         if(cache.is_system(target)) {
 
-            auto module = cache.get_system(target);
+            auto module = cache.get_system_metadata(target);
 
-            multi_component_system sys(module.specs_path);
+            multi_component_system sys(module.specs_path, cache);
             execution_model = sys;
 
         } else {
 
-            auto module = cache.get_module(target);
+            auto module = cache.get_module_metadata(target);
 
             component comp(module.specs_path);
             execution_model = comp;

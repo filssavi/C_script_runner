@@ -24,7 +24,7 @@ system_runner::system_runner(const multi_component_system &sys, modules_cache &c
         if(!c.contains(component_inst.type)) {
             std::cout << "Error: component "<< component_inst.type << "not found" <<std::endl;
         }
-        auto component_metadata = c.get_module(component_inst.type);
+        auto component_metadata = c.get_module_metadata(component_inst.type);
         components[component_inst.name] = component_metadata;
         if (component_metadata.needs_rebuilding) {
             builder::build_module(component_metadata);
@@ -51,9 +51,8 @@ system_runner::system_runner(const multi_component_system &sys, modules_cache &c
             }
         }
 
-        for(auto &i:sys.connections) {
-            int j = 0;
-            comp.i
+        for(const auto &[source, destination]:sys.connections) {
+            i_m.add_connection(source, destination, 0);
         }
 
     }

@@ -47,6 +47,7 @@ struct system_metadata {
 
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(system_metadata, name, specs_path);
 
+class component;
 
 class modules_cache {
 public:
@@ -62,11 +63,13 @@ public:
 
     bool contains(const std::string& name) const {return components.contains(name) || systems.contains(name);}
 
-    void clear_rebuild_flag(const std::string& name) {components[name].needs_rebuilding = false;};
-    component_metadata get_module(const std::string& name) const {return components.at(name);};
-    system_metadata get_system(const std::string& name) const {return systems.at(name);};
+    void clear_rebuild_flag(const std::string& name) {components[name].needs_rebuilding = false;}
 
-    bool is_system(const std::string& name) const {return systems.contains(name);};
+    component_metadata get_module_metadata(const std::string& name) const {return components.at(name);}
+    component get_component(const std::string &name) const;
+    system_metadata get_system_metadata(const std::string& name) const {return systems.at(name);}
+
+    bool is_system(const std::string& name) const {return systems.contains(name);}
 
     ~modules_cache();
 private:

@@ -23,6 +23,7 @@
 #include "data_model/multi_component_system.hpp"
 #include "data_model/component.hpp"
 #include "execution/runner_target.hpp"
+#include "execution/interconnect_manger.hpp"
 #include "data_model/modules_cache.hpp"
 
 class system_runner {
@@ -35,7 +36,7 @@ public:
 
 private:
     component get_component(const std::string &name);
-
+    interconnect_manger i_m;
     std::unordered_map<std::string, target_cscript_t> targets;
     std::unordered_map<std::string, component_metadata> components;
     multi_component_system system;

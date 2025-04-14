@@ -10,29 +10,11 @@
 
 #include "data_model/component.hpp"
 #include "data_model/modules_cache.hpp"
-
-
-struct endpoint_descriptor {
-    std::string component;
-    std::string port;
-    uint32_t order;
-};
-
-struct system_connection {
-    endpoint_descriptor source;
-    endpoint_descriptor destination;
-};
-
-struct system_component {
-    std::string name;
-    std::string type;
-    float sampling_frequency;
-};
-
+#include "data_model/system_metadata.hpp"
 
 class multi_component_system {
 public:
-    explicit multi_component_system(const std::filesystem::path &path);
+    explicit multi_component_system(const std::filesystem::path &path, const modules_cache &cache);
     multi_component_system(const multi_component_system &other);
 
     std::string name;
@@ -42,7 +24,8 @@ public:
     std::vector<endpoint_descriptor> outputs_overloads;
     uint32_t n_steps;
 private:
-    static endpoint_descriptor parse_endpoint(const std::string &s);
+    static endpoint_descriptor parse_endpoint(const std::string &s, const std::string &type, const std::unordered_map<std::string, component> &models);
+
 };
 
 
