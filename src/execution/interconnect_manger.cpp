@@ -18,25 +18,42 @@ interconnect_manger::interconnect_manger(): connections() {
 }
 
 void interconnect_manger::add_connection(const endpoint_descriptor& src, const endpoint_descriptor& dst, const double initial_value) {
-    connections[interconnect_to_string(src, dst)] = initial_value;
+    connections.emplace_back(src, dst, initial_value);
 }
 
-void interconnect_manger::update_value(const endpoint_descriptor& src, const endpoint_descriptor& dst, const double value) {
-    if(!connections.contains(interconnect_to_string(src, dst))) {
-        std::cout << "Error: Attempted update of unknown connection" << std::endl;
-        exit(1);
+void interconnect_manger::update_value(const endpoint_descriptor &ep, const double value) {
+    for(auto &ic:connections) {
+        if(ic.source.component == ep.component && ic.source.port== ep.port) {
+            ic.value = value;
+        }
     }
-    connections[interconnect_to_string(src, dst)] = value;
 }
 
-double interconnect_manger::get_value(const endpoint_descriptor& src, const endpoint_descriptor& dst) {
-    if(!connections.contains(interconnect_to_string(src, dst))) {
-        std::cout << "Error: Attempted retrival of unknown connection" << std::endl;
-        exit(1);
+
+double interconnect_manger::get_value(const endpoint_descriptor& ep) {
+    for(const auto& ic:connections) {
+        if(ic.destination.component == ep.component && ic.destination.port == ep.port) {
+            return ic.value;
+        }
     }
-    return connections[interconnect_to_string(src, dst)];
+    std::cout << "Error: Attempted get the value of unknown connection" << std::endl;
+    exit(1);
 }
 
-std::string interconnect_manger::interconnect_to_string(const endpoint_descriptor &src, const endpoint_descriptor &dst) {
-    return src.to_string() + "---" + dst.to_string();
+bool interconnect_manger::is_overridden(const endpoint_descriptor &ep) {
+    return std::ranges::any_of(
+        connections.begin(),
+        connections.end(),
+        [&](const auto& ic) {
+            return ic.destination.component == ep.component && ic.destination.port == ep.port;
+        });
+}
+
+bool interconnect_manger::is_overriding(const endpoint_descriptor &ep) {
+    return std::ranges::any_of(
+    connections.begin(),
+    connections.end(),
+    [&](const auto& ic) {
+        return ic.source.component == ep.component && ic.source.port == ep.port;
+    });
 }

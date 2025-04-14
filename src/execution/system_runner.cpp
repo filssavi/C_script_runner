@@ -25,7 +25,7 @@ system_runner::system_runner(const multi_component_system &sys, modules_cache &c
             std::cout << "Error: component "<< component_inst.type << "not found" <<std::endl;
         }
         auto component_metadata = c.get_module_metadata(component_inst.type);
-        components[component_inst.name] = component_metadata;
+        components[component_inst.name] = c.get_component(component_inst.type);
         if (component_metadata.needs_rebuilding) {
             builder::build_module(component_metadata);
             c.clear_rebuild_flag(component_metadata.name);
@@ -43,18 +43,23 @@ system_runner::system_runner(const multi_component_system &sys, modules_cache &c
 
         for(auto &i:comp.inputs) {
             for(auto &ov:sys.inputs_overloads) {
-                if(i.name== ov.name) {
-                    inputs[component_inst.name].push_back(ov.data);
-                }else {
-                    inputs[component_inst.name].push_back(i.data);
+                auto split_point = ov.name.find('.');
+                auto instance = ov.name.substr(0, split_point);
+                auto port = ov.name.substr(split_point + 1);
+                if(component_inst.name== instance) {
+                    if(i.name == port) {
+                        inputs[component_inst.name].push_back(ov.data);
+                    }else {
+                        inputs[component_inst.name].push_back(i.data);
+                    }
                 }
+
             }
         }
 
-        for(const auto &[source, destination]:sys.connections) {
-            i_m.add_connection(source, destination, 0);
-        }
-
+    }
+    for(const auto &[source, destination]:sys.connections) {
+        i_m.add_connection(source, destination, 0);
     }
     for(auto &o:sys.outputs_overloads) {
         outputs[o.component][o.port] = std::vector<double>(sys.n_steps, 0);
@@ -64,14 +69,31 @@ system_runner::system_runner(const multi_component_system &sys, modules_cache &c
 
 void system_runner::run_emulation() {
 
-    for (int i = 0; i<system.n_steps; i++) {
+    for (int current_step = 0; current_step<system.n_steps; current_step++) {
         for(auto &c:system.components) {
+            auto component = components[c.name];
+            std::vector<float> input_values;
+            for(auto &in:component.inputs) {
+                endpoint_descriptor ep = {c.name ,in.name, in.input_index};
+                if(i_m.is_overridden(ep)) {
+                    input_values.push_back(i_m.get_value(ep));
+                }else {
+                    input_values.push_back(inputs[c.name][in.input_index][current_step]);
+                }
+            }
+
+            auto step_out = targets[c.name](input_values, states[c.name]);
+            for(const auto &out:component.outputs) {
+                i_m.update_value({c.name, out.name, out.output_index}, step_out[out.output_index]);
+                for(auto & sys_out: outputs[c.name]) {
+                    if(sys_out.first == out.name) {
+                        auto out_val = step_out[out.output_index];
+                        sys_out.second[current_step] = out_val;
+                    }
+                }
+            }
         }
     }
-    // LOOP
-        //TODO: INPUTS PHASE
-        //TODO: EMULATION PHASE
-        //TODO: OUTPUT PHASE
 }
 
 void system_runner::process_output() {

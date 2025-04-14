@@ -38,7 +38,7 @@ private:
     component get_component(const std::string &name);
     interconnect_manger i_m;
     std::unordered_map<std::string, target_cscript_t> targets;
-    std::unordered_map<std::string, component_metadata> components;
+    std::unordered_map<std::string, component> components;
     multi_component_system system;
 
     std::unordered_map<std::string, std::vector<float>> states;

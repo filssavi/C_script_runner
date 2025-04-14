@@ -30,7 +30,7 @@
     {
       "name": "mem",
       "order": 0,
-      "initial_value": 2
+      "initial_value": 3
     }
   ],
   "model": {

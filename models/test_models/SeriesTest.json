@@ -27,7 +27,8 @@
     }
   ],
   "outputs": [
-    "acc.v_out"
+    "acc.v_out",
+    "mult.v_out"
   ],
   "run_length": 25001
 }

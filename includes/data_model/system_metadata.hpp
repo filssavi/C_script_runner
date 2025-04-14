@@ -26,6 +26,16 @@ struct endpoint_descriptor {
     [[nodiscard]] std::string to_string() const {
         return component + "." + port + "." + std::to_string(order);
     }
+
+    friend bool operator==(const endpoint_descriptor &lhs, const endpoint_descriptor &rhs) {
+        return lhs.component == rhs.component
+               && lhs.port == rhs.port
+               && lhs.order == rhs.order;
+    }
+
+    friend bool operator!=(const endpoint_descriptor &lhs, const endpoint_descriptor &rhs) {
+        return !(lhs == rhs);
+    }
 };
 
 struct system_connection {

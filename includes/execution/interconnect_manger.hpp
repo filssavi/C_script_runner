@@ -17,6 +17,7 @@
 
 #include <unordered_map>
 #include <vector>
+#include <algorithm>
 #include <iostream>
 
 #include "data_model/system_metadata.hpp"
@@ -25,11 +26,19 @@ class interconnect_manger {
 public:
     interconnect_manger();
     void add_connection(const endpoint_descriptor& src, const endpoint_descriptor& dst, double initial_value);
-    void update_value(const endpoint_descriptor& src, const endpoint_descriptor& dst, double value);
-    double get_value(const endpoint_descriptor& src, const endpoint_descriptor& dst);
+    void update_value(const endpoint_descriptor &ep, double value);
+    double get_value(const endpoint_descriptor& ep);
+    bool is_overridden(const endpoint_descriptor& ep);
+    bool is_overriding(const endpoint_descriptor& ep);
 private:
-    static std::string interconnect_to_string(const endpoint_descriptor& src, const endpoint_descriptor& dst);
-    std::unordered_map<std::string, double> connections;
+
+    struct interconect {
+        endpoint_descriptor source;
+        endpoint_descriptor destination;
+        double value = 0;
+    };
+
+    std::vector<interconect> connections;
 };
 
 
