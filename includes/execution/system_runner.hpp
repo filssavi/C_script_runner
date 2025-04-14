@@ -27,10 +27,14 @@
 
 class system_runner {
 public:
-    system_runner(const multi_component_system &sys, modules_cache &cache);
+    system_runner(const multi_component_system &sys, modules_cache &c);
+    target_cscript_t load_dll(const std::string &path, const std::string &);
+
     void run_emulation();
     void process_output();
-    target_cscript_t load_dll(const std::string &path, const std::string &);
+
+private:
+    component get_component(const std::string &name);
 
     std::unordered_map<std::string, target_cscript_t> targets;
     std::unordered_map<std::string, component_metadata> components;
@@ -38,6 +42,10 @@ public:
 
     std::unordered_map<std::string, std::vector<float>> states;
     std::unordered_map<std::string, std::vector<std::vector<double>>> inputs;
+    std::unordered_map<std::string, std::unordered_map<std::string, std::vector<double>>> outputs;
+    modules_cache cache;
+
+    std::unordered_map<std::string, std::pair<std::string, double>> cross_connect;
 };
 
 

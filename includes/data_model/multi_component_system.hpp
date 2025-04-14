@@ -15,6 +15,7 @@
 struct endpoint_descriptor {
     std::string component;
     std::string port;
+    uint32_t order;
 };
 
 struct system_connection {

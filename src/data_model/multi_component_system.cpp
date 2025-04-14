@@ -21,7 +21,6 @@ multi_component_system::multi_component_system(const std::filesystem::path &path
     }
     for(auto &conn: spec["connections"]) {
         system_connection c;
-        auto point = std::string().find('.');
         c.source = parse_endpoint(conn["source"]);
         c.destination = parse_endpoint(conn["destination"]);
         connections.push_back(c);
@@ -46,7 +45,7 @@ multi_component_system::multi_component_system(const multi_component_system &oth
 
 endpoint_descriptor multi_component_system::parse_endpoint(const std::string &s) {
     auto split_point = s.find('.');
-    return {s.substr(0, split_point), s.substr(split_point + 1)};
+    return {s.substr(0, split_point), s.substr(split_point + 1), 0};
 }
 
 std::vector<system_component> components;

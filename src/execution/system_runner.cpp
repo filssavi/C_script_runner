@@ -16,46 +16,59 @@
 
 #include "execution/system_runner.hpp"
 
-system_runner::system_runner(const multi_component_system &sys, modules_cache &cache) : system(sys){
+system_runner::system_runner(const multi_component_system &sys, modules_cache &c) : system(sys){
 
-    for(auto &c:sys.components) {
-        if(!cache.contains(c.type)) {
-            std::cout << "Error: component "<< c.type << "not found" <<std::endl;
+    cache = c;
+
+    for(auto &component_inst:sys.components) {
+        if(!c.contains(component_inst.type)) {
+            std::cout << "Error: component "<< component_inst.type << "not found" <<std::endl;
         }
-        auto component_metadata = cache.get_module(c.type);
-        components[c.name] = component_metadata;
+        auto component_metadata = c.get_module(component_inst.type);
+        components[component_inst.name] = component_metadata;
         if (component_metadata.needs_rebuilding) {
             builder::build_module(component_metadata);
-            cache.clear_rebuild_flag(component_metadata.name);
+            c.clear_rebuild_flag(component_metadata.name);
         }
 
         auto path =  std::filesystem::path(component_metadata.target_path);
         auto base_path = path.parent_path().string();
         auto exec_path = base_path + "/lib" + path.filename().replace_extension().string() + ".so";
-        targets[c.name] = load_dll(exec_path, component_metadata.name);
+        targets[component_inst.name] = load_dll(exec_path, component_metadata.name);
 
         component comp(component_metadata.specs_path);
         for(auto s:comp.states){
-            states[c.name].push_back(s);
+            states[component_inst.name].push_back(s);
         }
 
         for(auto &i:comp.inputs) {
             for(auto &ov:sys.inputs_overloads) {
                 if(i.name== ov.name) {
-                    inputs[c.name].push_back(ov.data);
+                    inputs[component_inst.name].push_back(ov.data);
                 }else {
-                    inputs[c.name].push_back(i.data);
+                    inputs[component_inst.name].push_back(i.data);
                 }
             }
         }
 
+        for(auto &i:sys.connections) {
+            int j = 0;
+            comp.i
+        }
+
+    }
+    for(auto &o:sys.outputs_overloads) {
+        outputs[o.component][o.port] = std::vector<double>(sys.n_steps, 0);
     }
     system = sys;
 }
 
 void system_runner::run_emulation() {
 
-
+    for (int i = 0; i<system.n_steps; i++) {
+        for(auto &c:system.components) {
+        }
+    }
     // LOOP
         //TODO: INPUTS PHASE
         //TODO: EMULATION PHASE
