@@ -39,7 +39,7 @@ public:
     void process_output();
 private:
     component comp;
-    target_cscript_t target;
+    target_cscript_t target{};
 
     std::vector<std::vector<double>> outputs;
     std::vector<float> states;

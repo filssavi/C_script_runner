@@ -14,24 +14,19 @@
 
 #include "output_manager.hpp"
 
-#include <iostream>
+#include <utility>
 
-void output_manager::set_component(const component &c) {
-    comp = c;
-    reference_outputs = csv_interface::parse_file(comp.get_reference_path());
-}
-
-void output_manager::output_plot(std::vector<double> timebase, std::vector<std::vector<double>> outputs) const {
+void output_manager::output_plot(std::vector<double> timebase, std::vector<std::vector<double>> output_values) const {
 
     std::vector<std::vector<sciplot::PlotVariant>> plots;
 
     sciplot::Vec x(timebase.data(), timebase.size());
 
-    for (int i = 0; i<outputs.size(); i++) {
+    for (int i = 0; i<output_values.size(); i++) {
         sciplot::Plot2D p;
 
-        p.drawCurve(x, outputs[i]).lineWidth(1).label("run");
-        std::string name = comp.outputs[i].name;
+        p.drawCurve(x, output_values[i]).lineWidth(1).label("run");
+        std::string name = outputs[i].name;
         if(reference_outputs.contains(name)) {
             auto ref = reference_outputs.at(name);
             p.drawCurve(x, ref).lineWidth(1).label("Reference");
@@ -39,8 +34,8 @@ void output_manager::output_plot(std::vector<double> timebase, std::vector<std::
             std::cout << "Reference data for " << name << " not found" << std::endl;
         }
 
-        p.yrange(comp.outputs[i].y_range.first,comp.outputs[i].y_range.second);
-        p.xrange(comp.plot_interval.first, comp.plot_interval.second);
+        p.yrange(outputs[i].y_range.first,outputs[i].y_range.second);
+        p.xrange(limits.first, limits.second);
         plots.push_back({p});
     }
 
@@ -59,7 +54,13 @@ void output_manager::output_plot(std::vector<double> timebase, std::vector<std::
 
 }
 
-void output_manager::output_data(std::vector<double> timebase, std::vector<std::vector<double>> outputs) {
+void output_manager::output_data(std::vector<double> timebase, std::vector<std::vector<double>> output_values) {
+    std::vector<std::pair<std::string, std::vector<double>>> data;
+    data.emplace_back("timebase", timebase);
 
+    for (int i = 0; i<output_values.size(); i++) {
+        data.emplace_back(outputs[i].name, output_values[i]);
+    }
+    csv_interface::write_file("results.csv", data);
 }
 

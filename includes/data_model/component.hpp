@@ -43,7 +43,7 @@ class component {
     static void validate_path(const std::string &p);
     static std::string get_full_path(const std::string &filename, const std::string &base_path);
 
-    std::string get_reference_path() {return reference_path; };
+    std::string get_reference_path() {return reference_path;};
 
 
     std::string name;

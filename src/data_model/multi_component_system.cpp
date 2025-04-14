@@ -19,6 +19,7 @@ multi_component_system::multi_component_system(const std::filesystem::path &path
         c.name = model["name"];
         c. type = model["type"];
         c.sampling_frequency = model["sampling_frequency"];
+        sampling_frequency = c.sampling_frequency; // todo: make this simulator multi_step capable
         models[c.name] = cache.get_component(c.type);
         components.push_back(c);
     }
@@ -38,12 +39,15 @@ multi_component_system::multi_component_system(const std::filesystem::path &path
 }
 
 multi_component_system::multi_component_system(const multi_component_system &other) {
+
     components = other.components;
     name = other.name;
     n_steps = other.n_steps;
     inputs_overloads = other.inputs_overloads;
     outputs_overloads = other.outputs_overloads;
     connections = other.connections;
+    sampling_frequency = other.sampling_frequency;
+    out_type = other.out_type;
 }
 
 endpoint_descriptor multi_component_system::parse_endpoint(const std::string &s, const std::string &type,

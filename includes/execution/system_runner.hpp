@@ -25,6 +25,7 @@
 #include "execution/runner_target.hpp"
 #include "execution/interconnect_manger.hpp"
 #include "data_model/modules_cache.hpp"
+#include "output_manager.hpp"
 
 class system_runner {
 public:
@@ -33,6 +34,7 @@ public:
 
     void run_emulation();
     void process_output();
+    [[nodiscard]] std::vector<double> get_timebase() const;
 
 private:
     component get_component(const std::string &name);
@@ -45,6 +47,7 @@ private:
     std::unordered_map<std::string, std::vector<std::vector<double>>> inputs;
     std::unordered_map<std::string, std::unordered_map<std::string, std::vector<double>>> outputs;
     modules_cache cache;
+    output_manager out_mgr;
 
     std::unordered_map<std::string, std::pair<std::string, double>> cross_connect;
 };

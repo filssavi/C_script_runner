@@ -31,7 +31,7 @@
     std::istringstream iss(header);
     for (std::string val_s; std::getline(iss, val_s, ',');) {
         columns.push_back(val_s);
-        raw_data.push_back(std::vector<double>());
+        raw_data.emplace_back();
     }
 
 
@@ -52,6 +52,29 @@
     return ret_val;
 }
 
-void csv_interface::write_file(std::string filename, std::unordered_map<std::string, std::vector<float>> data) {
+void csv_interface::write_file(std::string filename, std::vector<std::pair<std::string, std::vector<double>>> data) {
+    std::ofstream file(filename);
+    std::stringstream ss;
+    std::vector<std::vector<double>> raw_data;
+    for(auto &[key, value] : data) {
+        ss << key << ",";
+        raw_data.push_back(value);
+    }
+    auto header = ss.str();
+    header.pop_back();
+    file << header << std::endl;
 
+    for(int i = 0; i < raw_data[0].size(); ++i) {
+        std::stringstream line;
+        for(int j = 0; j < raw_data.size(); ++j) {
+            line << raw_data[j][i];
+            if(j != raw_data.size() - 1) {
+                line << ",";
+            } else {
+                line << std::endl;
+            }
+        }
+        auto l = line.str();
+        file << l;
+    }
 }

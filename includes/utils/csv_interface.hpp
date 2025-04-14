@@ -15,6 +15,7 @@
 #define CSV_INTERFACE_HPP
 
 #include <unordered_map>
+#include <map>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -24,7 +25,7 @@ class csv_interface {
 
   public:
     static std::unordered_map<std::string, std::vector<double>> parse_file(std::string filename);
-    static void write_file(std::string filename, std::unordered_map<std::string, std::vector<float>> data);
+    static void write_file(std::string filename, std::vector<std::pair<std::string, std::vector<double>>> data);
 };
 
 

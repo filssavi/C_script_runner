@@ -15,6 +15,7 @@
 #define OUTPUT_MANAGER_HPP
 
 #include <utility>
+#include <iostream>
 
 #include <nlohmann/json.hpp>
 #include "sciplot/sciplot.hpp"
@@ -27,11 +28,14 @@
 
 class output_manager {
 public:
-    void set_component(const component &c);
+    void set_plot_interval(const std::pair<float, float> &l) {limits = l;}
+    void set_output_specs(const std::vector<model_output> &o) {outputs = o;}
+    void set_reference(const std::unordered_map<std::string, std::vector<double>> &r){reference_outputs = r;}
     void output_plot(std::vector<double> timebase, std::vector<std::vector<double>> outputs) const;
     void output_data(std::vector<double> timebase, std::vector<std::vector<double>> outputs);
 private:
-    component comp;
+    std::pair<float, float> limits;
+    std::vector<model_output> outputs;
     std::unordered_map<std::string, std::vector<double>> reference_outputs;
 };
 

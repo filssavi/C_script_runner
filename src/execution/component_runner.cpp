@@ -14,10 +14,11 @@
 
 #include "execution/component_runner.hpp"
 
-
 component_runner::component_runner(const component &c, modules_cache &cache) {
     comp = c;
-    out_mgr.set_component(c);
+    out_mgr.set_plot_interval(c.plot_interval);
+    out_mgr.set_output_specs(c.outputs);
+    out_mgr.set_reference(csv_interface::parse_file(comp.get_reference_path()));
 
     auto metadata = cache.get_module_metadata(comp.name);
     if (metadata.needs_rebuilding) {
