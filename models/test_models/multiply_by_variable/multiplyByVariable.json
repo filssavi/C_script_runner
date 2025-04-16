@@ -1,0 +1,43 @@
+{
+  "type": "component",
+  "reference_outputs" : "",
+  "inputs": {
+    "series_file": "multiply_by_v.csv",
+    "specs": [
+      {
+        "name": "v_in",
+        "type": "constant",
+        "model_order": 0,
+        "value": 2
+      },
+      {
+        "name": "var",
+        "type": "series",
+        "model_order": 1,
+        "series_order": 1
+      }
+    ]
+  },
+  "outputs": {
+    "type": "plot",
+    "specs":[
+      {
+        "name": "v_out",
+        "model_order": 0,
+        "reference_order": 0,
+        "plot_range": [
+          0,
+          200
+        ]
+      }
+    ]
+  },
+  "states": [],
+  "model": {
+    "target_path": "multiplyByVariable.cpp",
+    "target_name": "multiply_by_variable",
+    "sampling_frequency": 1
+  },
+  "plot_interval": [0, 8],
+  "run_length": 6
+}

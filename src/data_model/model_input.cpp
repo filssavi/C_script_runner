@@ -51,6 +51,10 @@ model_input::model_input(nlohmann::json in, const std::unordered_map<std::string
         }
     } else {
         type = series_input;
+        if(!d.contains(name)) {
+            std::cout << "Error: input series "<< name << " does not exist!" << std::endl;
+            exit(1);
+        }
         data = d.at(name);
     }
 }

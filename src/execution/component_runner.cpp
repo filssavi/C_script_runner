@@ -45,7 +45,6 @@ void component_runner::run_emulation() {
             outputs[out.series_index].push_back(step_out[out.output_index]);
         }
     }
-
 }
 
 std::vector<double> component_runner::get_timebase() const {
