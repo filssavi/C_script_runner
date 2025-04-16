@@ -27,13 +27,31 @@ modules_cache::modules_cache() {
         components = cache["modules"];
         systems = cache["systems"];
     }
+    check_cache();
     index_modules(modules_path);
+}
+
+void modules_cache::check_cache() {
+    std::vector<std::string> invalid_components;
+    for(auto &[key, comp]:components) {
+        if(!std::filesystem::exists(comp.specs_path)) {
+            invalid_components.push_back(key);
+        }
+    }
+    for(auto &key: invalid_components) components.erase(key);
+    invalid_components.clear();
+    for(auto &[key, sys]:systems) {
+        if(!std::filesystem::exists(sys.specs_path)) {
+            invalid_components.push_back(key);
+        }
+    }
+    for(auto &key: invalid_components) systems.erase(key);
 }
 
 void modules_cache::index_modules(const std::string& modules_dir) {
     for(auto &m:std::filesystem::directory_iterator(modules_dir)) {
         if(m.is_directory()){
-            for(auto &f:std::filesystem::directory_iterator(m.path())) {
+            for(auto &f:std::filesystem::recursive_directory_iterator(m.path())) {
                 if(f.is_regular_file()) {
                     if(f.path().extension() == ".json") {
                         process_module(f.path());
@@ -127,7 +145,13 @@ std::string modules_cache::hash_file(std::string target_path) {
 }
 
 component modules_cache::get_component(const std::string &name) const {
-    return component(components.at(name).specs_path);
+    auto path = components.at(name).specs_path;
+    if(!std::filesystem::exists(path)) {
+        std::cout << "ERROR: could not find component " << name << "\n";
+        std::cout << path << " not found" << std::endl;
+        exit(1);
+    }
+    return component(path);
 }
 
 modules_cache::~modules_cache() {

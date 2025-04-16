@@ -52,6 +52,7 @@ class component;
 class modules_cache {
 public:
     modules_cache();
+    void check_cache();
     void index_modules(const std::string& modules_dir);
     void process_module(const std::string& module_path);
 
