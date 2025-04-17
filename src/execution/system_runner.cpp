@@ -109,7 +109,8 @@ void system_runner::process_output() {
             specs.emplace_back(out_name,range);
         }
     }
-    out_mgr.set_plot_interval({0, 1});
+    auto tb = get_timebase();
+    out_mgr.set_plot_interval({tb.front(), tb.back()});
     out_mgr.set_output_specs(specs);
     if (system.out_type == plot) {
         out_mgr.output_plot(get_timebase(), raw_outputs);

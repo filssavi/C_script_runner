@@ -1,0 +1,34 @@
+{
+  "type": "system",
+  "name": "series_w_in_test",
+  "models": [
+    {
+      "name": "mult",
+      "type": "multiply_by_variable",
+      "sampling_frequency": 1
+    },
+    {
+      "name": "acc",
+      "type": "accumulator",
+      "sampling_frequency": 1
+    }
+  ],
+  "connections": [
+    {
+      "source": "mult.v_out",
+      "destination": "acc.v_in"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "mult.v_in",
+      "type": "constant",
+      "value": 3
+    }
+  ],
+  "outputs": [
+    "acc.v_out",
+    "mult.v_out"
+  ],
+  "run_length": 6
+}
