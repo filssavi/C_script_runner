@@ -44,7 +44,7 @@ private:
     multi_component_system system;
 
     std::unordered_map<std::string, std::vector<float>> states;
-    std::unordered_map<std::string, std::vector<std::vector<double>>> inputs;
+    std::unordered_map<std::string, std::vector<runner_input>> inputs;
     std::unordered_map<std::string, std::unordered_map<std::string, std::vector<double>>> outputs;
     modules_cache cache;
     output_manager out_mgr;

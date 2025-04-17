@@ -5,7 +5,7 @@
     "series_file": "multiply_by_v.csv",
     "specs": [
       {
-        "name": "v_in",
+        "name": " ",
         "type": "constant",
         "model_order": 0,
         "value": 2

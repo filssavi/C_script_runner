@@ -23,4 +23,18 @@
 typedef std::vector<float> (*target_cscript_t)(std::vector<float>, std::vector<float>&);
 typedef std::function< std::vector<float>(std::vector<float>, std::vector<float>&)> update_model_t;
 
+struct runner_input {
+    std::vector<double> data;
+    uint32_t position;
+    static std::vector<double> get_input_at_position(const std::vector<runner_input> &inputs, uint32_t position);
+};
+
+inline std::vector<double> runner_input::get_input_at_position(const std::vector<runner_input> &inputs, uint32_t pos) {
+    for(const auto &[data, position]:inputs){
+        if(position == pos) {
+            return data;
+        };
+    }
+    throw std::runtime_error("runner_input::get_input_at_position: position out of range");
+}
 #endif //RUNNER_TARGET_HPP

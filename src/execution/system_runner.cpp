@@ -42,18 +42,20 @@ system_runner::system_runner(const multi_component_system &sys, modules_cache &c
         }
 
         for(auto &i:comp.inputs) {
+            bool overridden = false;
             for(auto &ov:sys.inputs_overloads) {
                 auto split_point = ov.name.find('.');
                 auto instance = ov.name.substr(0, split_point);
                 auto port = ov.name.substr(split_point + 1);
                 if(component_inst.name== instance) {
                     if(i.name == port) {
-                        inputs[component_inst.name].push_back(ov.data);
-                    }else {
-                        inputs[component_inst.name].push_back(i.data);
+                        inputs[component_inst.name].emplace_back(ov.data, i.input_index);
+                        overridden = true;
                     }
                 }
-
+            }
+            if(!overridden) {
+                inputs[component_inst.name].emplace_back(i.data, i.input_index);
             }
         }
 
@@ -79,7 +81,13 @@ void system_runner::run_emulation() {
                 if(i_m.is_overridden(ep)) {
                     input_values.push_back(i_m.get_value(ep));
                 }else {
-                    input_values.push_back(inputs[c.name][in.input_index][current_step]);
+                    try {
+                        auto input_vect = runner_input::get_input_at_position(inputs[c.name], in.input_index);
+                        input_values.push_back(input_vect[current_step]);
+                    } catch(std::runtime_error &e) {
+                        std::cout << "Cant Find input " << in.name << " at index: " << std::to_string(in.input_index) << " for component " << c.name << std::endl;
+                        std::exit(1);
+                    }
                 }
             }
 
