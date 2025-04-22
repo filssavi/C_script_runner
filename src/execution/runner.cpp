@@ -13,16 +13,17 @@
 // limitations under the License.
 
 #include "execution/runner.hpp"
+namespace c_script_engine {
+    void run(const std::variant<component, multi_component_system> &model, modules_cache &cache) {
 
-void run(const std::variant<component, multi_component_system> &model, modules_cache &cache) {
-
-    if(std::holds_alternative<component>(model)) {
-        component_runner c(std::get<component>(model), cache);
-        c.run_emulation();
-        c.process_output();
-    } else {
-        system_runner s(std::get<multi_component_system>(model), cache);
-        s.run_emulation();
-        s.process_output();
+        if(std::holds_alternative<component>(model)) {
+            component_runner c(std::get<component>(model), cache);
+            c.run_emulation();
+            c.process_output();
+        } else {
+            system_runner s(std::get<multi_component_system>(model), cache);
+            s.run_emulation();
+            s.process_output();
+        }
     }
 }

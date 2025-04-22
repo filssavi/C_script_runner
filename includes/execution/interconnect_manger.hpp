@@ -21,25 +21,26 @@
 #include <iostream>
 
 #include "data_model/system_metadata.hpp"
+namespace c_script_engine {
+    class interconnect_manger {
+    public:
+        interconnect_manger();
+        void add_connection(const endpoint_descriptor& src, const endpoint_descriptor& dst, double initial_value);
+        void update_value(const endpoint_descriptor &ep, double value);
+        double get_value(const endpoint_descriptor& ep);
+        bool is_overridden(const endpoint_descriptor& ep);
+        bool is_overriding(const endpoint_descriptor& ep);
+    private:
 
-class interconnect_manger {
-public:
-    interconnect_manger();
-    void add_connection(const endpoint_descriptor& src, const endpoint_descriptor& dst, double initial_value);
-    void update_value(const endpoint_descriptor &ep, double value);
-    double get_value(const endpoint_descriptor& ep);
-    bool is_overridden(const endpoint_descriptor& ep);
-    bool is_overriding(const endpoint_descriptor& ep);
-private:
+        struct interconect {
+            endpoint_descriptor source;
+            endpoint_descriptor destination;
+            double value = 0;
+        };
 
-    struct interconect {
-        endpoint_descriptor source;
-        endpoint_descriptor destination;
-        double value = 0;
+        std::vector<interconect> connections;
     };
-
-    std::vector<interconect> connections;
-};
+}
 
 
 

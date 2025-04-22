@@ -26,8 +26,8 @@
 #include "data_model/component.hpp"
 #include "data_model/modules_cache.hpp"
 #include"data_model/multi_component_system.hpp"
-
-void run(const std::variant<component, multi_component_system>&model, modules_cache &cache);
-
+namespace c_script_engine {
+    void run(const std::variant<component, multi_component_system>&model, modules_cache &cache);
+}
 
 #endif //RUNNER_HPP

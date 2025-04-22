@@ -17,37 +17,37 @@
 
 #include <string>
 #include <cstdint>
+namespace c_script_engine {
+    struct endpoint_descriptor {
+        std::string component;
+        std::string port;
+        uint32_t order;
 
-struct endpoint_descriptor {
-    std::string component;
-    std::string port;
-    uint32_t order;
+        [[nodiscard]] std::string to_string() const {
+            return component + "." + port + "." + std::to_string(order);
+        }
 
-    [[nodiscard]] std::string to_string() const {
-        return component + "." + port + "." + std::to_string(order);
-    }
+        friend bool operator==(const endpoint_descriptor &lhs, const endpoint_descriptor &rhs) {
+            return lhs.component == rhs.component
+                   && lhs.port == rhs.port
+                   && lhs.order == rhs.order;
+        }
 
-    friend bool operator==(const endpoint_descriptor &lhs, const endpoint_descriptor &rhs) {
-        return lhs.component == rhs.component
-               && lhs.port == rhs.port
-               && lhs.order == rhs.order;
-    }
+        friend bool operator!=(const endpoint_descriptor &lhs, const endpoint_descriptor &rhs) {
+            return !(lhs == rhs);
+        }
+    };
 
-    friend bool operator!=(const endpoint_descriptor &lhs, const endpoint_descriptor &rhs) {
-        return !(lhs == rhs);
-    }
-};
+    struct system_connection {
+        endpoint_descriptor source;
+        endpoint_descriptor destination;
+    };
 
-struct system_connection {
-    endpoint_descriptor source;
-    endpoint_descriptor destination;
-};
-
-struct system_component {
-    std::string name;
-    std::string type;
-    float sampling_frequency;
-};
-
+    struct system_component {
+        std::string name;
+        std::string type;
+        float sampling_frequency;
+    };
+}
 
 #endif //SYSTEM_METADATA_HPP

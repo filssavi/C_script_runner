@@ -16,31 +16,34 @@
 
 #include "utils/builder.hpp"
 
-void builder::build_module(const component_metadata &md) {
 
-    auto parent = std::filesystem::path(md.specs_path).parent_path().string();
-    std::string current_dir = std::filesystem::current_path().string();
-    std::filesystem::current_path(parent);
+namespace c_script_engine {
+    void builder::build_module(const component_metadata &md) {
 
-    compile(std::filesystem::path(md.target_path));
+        auto parent = std::filesystem::path(md.specs_path).parent_path().string();
+        std::string current_dir = std::filesystem::current_path().string();
+        std::filesystem::current_path(parent);
 
-    std::filesystem::current_path(current_dir);
-}
+        compile(std::filesystem::path(md.target_path));
 
-void builder::compile(std::filesystem::path path) {
-    const std::string file_name ="lib" +path.stem().string() + std::string(".so");
-    if (std::filesystem::exists(file_name)) {
-        std::filesystem::remove_all(file_name);
+        std::filesystem::current_path(current_dir);
     }
-    std::vector<std::string> compile_command_args = {
-        "g++",
-        "-fPIC",
-        "-shared",
-        path.string(),
-        "-o",
-        file_name
-    };
-    std::string command;
-    for (auto &p:compile_command_args) command += p + " ";
-    std::system(command.c_str());
+
+    void builder::compile(std::filesystem::path path) {
+        const std::string file_name ="lib" +path.stem().string() + std::string(".so");
+        if (std::filesystem::exists(file_name)) {
+            std::filesystem::remove_all(file_name);
+        }
+        std::vector<std::string> compile_command_args = {
+            "g++",
+            "-fPIC",
+            "-shared",
+            path.string(),
+            "-o",
+            file_name
+        };
+        std::string command;
+        for (auto &p:compile_command_args) command += p + " ";
+        std::system(command.c_str());
+    }
 }

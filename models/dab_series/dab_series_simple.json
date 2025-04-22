@@ -1,15 +1,10 @@
 {
   "type": "system",
-  "name": "dab_series",
+  "name": "dab_series_simple",
   "models": [
     {
       "name": "mv_dab",
       "type": "sd_dab",
-      "sampling_frequency": 25e3
-    },
-    {
-      "name": "mv_bus",
-      "type": "bus_model",
       "sampling_frequency": 25e3
     },
     {
@@ -21,19 +16,11 @@
   "connections": [
     {
       "source": "mv_dab.v_out",
-      "destination": "mv_bus.v_in"
-    },
-    {
-      "source": "mv_bus.i_in",
-      "destination": "mv_dab.i_out"
-    },
-    {
-      "source": "mv_bus.v_out",
       "destination": "lv_dab.v_in"
     },
     {
       "source": "lv_dab.i_in",
-      "destination": "mv_bus.i_out"
+      "destination": "mv_dab.i_out"
     }
   ],
   "inputs": [
@@ -41,11 +28,6 @@
       "name": "mv_dab.v_in",
       "type": "constant",
       "value": 1000
-    },
-    {
-      "name": "mv_bus.fault",
-      "type": "constant",
-      "value": 0
     },
     {
       "name": "lv_dab.v_ref",
@@ -57,14 +39,15 @@
       "type": "random",
       "distribution": {
         "name": "gaussian",
-        "parameters": [150.0, 4]
+        "parameters": [70.0, 4]
       }
     }
   ],
   "outputs": [
-    "mv_dab.i_out",
     "mv_dab.v_out",
-    "lv_dab.v_out"
+    "lv_dab.v_out",
+    "mv_dab.i_in",
+    "lv_dab.i_in"
   ],
   "run_length": 25001
 }

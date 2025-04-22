@@ -19,14 +19,17 @@
 
 #include <data_model/modules_cache.hpp>
 
+namespace c_script_engine {
+    class builder {
+    public:
+        static void build_module(const component_metadata &md);
+    private:
+        static void compile(std::filesystem::path path);
 
-class builder {
-public:
-    static void build_module(const component_metadata &md);
-private:
-    static void compile(std::filesystem::path path);
+    };
+}
 
-};
+
 
 
 

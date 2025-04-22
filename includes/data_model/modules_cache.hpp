@@ -23,62 +23,61 @@
 #include "nlohmann/json.hpp"
 
 #include "utils/settings_store.hpp"
+namespace c_script_engine {
+    enum module_type {
+        component_module,
+        system_module
+    };
 
-enum module_type {
-    component_module,
-    system_module
-};
+    struct component_metadata {
+        std::string name;
+        std::string specs_path;
+        std::string target_path;
+        std::string hash;
+        module_type type=component_module;
+        bool needs_rebuilding = true;
+    };
 
-struct component_metadata {
-    std::string name;
-    std::string specs_path;
-    std::string target_path;
-    std::string hash;
-    module_type type=component_module;
-    bool needs_rebuilding = true;
-};
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(component_metadata, name, specs_path, target_path, hash, needs_rebuilding);
 
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(component_metadata, name, specs_path, target_path, hash, needs_rebuilding);
+    struct system_metadata {
+        std::string name;
+        std::string specs_path;
+    };
 
-struct system_metadata {
-    std::string name;
-    std::string specs_path;
-};
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(system_metadata, name, specs_path);
 
-NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(system_metadata, name, specs_path);
+    class component;
 
-class component;
+    class modules_cache {
+    public:
+        modules_cache();
+        void check_cache();
+        void index_modules(const std::string& modules_dir);
+        void process_module(const std::string& module_path);
 
-class modules_cache {
-public:
-    modules_cache();
-    void check_cache();
-    void index_modules(const std::string& modules_dir);
-    void process_module(const std::string& module_path);
+        std::optional<std::string> check_cache(const nlohmann::json& module, const std::string &base_path);
 
-    std::optional<std::string> check_cache(const nlohmann::json& module, const std::string &base_path);
+        static std::string get_full_path(const std::string &filename, const std::string &base_path);
 
-    static std::string get_full_path(const std::string &filename, const std::string &base_path);
+        std::string hash_file(std::string filename);
 
-    std::string hash_file(std::string filename);
+        bool contains(const std::string& name) const {return components.contains(name) || systems.contains(name);}
 
-    bool contains(const std::string& name) const {return components.contains(name) || systems.contains(name);}
+        void clear_rebuild_flag(const std::string& name) {components[name].needs_rebuilding = false;}
 
-    void clear_rebuild_flag(const std::string& name) {components[name].needs_rebuilding = false;}
+        component_metadata get_module_metadata(const std::string& name) const {return components.at(name);}
+        component get_component(const std::string &name) const;
+        system_metadata get_system_metadata(const std::string& name) const {return systems.at(name);}
 
-    component_metadata get_module_metadata(const std::string& name) const {return components.at(name);}
-    component get_component(const std::string &name) const;
-    system_metadata get_system_metadata(const std::string& name) const {return systems.at(name);}
+        bool is_system(const std::string& name) const {return systems.contains(name);}
 
-    bool is_system(const std::string& name) const {return systems.contains(name);}
+        ~modules_cache();
+    private:
 
-    ~modules_cache();
-private:
-
-    std::unordered_map<std::string, component_metadata> components;
-    std::unordered_map<std::string, system_metadata> systems;
-};
-
-
+        std::unordered_map<std::string, component_metadata> components;
+        std::unordered_map<std::string, system_metadata> systems;
+    };
+}
 
 #endif //MODULES_CACHE_HPP

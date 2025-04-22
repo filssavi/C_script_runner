@@ -28,23 +28,23 @@
 #include "data_model/component.hpp"
 #include "output_manager.hpp"
 
+namespace c_script_engine {
+    class component_runner {
+    public:
+        explicit component_runner(const component &c, modules_cache &cache);
+        void run_emulation();
+        [[nodiscard]] std::vector<double> get_timebase() const;
+        void load_target();
+        void process_output();
+    private:
+        component comp;
+        target_cscript_t target{};
 
-
-class component_runner {
-public:
-    explicit component_runner(const component &c, modules_cache &cache);
-    void run_emulation();
-    [[nodiscard]] std::vector<double> get_timebase() const;
-    void load_target();
-    void process_output();
-private:
-    component comp;
-    target_cscript_t target{};
-
-    std::vector<std::vector<double>> outputs;
-    std::vector<float> states;
-    output_manager out_mgr;
-};
+        std::vector<std::vector<double>> outputs;
+        std::vector<float> states;
+        output_manager out_mgr;
+    };
+}
 
 
 

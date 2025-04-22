@@ -33,31 +33,32 @@ enum output_type {
     csv
 };
 
+namespace c_script_engine {
+    class component {
+    public:
+        component() = default;
+        component(const std::filesystem::path &path);
+        void parse_specifications(const nlohmann::json& specs, const std::string &base_path);
 
-class component {
-  public:
-    component() = default;
-    component(const std::filesystem::path &path);
-    void parse_specifications(const nlohmann::json& specs, const std::string &base_path);
+        static void validate_path(const std::string &p);
+        static std::string get_full_path(const std::string &filename, const std::string &base_path);
 
-    static void validate_path(const std::string &p);
-    static std::string get_full_path(const std::string &filename, const std::string &base_path);
-
-    std::string get_reference_path() {return reference_path;};
+        std::string get_reference_path() {return reference_path;};
 
 
-    std::string name;
-    std::vector<model_input> inputs;
-    std::vector<model_output> outputs;
-    std::pair<float, float> plot_interval;
-    uint32_t n_steps;
-    uint32_t sampling_frequency;
-    std::vector<float> states;
+        std::string name;
+        std::vector<model_input> inputs;
+        std::vector<model_output> outputs;
+        std::pair<float, float> plot_interval;
+        uint32_t n_steps;
+        uint32_t sampling_frequency;
+        std::vector<float> states;
 
-    target model;
-    std::string reference_path;
-    output_type out_type;
-};
+        target model;
+        std::string reference_path;
+        output_type out_type;
+    };
+}
 
 
 

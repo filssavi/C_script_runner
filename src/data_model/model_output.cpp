@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 #include "data_model/model_output.hpp"
-
-model_output::model_output(const nlohmann::json &out) {
-    name = out["name"];
-    output_index = out["model_order"];
-    series_index = out["reference_order"];
-    y_range = {out["plot_range"][0], out["plot_range"][1]};
+namespace c_script_engine {
+    model_output::model_output(const nlohmann::json &out) {
+        name = out["name"];
+        output_index = out["model_order"];
+        series_index = out["reference_order"];
+        y_range = {out["plot_range"][0], out["plot_range"][1]};
+    }
 }

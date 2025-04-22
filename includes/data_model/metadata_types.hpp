@@ -19,30 +19,30 @@
 #include <cstdint>
 #include <unordered_map>
 
+namespace c_script_engine {
+    struct port_metadata {
+        std::string core;
+        std::string name;
+    };
 
-struct port_metadata {
-    std::string core;
-    std::string name;
-};
 
+    enum distribution_type_t {
+        normal,
+        uniform
+    };
 
-enum distribution_type_t {
-    normal,
-    uniform
-};
+    inline std::unordered_map<std::string, distribution_type_t> distribution_type_map = {
+        {"normal", normal},
+        {"uniform", uniform}
+    };
 
-inline std::unordered_map<std::string, distribution_type_t> distribution_type_map = {
-{"normal", normal},
-{"uniform", uniform}
-};
+    distribution_type_t name_string_to_distribution_type(std::string);
 
-distribution_type_t name_string_to_distribution_type(std::string);
-
-enum input_type {
-    constant_input = 0,
-    series_input = 1,
-    random_input = 2
-};
-
+    enum input_type {
+        constant_input = 0,
+        series_input = 1,
+        random_input = 2
+    };
+}
 
 #endif //METADATA_TYPES_HPP

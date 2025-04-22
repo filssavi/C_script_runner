@@ -1,0 +1,38 @@
+{
+  "type": "system",
+  "name": "lv_dab_test",
+  "models": [
+    {
+      "name": "lv_dab",
+      "type": "sd_dab",
+      "sampling_frequency": 25e3
+    }
+  ],
+  "connections": [
+  ],
+  "inputs": [
+    {
+      "name": "lv_dab.v_in",
+      "type": "constant",
+      "value": 250
+    },
+    {
+      "name": "lv_dab.v_ref",
+      "type": "constant",
+      "value": 28
+    },
+    {
+      "name": "lv_dab.i_out",
+      "type": "random",
+      "distribution": {
+        "name": "gaussian",
+        "parameters": [150.0, 4]
+      }
+    }
+  ],
+  "outputs": [
+    "lv_dab.i_in",
+    "lv_dab.v_out"
+  ],
+  "run_length": 25001
+}

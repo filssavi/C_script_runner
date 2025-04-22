@@ -18,17 +18,18 @@
 #include <string>
 #include <cstdint>
 #include <nlohmann/json.hpp>
-
-class model_output {
+namespace c_script_engine {
+    class model_output {
     public:
-    explicit model_output(const nlohmann::json &out);
-    model_output(std::string n, std::pair<float, float> r){name = n; y_range = r;}
-    std::string name;
-    uint8_t output_index{};
-    uint8_t series_index{};
-    std::pair<float, float> y_range;
+        explicit model_output(const nlohmann::json &out);
+        model_output(std::string n, std::pair<float, float> r){name = n; y_range = r;}
+        std::string name;
+        uint8_t output_index{};
+        uint8_t series_index{};
+        std::pair<float, float> y_range;
 
-};
+    };
+}
 
 
 

@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
     app.add_option("Module", target, "Component or System name");
     CLI11_PARSE(app, argc, argv);
 
-    modules_cache cache;
+    c_script_engine::modules_cache cache;
 
     if(!cache.contains(target)) {
         std::cout << "Module " << target << " not found" << std::endl;
@@ -41,19 +41,19 @@ int main(int argc, char **argv) {
 
 
     if(!target.empty()) {
-        std::variant<component, multi_component_system> execution_model;
+        std::variant<c_script_engine::component, c_script_engine::multi_component_system> execution_model;
         if(cache.is_system(target)) {
 
             auto module = cache.get_system_metadata(target);
 
-            multi_component_system sys(module.specs_path, cache);
+            c_script_engine::multi_component_system sys(module.specs_path, cache);
             execution_model = sys;
 
         } else {
 
             auto module = cache.get_module_metadata(target);
 
-            component comp(module.specs_path);
+            c_script_engine::component comp(module.specs_path);
             execution_model = comp;
 
         }

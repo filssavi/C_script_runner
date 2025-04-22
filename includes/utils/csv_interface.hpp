@@ -21,13 +21,14 @@
 #include <string>
 #include <vector>
 
-class csv_interface {
 
-  public:
-    static std::unordered_map<std::string, std::vector<double>> parse_file(std::string filename);
-    static void write_file(std::string filename, std::vector<std::pair<std::string, std::vector<double>>> data);
-};
+namespace c_script_engine {
+    class csv_interface {
 
-
+    public:
+        static std::unordered_map<std::string, std::vector<double>> parse_file(std::string filename);
+        static void write_file(std::string filename, std::vector<std::pair<std::string, std::vector<double>>> data);
+    };
+}
 
 #endif //CSV_INTERFACE_HPP
