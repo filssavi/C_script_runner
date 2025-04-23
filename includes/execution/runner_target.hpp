@@ -26,13 +26,13 @@ namespace c_script_engine {
     struct runner_input {
         std::vector<double> data;
         uint32_t position;
-        static std::vector<double> get_input_at_position(const std::vector<runner_input> &inputs, uint32_t position);
+        static double get_input_at_position(const std::vector<runner_input> &inputs, uint32_t position, uint32_t step);
     };
 
-    inline std::vector<double> runner_input::get_input_at_position(const std::vector<runner_input> &inputs, uint32_t pos) {
+    inline double runner_input::get_input_at_position(const std::vector<runner_input> &inputs, uint32_t pos, uint32_t step) {
         for(const auto &[data, position]:inputs){
             if(position == pos) {
-                return data;
+                return data.at(step);
             };
         }
         throw std::runtime_error("runner_input::get_input_at_position: position out of range");

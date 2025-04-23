@@ -74,16 +74,15 @@ namespace c_script_engine {
 
         for (int current_step = 0; current_step<system.n_steps; current_step++) {
             for(auto &c:system.components) {
-                auto component = components[c.name];
                 std::vector<float> input_values;
-                for(auto &in:component.inputs) {
+                for(auto &in:components[c.name].inputs) {
                     endpoint_descriptor ep = {c.name ,in.name, in.input_index};
                     if(i_m.is_overridden(ep)) {
                         input_values.push_back(i_m.get_value(ep));
                     }else {
                         try {
-                            auto input_vect = runner_input::get_input_at_position(inputs[c.name], in.input_index);
-                            input_values.push_back(input_vect[current_step]);
+                            auto input = runner_input::get_input_at_position(inputs[c.name], in.input_index, current_step);
+                            input_values.push_back(input);
                         } catch(std::runtime_error &e) {
                             std::cout << "Cant Find input " << in.name << " at index: " << std::to_string(in.input_index) << " for component " << c.name << std::endl;
                             std::exit(1);
@@ -92,7 +91,7 @@ namespace c_script_engine {
                 }
 
                 auto step_out = targets[c.name](input_values, states[c.name]);
-                for(const auto &out:component.outputs) {
+                for(const auto &out:components[c.name].outputs) {
                     i_m.update_value({c.name, out.name, out.output_index}, step_out[out.output_index]);
                     for(auto & sys_out: outputs[c.name]) {
                         if(sys_out.first == out.name) {
