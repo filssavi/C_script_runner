@@ -24,7 +24,6 @@ namespace c_script_engine {
         std::vector<endpoint_descriptor> outputs_overloads;
         uint32_t n_steps;
         float sampling_frequency;
-        output_type out_type = plot;
     private:
         static endpoint_descriptor parse_endpoint(const std::string &s, const std::string &type, const std::unordered_map<std::string, component> &models);
 

@@ -53,14 +53,14 @@ namespace c_script_engine{
 
     }
 
-    void output_manager::output_data(std::vector<double> timebase, std::vector<std::vector<double>> output_values) {
+    void output_manager::output_data(std::vector<double> timebase, std::vector<std::vector<double>> output_values, const std::string &file_path) {
         std::vector<std::pair<std::string, std::vector<double>>> data;
         data.emplace_back("timebase", timebase);
 
         for (int i = 0; i<output_values.size(); i++) {
             data.emplace_back(outputs[i].name, output_values[i]);
         }
-        csv_interface::write_file("results.csv", data);
+        csv_interface::write_file(file_path, data);
     }
 }
 

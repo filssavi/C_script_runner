@@ -31,6 +31,11 @@ namespace c_script_engine {
         uniform
     };
 
+    enum output_type {
+        plot,
+        csv
+    };
+
     inline std::unordered_map<std::string, distribution_type_t> distribution_type_map = {
         {"normal", normal},
         {"uniform", uniform}

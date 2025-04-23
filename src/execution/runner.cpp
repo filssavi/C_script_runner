@@ -14,16 +14,28 @@
 
 #include "execution/runner.hpp"
 namespace c_script_engine {
-    void run(const std::variant<component, multi_component_system> &model, modules_cache &cache) {
+    void run(
+        const std::variant<component, multi_component_system> &model,
+        modules_cache &cache,
+        const std::string &output_file
+        ) {
+
+        output_type out_t;
+        if(output_file.empty())
+            out_t = plot;
+        else
+            out_t = csv;
 
         if(std::holds_alternative<component>(model)) {
             component_runner c(std::get<component>(model), cache);
+            c.set_output_type(out_t);
             c.run_emulation();
-            c.process_output();
+            c.process_output(output_file);
         } else {
             system_runner s(std::get<multi_component_system>(model), cache);
+            s.set_output_type(out_t);
             s.run_emulation();
-            s.process_output();
+            s.process_output(output_file);
         }
     }
 }

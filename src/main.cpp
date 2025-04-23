@@ -18,6 +18,7 @@
 #include <nlohmann/json.hpp>
 
 #include "data_model/component.hpp"
+#include "data_model/metadata_types.hpp"
 #include "data_model/multi_component_system.hpp"
 #include "data_model/modules_cache.hpp"
 #include "execution/runner.hpp"
@@ -29,7 +30,9 @@ int main(int argc, char **argv) {
     CLI::App app{"General purpose runner for C-script derived functions"};
 
     std::string target;
+    std::string output_path;
     app.add_option("Module", target, "Component or System name");
+    app.add_option("--output_file", output_path, "Path for the output csv file");
     CLI11_PARSE(app, argc, argv);
 
     c_script_engine::modules_cache cache;
@@ -57,7 +60,7 @@ int main(int argc, char **argv) {
             execution_model = comp;
 
         }
-         run(execution_model, cache);
+         run(execution_model, cache, output_path);
 
     }
 

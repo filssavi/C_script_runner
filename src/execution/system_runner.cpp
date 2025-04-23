@@ -104,7 +104,7 @@ namespace c_script_engine {
         }
     }
 
-    void system_runner::process_output() {
+    void system_runner::process_output(const std::string &output_file) {
 
         std::vector<std::vector<double>> raw_outputs;
         std::vector<model_output> specs;
@@ -119,10 +119,10 @@ namespace c_script_engine {
         auto tb = get_timebase();
         out_mgr.set_plot_interval({tb.front(), tb.back()});
         out_mgr.set_output_specs(specs);
-        if (system.out_type == plot) {
+        if (out_mgr.out_type == plot) {
             out_mgr.output_plot(get_timebase(), raw_outputs);
-        } else if (system.out_type == csv) {
-            out_mgr.output_data(get_timebase(), raw_outputs);
+        } else if (out_mgr.out_type == csv) {
+            out_mgr.output_data(get_timebase(), raw_outputs, output_file);
         }
     }
 

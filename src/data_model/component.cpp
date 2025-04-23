@@ -66,11 +66,6 @@ namespace c_script_engine {
 
         plot_interval = {comp["plot_interval"][0],comp["plot_interval"][1]};
 
-        if(comp["outputs"]["type"] == "plot") {
-            out_type = plot;
-        } else if(comp["outputs"]["type"] == "csv") {
-            out_type = csv;
-        }
     }
 
 

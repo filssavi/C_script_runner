@@ -32,11 +32,14 @@ namespace c_script_engine {
         void set_output_specs(const std::vector<model_output> &o) {outputs = o;}
         void set_reference(const std::unordered_map<std::string, std::vector<double>> &r){reference_outputs = r;}
         void output_plot(std::vector<double> timebase, std::vector<std::vector<double>> outputs) const;
-        void output_data(std::vector<double> timebase, std::vector<std::vector<double>> outputs);
+        void output_data(std::vector<double> timebase, std::vector<std::vector<double>> outputs, const std::string &file_path);
+        void set_output_type(const output_type &out) {out_type = out;}
+        output_type out_type = plot;
     private:
         std::pair<float, float> limits;
         std::vector<model_output> outputs;
         std::unordered_map<std::string, std::vector<double>> reference_outputs;
+
     };
 }
 

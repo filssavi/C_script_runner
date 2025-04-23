@@ -28,10 +28,6 @@ struct target {
     std::string path;
 };
 
-enum output_type {
-    plot,
-    csv
-};
 
 namespace c_script_engine {
     class component {
@@ -56,7 +52,6 @@ namespace c_script_engine {
 
         target model;
         std::string reference_path;
-        output_type out_type;
     };
 }
 

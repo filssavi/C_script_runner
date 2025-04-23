@@ -74,11 +74,11 @@ namespace c_script_engine {
         }
     }
 
-    void component_runner::process_output() {
-        if (comp.out_type == plot) {
+    void component_runner::process_output(const std::string &output_file) {
+        if (out_mgr.out_type == plot) {
             out_mgr.output_plot(get_timebase(), outputs);
-        } else if (comp.out_type == csv) {
-            out_mgr.output_data(get_timebase(), outputs);
+        } else if (out_mgr.out_type == csv) {
+            out_mgr.output_data(get_timebase(), outputs, output_file);
         }
     }
 }

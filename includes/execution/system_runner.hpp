@@ -33,8 +33,9 @@ namespace c_script_engine {
         target_cscript_t load_dll(const std::string &path, const std::string &);
 
         void run_emulation();
-        void process_output();
+        void process_output(const std::string &output_file);
         [[nodiscard]] std::vector<double> get_timebase() const;
+        void set_output_type(const output_type &type){out_mgr.out_type = type;}
 
     private:
         component get_component(const std::string &name);

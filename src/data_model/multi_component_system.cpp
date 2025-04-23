@@ -47,7 +47,6 @@ namespace c_script_engine {
         outputs_overloads = other.outputs_overloads;
         connections = other.connections;
         sampling_frequency = other.sampling_frequency;
-        out_type = other.out_type;
     }
 
     endpoint_descriptor multi_component_system::parse_endpoint(const std::string &s, const std::string &type,
