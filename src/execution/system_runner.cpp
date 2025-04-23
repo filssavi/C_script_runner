@@ -37,9 +37,6 @@ namespace c_script_engine {
             targets[component_inst.name] = load_dll(exec_path, component_metadata.name);
 
             component comp(component_metadata.specs_path);
-            for(const auto& s:comp.states){
-                comp_states[component_inst.name].emplace_back(s);
-            }
 
             for(auto &i:comp.inputs) {
                 bool overridden = false;
@@ -59,7 +56,27 @@ namespace c_script_engine {
                 }
             }
 
+            for(auto &s:comp.states) {
+                bool overridden = false;
+                for(auto &ov:sys.states_overloads) {
+                    auto split_point = ov.name.find('.');
+                    auto instance = ov.name.substr(0, split_point);
+                    auto state = ov.name.substr(split_point + 1);
+                    if(component_inst.name== instance) {
+                        if(s.name == state) {
+                            states[component_inst.name].push_back(ov);
+                            states[component_inst.name].back().order = s.order;
+                            overridden = true;
+                        }
+                    }
+                }
+                if(!overridden) {
+                    states[component_inst.name].push_back(s);
+                }
+            }
+
         }
+
         for(const auto &[source, destination]:sys.connections) {
             i_m.add_connection(source, destination, 0);
         }
@@ -72,9 +89,9 @@ namespace c_script_engine {
 
     void system_runner::run_emulation() {
 
-        std::unordered_map<std::string, std::vector<float>> states;
-        for(const auto &[name, comp]:components) {
-            states[name] = model_state::get_state_vector(comp.states);
+        std::unordered_map<std::string, std::vector<float>> current_states;
+        for(const auto &[name, s]:states) {
+            current_states[name] = model_state::get_state_vector(s);
         }
         for (int current_step = 0; current_step<system.n_steps; current_step++) {
             for(auto &c:system.components) {
@@ -94,7 +111,7 @@ namespace c_script_engine {
                     }
                 }
 
-                auto step_out = targets[c.name](input_values, states[c.name]);
+                auto step_out = targets[c.name](input_values, current_states[c.name]);
                 for(const auto &out:components[c.name].outputs) {
                     i_m.update_value({c.name, out.name, out.output_index}, step_out[out.output_index]);
                     for(auto & sys_out: outputs[c.name]) {

@@ -17,7 +17,9 @@
 
 
 model_state::model_state(nlohmann::json input) {
-    order = input["order"];
+    is_overload = false;
+    if(input.contains("order")) order = input["order"];
+    else is_overload =  true;
     initial_value = input["initial_value"];
     name = input["name"];
 }

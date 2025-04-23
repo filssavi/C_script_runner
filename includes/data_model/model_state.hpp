@@ -26,6 +26,7 @@ public:
   std::string name;
   uint32_t order;
   double initial_value;
+  bool is_overload;
   static std::vector<float> get_state_vector(const std::vector<model_state> &models);
 };
 

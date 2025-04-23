@@ -43,6 +43,16 @@
       }
     }
   ],
+   "states": [
+    {
+      "name": "lv_dab.mem_v_cap_in_past",
+      "initial_value": 250
+    },
+    {
+      "name": "lv_dab.mem_v_cap_out_past",
+      "initial_value": 28
+    }
+  ],
   "outputs": [
     "mv_dab.v_out",
     "lv_dab.v_out",

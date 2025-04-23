@@ -31,8 +31,12 @@ namespace c_script_engine {
         }
         for(auto &in: spec["inputs"]) {
             model_input i(in, {}, n_steps);
-            inputs_overloads.push_back(i);
+            inputs_overloads.emplace_back(i);
         }
+        for(auto &s: spec["states"]) {
+            states_overloads.emplace_back(s);
+        }
+
         for(auto &out: spec["outputs"]) {
             outputs_overloads.push_back(parse_endpoint(out,"out", models));
         }
@@ -44,6 +48,7 @@ namespace c_script_engine {
         name = other.name;
         n_steps = other.n_steps;
         inputs_overloads = other.inputs_overloads;
+        states_overloads = other.states_overloads;
         outputs_overloads = other.outputs_overloads;
         connections = other.connections;
         sampling_frequency = other.sampling_frequency;
