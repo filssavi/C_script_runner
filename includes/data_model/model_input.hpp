@@ -27,7 +27,6 @@
 #include "metadata_types.hpp"
 namespace c_script_engine {
     class model_input {
-
     public:
         model_input(nlohmann::json input, const std::unordered_map<std::string, std::vector<double>> &d, uint32_t n);
         std::string name;

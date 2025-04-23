@@ -33,14 +33,14 @@ namespace c_script_engine {
 
         load_target();
         outputs = std::vector(comp.outputs.size(), std::vector<double>());
-
+        auto states = model_state::get_state_vector(comp.states);
         for (int i = 0; i<comp.n_steps; i++) {
             std::vector<float> inputs(comp.inputs.size(), 0);
             for (const auto &in:comp.inputs) {
                 inputs[in.input_index] = in.data[i];
             }
 
-            auto step_out = target(inputs, comp.states);
+            auto step_out = target(inputs, states);
 
             for (const auto &out:comp.outputs) {
                 outputs[out.series_index].push_back(step_out[out.output_index]);

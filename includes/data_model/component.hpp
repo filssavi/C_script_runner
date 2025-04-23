@@ -19,6 +19,7 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 
+#include "data_model/model_state.hpp"
 #include "data_model/model_input.hpp"
 #include "data_model/model_output.hpp"
 #include "utils/csv_interface.hpp"
@@ -48,7 +49,7 @@ namespace c_script_engine {
         std::pair<float, float> plot_interval;
         uint32_t n_steps;
         uint32_t sampling_frequency;
-        std::vector<float> states;
+        std::vector<model_state> states;
 
         target model;
         std::string reference_path;

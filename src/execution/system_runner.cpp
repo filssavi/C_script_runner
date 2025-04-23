@@ -37,8 +37,8 @@ namespace c_script_engine {
             targets[component_inst.name] = load_dll(exec_path, component_metadata.name);
 
             component comp(component_metadata.specs_path);
-            for(auto s:comp.states){
-                states[component_inst.name].push_back(s);
+            for(const auto& s:comp.states){
+                comp_states[component_inst.name].emplace_back(s);
             }
 
             for(auto &i:comp.inputs) {
@@ -72,6 +72,10 @@ namespace c_script_engine {
 
     void system_runner::run_emulation() {
 
+        std::unordered_map<std::string, std::vector<float>> states;
+        for(const auto &[name, comp]:components) {
+            states[name] = model_state::get_state_vector(comp.states);
+        }
         for (int current_step = 0; current_step<system.n_steps; current_step++) {
             for(auto &c:system.components) {
                 std::vector<float> input_values;

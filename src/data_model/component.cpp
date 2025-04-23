@@ -42,10 +42,9 @@ namespace c_script_engine {
         sampling_frequency = comp["model"]["sampling_frequency"];
         n_steps = comp["run_length"];
 
-        states = std::vector<float>(comp["states"].size());
-
         for (const auto &s : comp["states"]) {
-            states[s["order"]] = s["initial_value"];
+            auto dbg = s.dump(4);
+            states.emplace_back(s);
         }
 
         const auto inputs_path = get_full_path(comp["inputs"]["series_file"], base_path);

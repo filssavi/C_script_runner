@@ -11,19 +11,21 @@ find_package(CLI11 REQUIRED)
 
 set(SOURCES /
         src/main.cpp
-        src/execution/component_runner.cpp
         src/output_manager.cpp
         src/data_model/model_input.cpp
         src/data_model/model_output.cpp
         src/data_model/component.cpp
+        src/data_model/modules_cache.cpp
+        src/data_model/model_state.cpp
         src/data_model/multi_component_system.cpp
+        src/execution/system_runner.cpp
+        src/execution/interconnect_manger.cpp
+        src/execution/runner.cpp
+        src/execution/component_runner.cpp
+        src/utils/builder.cpp
         src/utils/csv_interface.cpp
         src/utils/settings_store.cpp
-        src/data_model/modules_cache.cpp
-        src/execution/system_runner.cpp
-        src/execution/runner.cpp
-        src/utils/builder.cpp
-        src/execution/interconnect_manger.cpp
+
 )
 
 include_directories(${CMAKE_SOURCE_DIR}/includes)
