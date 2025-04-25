@@ -20,14 +20,20 @@
 #include <cstdint>
 #include <nlohmann/json.hpp>
 
-class model_state {
-public:
-  explicit model_state(nlohmann::json input);
-  std::string name;
-  uint32_t order;
-  double initial_value;
-  bool is_overload;
-  static std::vector<float> get_state_vector(const std::vector<model_state> &models);
-};
+
+namespace c_script_engine {
+  class model_state {
+  public:
+    model_state() = default;
+    explicit model_state(nlohmann::json input);
+    std::string name = "";
+    uint32_t order = 0;
+    double initial_value = 0;
+    bool is_overload = false;
+    static std::vector<float> get_state_vector(const std::vector<model_state> &models);
+  };
+  NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(model_state, name, order, initial_value, is_overload);
+}
+
 
 #endif //MODEL_STATE_HPP

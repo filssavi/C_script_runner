@@ -18,7 +18,6 @@
 #include <nlohmann/json.hpp>
 
 #include "data_model/component.hpp"
-#include "data_model/metadata_types.hpp"
 #include "data_model/multi_component_system.hpp"
 #include "data_model/modules_cache.hpp"
 #include "execution/runner.hpp"
@@ -29,13 +28,21 @@ int main(int argc, char **argv) {
 
     CLI::App app{"General purpose runner for C-script derived functions"};
 
+    std::string dump_lib;
     std::string target;
     std::string output_path;
     app.add_option("Module", target, "Component or System name");
     app.add_option("--output_file", output_path, "Path for the output csv file");
+    app.add_option("--lib_dump",dump_lib, "Dumps the component library content");
     CLI11_PARSE(app, argc, argv);
 
     c_script_engine::modules_cache cache;
+
+    if(!dump_lib.empty()) {
+        std::ofstream ofs(dump_lib);
+        ofs << cache.dump_lib()<< std::endl;
+        exit(0);
+    }
 
     if(!cache.contains(target)) {
         std::cout << "Module " << target << " not found" << std::endl;

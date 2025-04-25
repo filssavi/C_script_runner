@@ -21,6 +21,7 @@
 namespace c_script_engine {
     class model_output {
     public:
+        model_output() = default;
         explicit model_output(const nlohmann::json &out);
         model_output(std::string n, std::pair<float, float> r){name = n; y_range = r;}
         std::string name;
@@ -29,6 +30,11 @@ namespace c_script_engine {
         std::pair<float, float> y_range;
 
     };
+
+
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(model_output, name, output_index, series_index, y_range);
+
+
 }
 
 

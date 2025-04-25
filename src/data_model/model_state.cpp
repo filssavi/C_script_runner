@@ -16,19 +16,21 @@
 #include "data_model/model_state.hpp"
 
 
-model_state::model_state(nlohmann::json input) {
-    is_overload = false;
-    if(input.contains("order")) order = input["order"];
-    else is_overload =  true;
-    initial_value = input["initial_value"];
-    name = input["name"];
-}
-
-std::vector<float> model_state::get_state_vector(const std::vector<model_state> &models) {
-    std::vector<float> state_vector(models.size());
-
-    for(const auto& model : models) {
-        state_vector[ model.order] = model.initial_value;
+namespace c_script_engine {
+    model_state::model_state(nlohmann::json input) {
+        is_overload = false;
+        if(input.contains("order")) order = input["order"];
+        else is_overload =  true;
+        initial_value = input["initial_value"];
+        name = input["name"];
     }
-    return state_vector;
+
+    std::vector<float> model_state::get_state_vector(const std::vector<model_state> &models) {
+        std::vector<float> state_vector(models.size());
+
+        for(const auto& model : models) {
+            state_vector[ model.order] = model.initial_value;
+        }
+        return state_vector;
+    }
 }

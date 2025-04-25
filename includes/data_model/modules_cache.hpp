@@ -53,6 +53,7 @@ namespace c_script_engine {
     public:
         modules_cache();
         void check_cache();
+        nlohmann::json dump_lib();
         void index_modules(const std::string& modules_dir);
         void process_module(const std::string& module_path);
 

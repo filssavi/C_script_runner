@@ -54,6 +54,8 @@ namespace c_script_engine {
         target model;
         std::string reference_path;
     };
+
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(component, name, inputs, outputs, plot_interval, n_steps, sampling_frequency, states);
 }
 
 

@@ -48,6 +48,15 @@ namespace c_script_engine {
         for(auto &key: invalid_components) systems.erase(key);
     }
 
+    nlohmann::json modules_cache::dump_lib() {
+        nlohmann::json lib;
+        for(const auto &key: components | std::views::keys) {
+            auto comp = get_component(key);
+            lib[key] = comp;
+        }
+        return lib;
+    }
+
     void modules_cache::index_modules(const std::string& modules_dir) {
         for(auto &m:std::filesystem::directory_iterator(modules_dir)) {
             if(m.is_directory()){
