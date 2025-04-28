@@ -3,13 +3,18 @@
   "name": "dab_series",
   "models": [
     {
+      "name": "hv_bus",
+      "type": "bus_model_hv",
+      "sampling_frequency": 25e3
+    },
+    {
       "name": "mv_dab",
       "type": "sd_dab",
       "sampling_frequency": 25e3
     },
     {
       "name": "mv_bus",
-      "type": "bus_model",
+      "type": "bus_model_mv",
       "sampling_frequency": 25e3
     },
     {
@@ -19,11 +24,19 @@
     },
     {
       "name": "lv_bus",
-      "type": "bus_model",
+      "type": "bus_model_lv",
       "sampling_frequency": 25e3
     }
   ],
   "connections": [
+    {
+      "source": "hv_bus.v_out",
+      "destination": "mv_dab.v_in"
+    },
+    {
+      "source": "mv_dab.i_in",
+      "destination": "hv_bus.i_out"
+    },
     {
       "source": "mv_dab.v_out",
       "destination": "mv_bus.v_in"
@@ -51,7 +64,12 @@
   ],
   "inputs": [
     {
-      "name": "mv_dab.v_in",
+      "name": "hv_bus.fault",
+      "type": "constant",
+      "value": 0
+    },
+    {
+      "name": "hv_bus.v_in",
       "type": "constant",
       "value": 1000
     },
@@ -66,7 +84,7 @@
       "value": 28
     },
     {
-      "name": "lv_bus.i_out",
+      "name": "lv _bus.i_out",
       "type": "random",
       "distribution": {
         "name": "gaussian",
@@ -90,8 +108,10 @@
     }
   ],
   "outputs": [
-    "mv_dab.i_in",
+    "hv_bus.v_out",
+    "hv_bus.i_in",
     "mv_dab.v_out",
+    "mv_dab.i_in",
     "lv_dab.v_out",
     "lv_dab.i_in",
     "lv_bus.v_out",

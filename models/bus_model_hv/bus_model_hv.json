@@ -47,13 +47,7 @@
       }
     ]
   },
-  "states": [
-    {
-      "name": "v_cap",
-      "order": 0,
-      "initial_value": 1000
-    }
-  ],
+  "states": [],
   "model": {
     "target_path": "bus_model_hv.cpp",
     "target_name": "bus_model_hv",

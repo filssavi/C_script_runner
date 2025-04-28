@@ -9,7 +9,7 @@
         "name": "v_in",
         "type": "constant",
         "model_order": 0,
-        "value": 1000
+        "value": 28
       },
       {
         "name": "i_out",
@@ -48,13 +48,7 @@
       }
     ]
   },
-  "states": [
-    {
-      "name": "v_cap",
-      "order": 0,
-      "initial_value": 1000
-    }
-  ],
+  "states": [],
   "model": {
     "target_path": "bus_model_lv.cpp",
     "target_name": "bus_model_lv",

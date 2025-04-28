@@ -8,8 +8,8 @@ std::vector<float> bus_model_lv(const std::vector<float>&inputs, std::vector<flo
     params.c = 1e-3;
     params.r_in = 1e-3;
     params.r_esr = 1e-6;
-    params.v_0 = 1000;
-    params.i_l = 400e3/1000;
+    params.v_0 = 28;
+    params.i_l = 2e3/params.v_0;
 
     std::vector<float> outputs(2, 0);
 

@@ -8,8 +8,8 @@
     params.c = 1e-3;
     params.r_in = 1e-3;
     params.r_esr = 1e-6;
-    params.v_0 = 1000;
-    params.i_l = 400e3/1000;
+    params.v_0 = 250;
+    params.i_l = 20e3/params.v_0;
 
     std::vector<float> outputs(2, 0);
 
