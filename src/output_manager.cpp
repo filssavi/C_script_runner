@@ -32,8 +32,9 @@ namespace c_script_engine{
             } else {
                 std::cout << "Reference data for " << name << " not found" << std::endl;
             }
-
-            p.yrange(outputs[i].y_range.first,outputs[i].y_range.second);
+            auto y_min = outputs[i].y_range.first;
+            auto y_max = std::max<float>(outputs[i].y_range.second, 1);
+            p.yrange(y_min,y_max);
             p.xrange(limits.first, limits.second);
             plots.push_back({p});
         }

@@ -53,6 +53,7 @@ namespace c_script_engine {
     public:
         modules_cache();
         void check_cache();
+
         nlohmann::json dump_lib();
         void index_modules(const std::string& modules_dir);
         void process_module(const std::string& module_path);
@@ -72,7 +73,7 @@ namespace c_script_engine {
         system_metadata get_system_metadata(const std::string& name) const {return systems.at(name);}
 
         bool is_system(const std::string& name) const {return systems.contains(name);}
-
+        static void clear_cache();
         ~modules_cache();
     private:
 

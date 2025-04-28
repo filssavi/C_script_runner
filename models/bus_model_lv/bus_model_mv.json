@@ -55,8 +55,8 @@
     }
   ],
   "model": {
-    "target_path": "bus_model.cpp",
-    "target_name": "bus_model",
+    "target_path": "bus_model_mv.cpp",
+    "target_name": "bus_model_mv",
     "sampling_frequency": 25e3
   },
   "plot_interval": [0, 1],

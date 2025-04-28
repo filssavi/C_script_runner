@@ -31,10 +31,17 @@ int main(int argc, char **argv) {
     std::string dump_lib;
     std::string target;
     std::string output_path;
+    bool clear_cache = false;
     app.add_option("Module", target, "Component or System name");
     app.add_option("--output_file", output_path, "Path for the output csv file");
     app.add_option("--lib_dump",dump_lib, "Dumps the component library content");
+    app.add_flag("--clear_cache", clear_cache, "Clears the component library cache");
     CLI11_PARSE(app, argc, argv);
+
+    if(clear_cache) {
+        c_script_engine::modules_cache::clear_cache();
+        exit(1);
+    }
 
     c_script_engine::modules_cache cache;
 

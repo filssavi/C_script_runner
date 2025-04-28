@@ -28,10 +28,10 @@ extern "C" std::vector<float> cc_dab(const std::vector<float>&inputs, std::vecto
 float satn(float in, float sat);
 float satp(float in, float sat);
 
-float dab_input(float i_in_past, float i_pri_prev, float v_cap_in_past, float *v_cap_in, struct model_parameters p);
-float dab_control(float setpoint, float fb, float en, float *pi_state, struct model_parameters p);
-void dab_model(float ps, float v_dab_in, float i_pri_prev, float v_cap_out_past, float i_sec_prev, float *i_sec, float *i_pri, struct model_parameters p);
-float dab_output(float i_sec, float i_out, float en, float *v_cap_out, struct model_parameters p);
-float dab_input_current(float v_in, float i_in_past, float v_cap_in_past, float i_pri_prev, struct model_parameters p);
+float dab_input(float i_in_past, float i_pri_prev, float v_cap_in_past, float *v_cap_in, model_parameters p);
+float dab_control(float setpoint, float fb, float en, float *pi_state, model_parameters p);
+void dab_model(float ps, float v_dab_in, float i_pri_prev, float v_cap_out_past, float i_sec_prev, float *i_sec, float *i_pri, model_parameters p);
+float dab_output(float i_sec, float i_out, float en, float *v_cap_out, model_parameters p);
+float dab_input_current(float v_in, float i_in_past, float v_cap_in_past, float i_pri, model_parameters p);
 
 #endif //CC_DAB_HPP

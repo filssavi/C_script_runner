@@ -41,7 +41,7 @@ std::vector<float> cc_dab(const std::vector<float>&inputs, std::vector<float>&st
     #define mem_i_sec_prev state[5]
 
 
-    float v_cap_in, pi_state_next, i_sec, i_pri, v_cap_out;
+    float v_cap_in, i_sec, i_pri;
 
     float v_dab_in = dab_input(mem_i_in_past, mem_i_pri_prev, mem_v_cap_in_past, &v_cap_in, params);
 
@@ -55,7 +55,7 @@ std::vector<float> cc_dab(const std::vector<float>&inputs, std::vector<float>&st
     out_v_out = dab_output(i_sec, in_i_out, in_en, &mem_v_cap_out_past, params);
 
 
-    mem_i_in_past = dab_input_current(in_v_in, mem_i_in_past, mem_v_cap_in_past, mem_i_pri_prev, params);
+    mem_i_in_past = dab_input_current(in_v_in, mem_i_in_past, mem_v_cap_in_past, i_pri, params);
 
     out_i_in = mem_i_in_past;
 
@@ -82,7 +82,7 @@ float satp(float in, float sat){
 }
 
 
-float dab_input(float i_in_past, float i_pri_prev, float v_cap_in_past, float *v_cap_in, struct model_parameters p) {
+float dab_input(float i_in_past, float i_pri_prev, float v_cap_in_past, float *v_cap_in, model_parameters p) {
 
 
     double i_cap_in = i_in_past - i_pri_prev;
@@ -95,7 +95,7 @@ float dab_input(float i_in_past, float i_pri_prev, float v_cap_in_past, float *v
 }
 
 
-float dab_control(float setpoint, float fb, float en, float *pi_state, struct model_parameters p){
+float dab_control(float setpoint, float fb, float en, float *pi_state, model_parameters p){
 
     float err = (setpoint-fb)*en;
 
@@ -118,7 +118,7 @@ float dab_control(float setpoint, float fb, float en, float *pi_state, struct mo
 
 
 
-void dab_model(float ps, float v_dab_in, float i_pri_prev, float v_cap_out_past, float i_sec_prev, float *i_sec, float *i_pri, struct model_parameters p){
+void dab_model(float ps, float v_dab_in, float i_pri_prev, float v_cap_out_past, float i_sec_prev, float *i_sec, float *i_pri, model_parameters p){
     float ps_rms = ps/p.sqrt2;
 
     float ps_factor = ps_rms*(1.0-2.0*ps_rms);
@@ -133,7 +133,7 @@ void dab_model(float ps, float v_dab_in, float i_pri_prev, float v_cap_out_past,
 }
 
 
-float dab_output(float i_sec, float i_out, float en, float *v_cap_out, struct model_parameters p){
+float dab_output(float i_sec, float i_out, float en, float *v_cap_out, model_parameters p){
 
     float i_cap_out = i_sec - i_out;
 
@@ -147,8 +147,8 @@ float dab_output(float i_sec, float i_out, float en, float *v_cap_out, struct mo
 }
 
 
-float dab_input_current(float v_in, float i_in_past, float v_cap_in_past, float i_pri_prev, struct model_parameters p){
+float dab_input_current(float v_in, float i_in_past, float v_cap_in_past, float i_pri, model_parameters p){
 
-    return i_in_past + p.t_sw/p.l_dc*(v_in - p.r_dc*i_in_past - v_cap_in_past -(i_in_past - i_pri_prev)*(p.t_sw/p.c_in + p.r_esr));
+    return i_in_past + p.t_sw/p.l_dc*(v_in - p.r_dc*i_in_past - v_cap_in_past -(i_in_past - i_pri)*(p.t_sw/p.c_in + p.r_esr));
 
 }

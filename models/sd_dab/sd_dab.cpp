@@ -68,7 +68,7 @@ std::vector<float> sd_dab(const std::vector<float>&inputs, std::vector<float>&st
 
 
 
-float dab_control(float setpoint, float fb, float *pi_state_next, struct model_parameters p) {
+float dab_control(float setpoint, float fb, float *pi_state_next, model_parameters p) {
 
     float err = setpoint - fb;
 
@@ -89,7 +89,7 @@ float dab_control(float setpoint, float fb, float *pi_state_next, struct model_p
 
 }
 
-void dab_model(float ps, float v_dab_in, float v_cap_out_past, float i_pri_prev, float i_sec_prev, float *i_pri, float *i_sec, struct model_parameters p){
+void dab_model(float ps, float v_dab_in, float v_cap_out_past, float i_pri_prev, float i_sec_prev, float *i_pri, float *i_sec, model_parameters p){
 
     float ps_rms = ps/p.sqrt2;
 
@@ -105,7 +105,7 @@ void dab_model(float ps, float v_dab_in, float v_cap_out_past, float i_pri_prev,
 }
 
 
-float dab_output(float i_sec, float i_out, float v_cap_out_past, float *v_cap_out, struct model_parameters p){
+float dab_output(float i_sec, float i_out, float v_cap_out_past, float *v_cap_out, model_parameters p){
     float i_cap_out = i_sec - i_out;
 
     *v_cap_out = v_cap_out_past + i_cap_out*p.t_sw/p.c_out;
@@ -115,7 +115,7 @@ float dab_output(float i_sec, float i_out, float v_cap_out_past, float *v_cap_ou
     return v_out;
 }
 
-float input_model(float i_in_past, float i_pri_prev, float v_cap_in_past, float *v_cap_in, struct model_parameters p){
+float input_model(float i_in_past, float i_pri_prev, float v_cap_in_past, float *v_cap_in, model_parameters p){
     float i_cap_in = i_in_past - i_pri_prev;
 
     *v_cap_in = v_cap_in_past + p.t_sw/p.c_in*i_cap_in;
@@ -125,6 +125,6 @@ float input_model(float i_in_past, float i_pri_prev, float v_cap_in_past, float 
 }
 
 
-float input_current(float i_in_past, float v_in, float v_cap_in, float i_pri, struct model_parameters p){
+float input_current(float i_in_past, float v_in, float v_cap_in, float i_pri, model_parameters p){
     return i_in_past + p.t_sw/p.l_dc*(v_in - p.r_dc*i_in_past - v_cap_in -(i_in_past - i_pri)*(p.t_sw/p.c_in + p.r_esr));
 }

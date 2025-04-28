@@ -16,6 +16,11 @@
       "name": "lv_dab",
       "type": "sd_dab",
       "sampling_frequency": 25e3
+    },
+    {
+      "name": "lv_bus",
+      "type": "bus_model",
+      "sampling_frequency": 25e3
     }
   ],
   "connections": [
@@ -34,6 +39,14 @@
     {
       "source": "lv_dab.i_in",
       "destination": "mv_bus.i_out"
+    },
+    {
+      "source": "lv_dab.v_out",
+      "destination": "lv_bus.v_in"
+    },
+    {
+      "source": "lv_bus.i_in",
+      "destination": "lv_dab.i_out"
     }
   ],
   "inputs": [
@@ -53,12 +66,17 @@
       "value": 28
     },
     {
-      "name": "lv_dab.i_out",
+      "name": "lv_bus.i_out",
       "type": "random",
       "distribution": {
         "name": "gaussian",
         "parameters": [150.0, 4]
       }
+    },
+    {
+      "name": "lv_bus.fault",
+      "type": "constant",
+      "value": 0
     }
   ],
   "states": [
@@ -75,7 +93,9 @@
     "mv_dab.i_in",
     "mv_dab.v_out",
     "lv_dab.v_out",
-    "lv_dab.i_in"
+    "lv_dab.i_in",
+    "lv_bus.v_out",
+    "lv_bus.i_in"
   ],
   "run_length": 25001
 }
