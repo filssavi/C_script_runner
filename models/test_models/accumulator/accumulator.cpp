@@ -1,7 +1,7 @@
  #include "accumulator.hpp"
 #include <iostream>
 
-std::vector<float> accumulator(const std::vector<float>&inputs, std::vector<float>&state) {
+std::vector<float> accumulator(const std::vector<float>&inputs, std::vector<float>&state, const std::vector<float> &parameters) {
 
     std::vector<float> outputs(2, 0);
 

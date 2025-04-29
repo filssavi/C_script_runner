@@ -25,6 +25,8 @@ set(SOURCES /
         src/utils/builder.cpp
         src/utils/csv_interface.cpp
         src/utils/settings_store.cpp
+        src/data_model/model_parameter.cpp
+        src/data_model/model_parameter.hpp
 
 )
 

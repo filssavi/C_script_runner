@@ -54,5 +54,37 @@
     "sampling_frequency": 25e3
   },
   "plot_interval": [0, 1],
-  "run_length": 25001
+  "run_length": 25001,
+  "parameters": [
+    {
+      "name": "f_sw",
+      "order": 0,
+      "value": 25e3
+    },
+    {
+      "name": "c",
+      "order": 1,
+      "value": 1e-3
+    },
+    {
+      "name": "r_in",
+      "order": 2,
+      "value": 1e-3
+    },
+    {
+      "name": "r_esr",
+      "order": 3,
+      "value": 1e-6
+    },
+    {
+      "name": "v_0",
+      "order": 4,
+      "value": 1000
+    },
+    {
+      "name": "p_load",
+      "order": 5,
+      "value": 400e3
+    }
+  ]
 }

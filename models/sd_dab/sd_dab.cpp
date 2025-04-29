@@ -1,28 +1,31 @@
 
 #include "sd_dab.hpp"
 
-std::vector<float> sd_dab(const std::vector<float>&inputs, std::vector<float>&state) {
+#include <iostream>
+#include <ostream>
+
+std::vector<float> sd_dab(const std::vector<float>&inputs, std::vector<float>&state, const std::vector<float> &parameters) {
 
     std::vector<float> outputs(2, 0);
     // OUTPUT
-    struct model_parameters p;
+    model_parameters p;
 
-    p.kp = 200e-6;
-    p.ki = 600e-3;
-    p.r_esr = 3e-3;
-    p.r_dab = 3.5e-3;
-    p.l_dc = 5e-6;
-    p.r_dc = 10e-3;
-    p.v_pri0 = 1000;
-    p.v_sec0 = 250;
-    p.f_sw = 25e3;
-    p.n_ps = 1000/250;
-    p.l_dab = 9e-6;
-    p.c_in = 800e-6;
-    p.c_out = 800e-6*3;
-    p.pi = 3.14159265358979323846;
+    p.kp = parameters[0];
+    p.ki = parameters[1];
+    p.r_esr = parameters[2];
+    p.r_dab = parameters[3];
+    p.l_dc = parameters[4];
+    p.r_dc = parameters[5];
+    p.v_pri0 = parameters[6];
+    p.v_sec0 = parameters[7];
+    p.f_sw = parameters[8];
+    p.n_ps = parameters[9];
+    p.l_dab = parameters[10];
+    p.c_in = parameters[11];
+    p.c_out = parameters[12];
+    p.pi = parameters[13];
     p.t_sw = 1/p.f_sw;
-    p.sqrt2 = 1.41421356237;
+    p.sqrt2 = parameters[14];
 
     #define in_v_in inputs[0]
     #define in_i_out inputs[1]

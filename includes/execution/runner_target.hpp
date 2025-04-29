@@ -20,8 +20,8 @@
 #include <vector>
 #include <functional>
 namespace c_script_engine {
-    typedef std::vector<float> (*target_cscript_t)(std::vector<float>, std::vector<float>&);
-    typedef std::function< std::vector<float>(std::vector<float>, std::vector<float>&)> update_model_t;
+    typedef std::vector<float> (*target_cscript_t)(std::vector<float>, std::vector<float>&,std::vector<float>);
+    typedef std::function< std::vector<float>(std::vector<float>, std::vector<float>&, std::vector<float>)> update_model_t;
 
     struct runner_input {
         std::vector<double> data;

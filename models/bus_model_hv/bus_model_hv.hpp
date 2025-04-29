@@ -13,7 +13,7 @@ struct model_parameters{
   float i_l;
 };
 
-extern "C" std::vector<float> bus_model_hv(const std::vector<float>&inputs, std::vector<float>&state);
+extern "C" std::vector<float> bus_model_hv(const std::vector<float>&inputs, std::vector<float>&state, const std::vector<float> &parameters);
 void bus(float i_out, float v_in, int fault, float &v_out, float &i_in, model_parameters &params);
 
 

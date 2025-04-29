@@ -111,7 +111,7 @@ namespace c_script_engine {
                     }
                 }
 
-                auto step_out = targets[c.name](input_values, current_states[c.name]);
+                auto step_out = targets[c.name](input_values, current_states[c.name], {});
                 for(const auto &out:components[c.name].outputs) {
                     i_m.update_value({c.name, out.name, out.output_index}, step_out[out.output_index]);
                     for(auto & sys_out: outputs[c.name]) {

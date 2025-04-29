@@ -60,7 +60,11 @@ namespace c_script_engine {
         for (auto &out:comp["outputs"]["specs"]) {
             model_output o(out);
             outputs.emplace_back(o);
+        }
 
+        for (auto &param:comp["parameters"]) {
+            model_parameter p(param);
+            parameters.emplace_back(p);
         }
 
         plot_interval = {comp["plot_interval"][0],comp["plot_interval"][1]};
@@ -86,5 +90,29 @@ namespace c_script_engine {
             path = std::filesystem::canonical(filename);
         }
         return path;
+    }
+
+    std::vector<float> component::get_parameters(const std::vector<model_parameter> &overloads) const {
+        std::vector<float> out(parameters.size());
+
+        std::set<uint32_t> orders;
+        for (const auto &p : parameters) {
+            if (p.order >= parameters.size()) {
+                std::cerr << "Parameter order out of bounds: " << p.order << std::endl;
+                exit(1);
+            }
+            if (!orders.insert(p.order).second) {
+                std::cerr << "Duplicate parameter order: " << p.order << std::endl;
+                exit(1);
+            }
+            out[p.order] = p.value;
+        }
+
+        if (orders.size() != parameters.size()) {
+            std::cerr << "Non-consecutive parameter orders" << std::endl;
+            exit(1);
+        }
+
+        return out;
     }
 }

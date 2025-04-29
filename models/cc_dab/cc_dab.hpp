@@ -22,7 +22,7 @@ struct model_parameters{
 };
 
 
-extern "C" std::vector<float> cc_dab(const std::vector<float>&inputs, std::vector<float>&state);
+extern "C" std::vector<float> cc_dab(const std::vector<float>&inputs, std::vector<float>&state, const std::vector<float> &parameters);
 
 
 float satn(float in, float sat);

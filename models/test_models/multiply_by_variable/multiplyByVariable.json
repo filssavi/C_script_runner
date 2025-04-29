@@ -39,5 +39,6 @@
     "sampling_frequency": 1
   },
   "plot_interval": [0, 8],
-  "run_length": 6
+  "run_length": 6,
+  "parameters": []
 }

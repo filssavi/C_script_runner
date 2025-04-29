@@ -4,7 +4,7 @@
 #include <vector>
 
 
-extern "C" std::vector<float> sd_dab(const std::vector<float>&inputs, std::vector<float>&state);
+extern "C" std::vector<float> sd_dab(const std::vector<float>&inputs, std::vector<float>&state, const std::vector<float> &parameters);
 
 struct model_parameters{
     float kp;

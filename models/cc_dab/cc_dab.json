@@ -86,5 +86,77 @@
   },
 
   "plot_interval": [0.2, 1],
-  "run_length": 25001
+  "run_length": 25001,
+  "parameters": [
+    {
+      "name": "kp",
+      "order": 0,
+      "value": 1e-3
+    },
+    {
+      "name": "ki",
+      "order": 1,
+      "value": 1
+    },
+    {
+      "name": "r_dab",
+      "order": 2,
+      "value": 3.5e-3
+    },
+    {
+      "name": "l_dc",
+      "order": 3,
+      "value": 10e-6
+    },
+    {
+      "name": "r_dc",
+      "order": 4,
+      "value": 20e-3
+    },
+    {
+      "name": "n_ps",
+      "order": 5,
+      "value": 1
+    },
+    {
+      "name": "r_esr",
+      "order": 6,
+      "value": 5e-3
+    },
+    {
+      "name": "v_0",
+      "order": 7,
+      "value": 1000
+    },
+    {
+      "name": "f_sw",
+      "order": 8,
+      "value": 25e3
+    },
+    {
+      "name": "l_dab",
+      "order": 9,
+      "value": 2e-6
+    },
+    {
+      "name": "c_in",
+      "order": 10,
+      "value": 1e-3
+    },
+    {
+      "name": "c_out",
+      "order": 11,
+      "value": 1e-3
+    },
+    {
+      "name": "pi",
+      "order": 12,
+      "value": 3.14159265358979323846
+    },
+    {
+      "name": "sqrt2",
+      "order": 13,
+      "value": 1.41421356237
+    }
+  ]
 }

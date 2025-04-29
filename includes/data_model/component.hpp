@@ -16,10 +16,12 @@
 
 #include <vector>
 #include <cstdint>
+#include <set>
 #include <iostream>
 #include <nlohmann/json.hpp>
 
 #include "data_model/model_state.hpp"
+#include "data_model/model_parameter.hpp"
 #include "data_model/model_input.hpp"
 #include "data_model/model_output.hpp"
 #include "utils/csv_interface.hpp"
@@ -42,9 +44,11 @@ namespace c_script_engine {
 
         std::string get_reference_path() {return reference_path;};
 
+        std::vector<float> get_parameters(const std::vector<model_parameter> &overloads) const;
 
         std::string name;
         std::vector<model_input> inputs;
+        std::vector<model_parameter> parameters;
         std::vector<model_output> outputs;
         std::pair<float, float> plot_interval;
         uint32_t n_steps;
@@ -55,7 +59,7 @@ namespace c_script_engine {
         std::string reference_path;
     };
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(component, name, inputs, outputs, plot_interval, n_steps, sampling_frequency, states);
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(component, name, inputs, outputs,parameters, plot_interval, n_steps, sampling_frequency, states);
 }
 
 

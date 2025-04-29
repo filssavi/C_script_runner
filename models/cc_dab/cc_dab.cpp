@@ -1,24 +1,24 @@
 
 #include "cc_dab.hpp"
 
-std::vector<float> cc_dab(const std::vector<float>&inputs, std::vector<float>&state) {
+std::vector<float> cc_dab(const std::vector<float>&inputs, std::vector<float>&state, const std::vector<float> &parameters) {
 
-	struct model_parameters params;
+	model_parameters params;
 
-	params.kp = 1E-3;
-    params.ki = 1;
-    params.r_dab = 3.5e-3;
-	params.l_dc = 10e-6;
-	params.r_dc = 20e-3;
-	params.n_ps = 1;
-	params.r_esr = 5e-3;
-	params.v_0 = 1000;
-	params.f_sw = 25e3;
-	params.l_dab = 2e-6;
-	params.c_in =  1e-3;
-	params.c_out =  1e-3;
-	params.pi =  3.14159265358979323846;
-	params.sqrt2 = 1.41421356237;
+	params.kp = parameters[0];
+    params.ki = parameters[1];
+    params.r_dab = parameters[2];
+	params.l_dc = parameters[3];
+	params.r_dc = parameters[4];
+	params.n_ps = parameters[5];
+	params.r_esr = parameters[6];
+	params.v_0 = parameters[7];
+	params.f_sw = parameters[8];
+	params.l_dab = parameters[9];
+	params.c_in =  parameters[10];
+	params.c_out =  parameters[11];
+	params.pi = parameters[12];
+	params.sqrt2 = parameters[13];
     params.t_sw = 1/params.f_sw;
 
 

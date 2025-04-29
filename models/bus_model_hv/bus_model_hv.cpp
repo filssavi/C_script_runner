@@ -1,15 +1,15 @@
  #include "bus_model_hv.hpp"
 
- std::vector<float> bus_model_hv(const std::vector<float>&inputs, std::vector<float>&state) {
+ std::vector<float> bus_model_hv(const std::vector<float>&inputs, std::vector<float>&state, const std::vector<float> &parameters) {
 
 
     model_parameters params;
-    params.t_sw = 1/25e3;
-    params.c = 1e-3;
-    params.r_in = 1e-3;
-    params.r_esr = 1e-6;
-    params.v_0 = 1000;
-    params.i_l = 400e3/params.v_0;
+    params.t_sw = 1/parameters[0];
+    params.c = parameters[1];
+    params.r_in = parameters[2];
+    params.r_esr = parameters[3];
+    params.v_0 = parameters[4];
+    params.i_l = parameters[5]/params.v_0;
 
     std::vector<float> outputs(2, 0);
 

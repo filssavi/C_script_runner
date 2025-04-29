@@ -15,13 +15,12 @@
 namespace c_script_engine {
     model_input::model_input(nlohmann::json in, const std::unordered_map<std::string, std::vector<double>>  &d, uint32_t n_steps) {
 
-        name = in["name"];
         if(!in.contains("model_order")) {
             is_overload = true;
         } else {
             input_index = in["model_order"];
         }
-
+        name = in["name"];
 
         if (in["type"] == "constant") {
             type = constant_input;

@@ -39,8 +39,8 @@ namespace c_script_engine {
             for (const auto &in:comp.inputs) {
                 inputs[in.input_index] = in.data[i];
             }
-
-            auto step_out = target(inputs, states);
+            auto params=comp.get_parameters({});
+            auto step_out = target(inputs, states, comp.get_parameters({}));
 
             for (const auto &out:comp.outputs) {
                 outputs[out.series_index].push_back(step_out[out.output_index]);
