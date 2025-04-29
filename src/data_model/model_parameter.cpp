@@ -22,6 +22,6 @@ namespace c_script_engine {
     model_parameter::model_parameter(const nlohmann::json &json) {
         name = json.at("name");
         value = json.at("value");
-        order = json.at("order");
+        if(json.contains("order")) order = json.at("order");
     }
 } // c_script_engine

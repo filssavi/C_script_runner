@@ -22,6 +22,7 @@ namespace c_script_engine {
         std::vector<system_connection> connections;
         std::vector<model_input> inputs_overloads;
         std::vector<model_state> states_overloads;
+        std::vector<model_parameter> parameters_overloads;
         std::vector<endpoint_descriptor> outputs_overloads;
         uint32_t n_steps;
         float sampling_frequency;

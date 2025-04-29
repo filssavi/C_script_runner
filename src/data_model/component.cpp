@@ -106,6 +106,9 @@ namespace c_script_engine {
                 exit(1);
             }
             out[p.order] = p.value;
+            for(const auto &o : overloads) {
+                if(o.name == p.name) out[p.order] = o.value;
+            }
         }
 
         if (orders.size() != parameters.size()) {

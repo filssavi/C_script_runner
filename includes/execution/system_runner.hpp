@@ -45,6 +45,7 @@ namespace c_script_engine {
         multi_component_system system;
 
         std::unordered_map<std::string, std::vector<model_state>> states;
+        std::unordered_map<std::string, std::vector<float>> parameters;
         std::unordered_map<std::string, std::vector<runner_input>> inputs;
         std::unordered_map<std::string, std::unordered_map<std::string, std::vector<double>>> outputs;
         modules_cache cache;

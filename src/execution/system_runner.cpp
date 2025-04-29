@@ -83,6 +83,25 @@ namespace c_script_engine {
         for(auto &o:sys.outputs_overloads) {
             outputs[o.component][o.port] = std::vector<double>(sys.n_steps, 0);
         }
+        std::unordered_map<std::string, std::vector<model_parameter>> sorted_overloads;
+        for(const auto ov: sys.parameters_overloads) {
+            auto split_point = ov.name.find('.');
+            auto instance = ov.name.substr(0, split_point);
+            auto param_name = ov.name.substr(split_point + 1);
+            model_parameter param;
+            param.name = param_name;
+            for(auto &p:components[instance].parameters) {
+                if(p.name == param_name) {
+                    param.order = p.order;
+                }
+            }
+            param.value = ov.value;
+            sorted_overloads[instance].push_back(param);
+        }
+
+        for(const auto &[comp_name, component]:components) {
+            parameters[comp_name] = component.get_parameters(sorted_overloads[comp_name]);
+        }
 
         system = sys;
     }
@@ -93,6 +112,7 @@ namespace c_script_engine {
         for(const auto &[name, s]:states) {
             current_states[name] = model_state::get_state_vector(s);
         }
+
         for (int current_step = 0; current_step<system.n_steps; current_step++) {
             for(auto &c:system.components) {
                 std::vector<float> input_values;
@@ -110,8 +130,8 @@ namespace c_script_engine {
                         }
                     }
                 }
-                auto params = components[c.name].get_parameters({});
-                auto step_out = targets[c.name](input_values, current_states[c.name], params);
+
+                auto step_out = targets[c.name](input_values, current_states[c.name], parameters[c.name]);
                 for(const auto &out:components[c.name].outputs) {
                     i_m.update_value({c.name, out.name, out.output_index}, step_out[out.output_index]);
                     for(auto & sys_out: outputs[c.name]) {
