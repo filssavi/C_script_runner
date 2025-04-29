@@ -14,7 +14,7 @@
     },
     {
       "name": "mv_bus",
-      "type": "bus_model_mv",
+      "type": "bus_model_hv",
       "sampling_frequency": 25e3
     },
     {
@@ -24,7 +24,7 @@
     },
     {
       "name": "lv_bus",
-      "type": "bus_model_lv",
+      "type": "bus_model_hv",
       "sampling_frequency": 25e3
     }
   ],
@@ -117,5 +117,32 @@
     "lv_bus.v_out",
     "lv_bus.i_in"
   ],
-  "run_length": 25001
+  "run_length": 25001,
+  "parameters": [
+    {
+      "name": "mv_bus.v_0",
+      "type": "constant",
+      "value": 250
+    },
+    {
+      "name": "mv_bus.p_load",
+      "type": "constant",
+      "value": 20E3
+    },
+    {
+      "name": "lv_bus.v_0",
+      "type": "constant",
+      "value": 28
+    },
+    {
+      "name": "lv_bus.p_load",
+      "type": "constant",
+      "value": 2E3
+    }
+  ]
+}
+{
+"name": "",
+"order": 5,
+"value": 400e3
 }
