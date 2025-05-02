@@ -49,8 +49,8 @@
   },
   "states": [],
   "model": {
-    "target_path": "bus_model_hv.cpp",
-    "target_name": "bus_model_hv",
+    "target_path": "bus_model.cpp",
+    "target_name": "bus_model",
     "sampling_frequency": 25e3
   },
   "plot_interval": [0, 1],

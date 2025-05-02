@@ -4,7 +4,7 @@
   "models": [
     {
       "name": "hv_bus",
-      "type": "bus_model_hv",
+      "type": "bus_model",
       "sampling_frequency": 25e3
     },
     {
@@ -14,7 +14,7 @@
     },
     {
       "name": "mv_bus",
-      "type": "bus_model_hv",
+      "type": "bus_model",
       "sampling_frequency": 25e3
     },
     {
@@ -24,7 +24,7 @@
     },
     {
       "name": "lv_bus",
-      "type": "bus_model_hv",
+      "type": "bus_model",
       "sampling_frequency": 25e3
     }
   ],

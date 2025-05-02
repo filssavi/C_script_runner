@@ -1,6 +1,6 @@
- #include "bus_model_hv.hpp"
+ #include "bus_model.hpp"
 
- std::vector<float> bus_model_hv(const std::vector<float>&inputs, std::vector<float>&state, const std::vector<float> &parameters) {
+ std::vector<float> bus_model(const std::vector<float>&inputs, std::vector<float>&state, const std::vector<float> &parameters) {
 
 
     model_parameters params;
