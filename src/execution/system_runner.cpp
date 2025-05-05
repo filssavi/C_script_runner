@@ -52,6 +52,10 @@ namespace c_script_engine {
                 if(!overridden) {
                     inputs[component_inst.name].emplace_back(i.data, i.input_index);
                 }
+                if(inputs[component_inst.name].back().data.size() != sys.n_steps) {
+                    std::cout << "Error: input " << i.name << " of component " << component_inst.name << " has size " << inputs[component_inst.name].back().data.size() << " but system has " << sys.n_steps << " steps" << std::endl;
+                    std::exit(1);
+                }
             }
 
             for(auto &s:components[component_inst.name].states) {

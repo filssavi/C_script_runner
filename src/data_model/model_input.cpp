@@ -55,11 +55,6 @@ namespace c_script_engine {
                 exit(1);
             }
             data = d.at(name);
-            if(data.size() < n_steps) {
-                std::cout << "Error: input series "<< name << " does not have enough data!" << std::endl;
-                std::cout << "Expected: " << n_steps << " data points, got: " << data.size() << std::endl;
-                exit(1);
-            }
         }else if(in["type"] == "step") {
 
             float initial_value = in["values"][0];
