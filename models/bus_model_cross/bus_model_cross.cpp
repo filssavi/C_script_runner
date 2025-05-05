@@ -1,7 +1,10 @@
  #include "bus_model_cross.hpp"
 
+#include <iostream>
+#include <ostream>
+
  std::vector<float> bus_model_cross_source(const std::vector<float> &inputs, std::vector<float> &state,
-     const std::vector<float> &parameters) {
+                                           const std::vector<float> &parameters) {
      return bus_model_cross(inputs, state, parameters);
  }
 
@@ -58,7 +61,6 @@ void bus(float i_out, float v_in, int fault, float &v_out, float &i_in, float &v
      }else {
 
          if(fault) {
-
              i_cross = i_out + i_l;
              v_out = v_cross;
              i_in = 0;

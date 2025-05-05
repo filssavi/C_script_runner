@@ -18,12 +18,12 @@
       {
         "name": "v_cross",
         "type": "series",
-        "model_order": 2
+        "model_order": 3
       },
       {
         "name": "fault",
         "type": "series",
-        "model_order": 3
+        "model_order": 2
       }
     ]
   },
@@ -62,7 +62,7 @@
     "target_name": "bus_model_cross_sink",
     "sampling_frequency": 50e3
   },
-  "plot_interval": [0, 1],
+  "plot_interval": [0.8, 0.85],
   "run_length": 50001,
   "parameters": [
     {
@@ -84,6 +84,11 @@
       "name": "p_load",
       "order": 3,
       "value": 400e3
+    },
+    {
+      "name": "mode",
+      "order": 4,
+      "value": 1
     }
   ]
 }
