@@ -40,9 +40,11 @@ std::vector<float> bus_model_cross(const std::vector<float>&inputs, std::vector<
     #define out_v_cross outputs[3]
 
     if(params.mode  == 0) {
+        // SOURCE MODE
         float i_cross = in_i_cross;
         bus(in_i_out, in_v_in, in_fault, out_v_out, out_i_in, out_v_cross, i_cross, params);
     } else {
+        //SINK MODE
         float v_cross = in_v_cross;
         bus(in_i_out, in_v_in, in_fault, out_v_out, out_i_in, v_cross, out_i_cross, params);
     }
