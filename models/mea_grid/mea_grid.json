@@ -1,0 +1,89 @@
+{
+  "type": "system",
+  "name": "mea_grid",
+  "models": [
+    {
+      "name": "hv_bus_a",
+      "type": "bus_model_cross_source",
+      "sampling_frequency": 50e3
+    },
+    {
+      "name": "hv_bus_b",
+      "type": "bus_model_cross_sink",
+      "sampling_frequency": 50e3
+    },
+    {
+      "name": "mv_dab_a",
+      "type": "sd_dab",
+      "sampling_frequency": 25e3
+    },
+    {
+      "name": "mv_dab_b",
+      "type": "sd_dab",
+      "sampling_frequency": 25e3
+    }
+  ],
+  "connections": [
+    {
+      "source": "hv_bus_a.v_out",
+      "destination": "mv_dab_a.v_in"
+    },
+    {
+      "source": "mv_dab_a.i_in",
+      "destination": "hv_bus_a.i_out"
+    },
+    {
+      "source": "hv_bus_a.v_cross",
+      "destination": "hv_bus_b.v_cross"
+    },
+    {
+      "source": "hv_bus_b.i_cross",
+      "destination": "hv_bus_a.i_cross"
+    },
+    {
+      "source": "hv_bus_b.v_out",
+      "destination": "mv_dab_b.v_in"
+    },
+    {
+      "source": "mv_dab_b.i_in",
+      "destination": "hv_bus_b.i_out"
+    }
+  ],
+  "inputs": [
+    {
+      "name": "hv_bus_b.fault",
+      "type": "step",
+      "time": 12500,
+      "values": [0, 1]
+    },
+    {
+      "name": "hv_bus_a.v_in",
+      "type": "constant",
+      "value": 1000
+    },
+    {
+      "name": "hv_bus_b.v_in",
+      "type": "constant",
+      "value": 1000
+    },
+    {
+      "name": "mv_dab_b.i_out",
+      "type": "constant",
+      "value": 50
+    },
+    {
+      "name": "mv_dab_b.i_out",
+      "type": "constant",
+      "value": 20
+    }
+  ],
+  "states": [],
+  "outputs": [
+    "mv_dab_a.v_out",
+    "mv_dab_b.v_out",
+    "hv_bus_a.i_in",
+    "hv_bus_b.i_in"
+  ],
+  "run_length": 50001,
+  "parameters": []
+}
