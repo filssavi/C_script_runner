@@ -1,5 +1,15 @@
  #include "bus_model_cross.hpp"
 
+ std::vector<float> bus_model_cross_source(const std::vector<float> &inputs, std::vector<float> &state,
+     const std::vector<float> &parameters) {
+     return bus_model_cross(inputs, state, parameters);
+ }
+
+ std::vector<float> bus_model_cross_sink(const std::vector<float> &inputs, std::vector<float> &state,
+                                         const std::vector<float> &parameters) {
+     return bus_model_cross(inputs, state, parameters);
+ }
+
 std::vector<float> bus_model_cross(const std::vector<float>&inputs, std::vector<float>&state, const std::vector<float> &parameters) {
 
 
