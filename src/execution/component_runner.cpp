@@ -43,6 +43,7 @@ namespace c_script_engine {
             auto step_out = target(inputs, states, comp.get_parameters({}));
 
             for (const auto &out:comp.outputs) {
+
                 outputs[out.series_index].push_back(step_out[out.output_index]);
             }
         }

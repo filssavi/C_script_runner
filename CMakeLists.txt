@@ -8,6 +8,8 @@ find_package(nlohmann_json REQUIRED)
 find_package(tomlplusplus REQUIRED)
 find_package(CLI11 REQUIRED)
 
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
 
 set(SOURCES /
         src/main.cpp

@@ -13,20 +13,17 @@
       {
         "name": "i_out",
         "type": "series",
-        "model_order": 1,
-        "series_order": 1
+        "model_order": 1
       },
       {
         "name": "v_cross",
         "type": "series",
-        "model_order": 2,
-        "series_order": 2
+        "model_order": 2
       },
       {
         "name": "fault",
         "type": "series",
-        "model_order": 3,
-        "series_order": 3
+        "model_order": 3
       }
     ]
   },

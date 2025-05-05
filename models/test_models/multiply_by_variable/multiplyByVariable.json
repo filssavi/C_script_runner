@@ -13,8 +13,7 @@
       {
         "name": "var",
         "type": "series",
-        "model_order": 1,
-        "series_order": 1
+        "model_order": 1
       }
     ]
   },

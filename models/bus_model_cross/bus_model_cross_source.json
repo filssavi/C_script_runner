@@ -13,8 +13,7 @@
       {
         "name": "i_out",
         "type": "series",
-        "model_order": 1,
-        "series_order": 1
+        "model_order": 1
       },
       {
         "name": "fault",
@@ -31,8 +30,7 @@
       {
         "name": "i_cross",
         "type": "series",
-        "model_order": 4,
-        "series_order": 2
+        "model_order": 4
       }
     ]
   },
@@ -42,28 +40,28 @@
       {
         "name": "v_out",
         "model_order": 0,
-        "reference_order": 2,
+        "reference_order": 1,
         "plot_range": [
-          800,
-          1100
+          0,
+          5000
         ]
       },
       {
         "name": "i_in",
         "model_order": 1,
-        "reference_order": 1,
+        "reference_order": 0,
         "plot_range": [
-          500,
-          600
+          0,
+          5000
         ]
       },
       {
         "name": "v_cross",
         "model_order": 2,
-        "reference_order": 3,
+        "reference_order": 2,
         "plot_range": [
-          500,
-          600
+          0,
+          5000
         ]
       }
     ]
