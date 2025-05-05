@@ -9,11 +9,12 @@ struct model_parameters{
   float r_in;
   float v_0;
   float p_l;
+  int mode;
 };
 
 
 extern "C" std::vector<float> bus_model_cross(const std::vector<float>&inputs, std::vector<float>&state, const std::vector<float> &parameters);
-void bus(float i_out, float v_in, int fault, float &v_out, float &i_in, model_parameters &params);
+void bus(float i_out, float v_in, int fault, float &v_out, float &i_in, float &v_cross, float &i_cross, const model_parameters &params);
 
 
 
