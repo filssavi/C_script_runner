@@ -146,13 +146,12 @@ namespace c_script_engine {
     }
 
     void system_runner::process_output(const std::string &output_file) {
-
-        std::vector<std::vector<double>> raw_outputs;
+        std::unordered_map<std::string, std::vector<double>> raw_outputs;
         std::vector<model_output> specs;
         for(auto &[module, outputs_map] :outputs) {
             for(auto &[port, data]: outputs_map) {
-                raw_outputs.push_back(data);
                 std::string out_name  = module + "." + port;
+                raw_outputs[out_name] = data;
                 std::pair<float, float> range =  {0, *std::ranges::max_element(data)*1.1};
                 specs.emplace_back(out_name,range);
             }

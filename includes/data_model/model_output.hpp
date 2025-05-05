@@ -26,13 +26,12 @@ namespace c_script_engine {
         model_output(std::string n, std::pair<float, float> r){name = n; y_range = r;}
         std::string name;
         uint8_t output_index{};
-        uint8_t series_index{};
         std::pair<float, float> y_range;
-
+        static std::optional<model_output> get_output_by_name(std::vector<model_output> vect, const std::string &name);
     };
 
 
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(model_output, name, output_index, series_index, y_range);
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(model_output, name, output_index, y_range);
 
 
 }

@@ -29,7 +29,6 @@
       {
         "name": "v_out",
         "model_order": 0,
-        "reference_order": 0,
         "plot_range": [
           240,
           260
@@ -38,7 +37,6 @@
       {
         "name": "i_in",
         "model_order": 1,
-        "reference_order": 1,
         "plot_range": [
           15,
           25

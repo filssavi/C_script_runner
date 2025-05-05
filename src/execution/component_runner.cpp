@@ -32,7 +32,6 @@ namespace c_script_engine {
     void component_runner::run_emulation() {
 
         load_target();
-        outputs = std::vector(comp.outputs.size(), std::vector<double>());
         auto states = model_state::get_state_vector(comp.states);
         for (int i = 0; i<comp.n_steps; i++) {
             std::vector<float> inputs(comp.inputs.size(), 0);
@@ -43,8 +42,7 @@ namespace c_script_engine {
             auto step_out = target(inputs, states, comp.get_parameters({}));
 
             for (const auto &out:comp.outputs) {
-
-                outputs[out.series_index].push_back(step_out[out.output_index]);
+                outputs[out.name].push_back(step_out[out.output_index]);
             }
         }
     }

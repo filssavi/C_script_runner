@@ -16,7 +16,13 @@ namespace c_script_engine {
     model_output::model_output(const nlohmann::json &out) {
         name = out["name"];
         output_index = out["model_order"];
-        series_index = out["reference_order"];
         y_range = {out["plot_range"][0], out["plot_range"][1]};
+    }
+
+    std::optional<model_output> model_output::get_output_by_name(std::vector<model_output> vect, const std::string &name)  {
+        for(const auto& out : vect) {
+            if(out.name == name) return out;
+        }
+        return {};
     }
 }

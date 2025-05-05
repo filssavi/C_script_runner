@@ -40,8 +40,7 @@ namespace c_script_engine {
     private:
         component comp;
         target_cscript_t target{};
-
-        std::vector<std::vector<double>> outputs;
+        std::unordered_map<std::string, std::vector<double>> outputs;
         std::vector<float> states;
         output_manager out_mgr;
     };
