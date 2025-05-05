@@ -1,0 +1,95 @@
+{
+  "type": "component",
+  "reference_outputs" : "ref_outputs.csv",
+  "inputs": {
+    "series_file": "plecs_inputs.csv",
+    "specs": [
+      {
+        "name": "v_in",
+        "type": "constant",
+        "model_order": 0,
+        "value": 1000
+      },
+      {
+        "name": "i_out",
+        "type": "series",
+        "model_order": 1,
+        "series_order": 1
+      },
+      {
+        "name": "v_cross",
+        "type": "series",
+        "model_order": 2,
+        "series_order": 2
+      },
+      {
+        "name": "fault",
+        "type": "series",
+        "model_order": 3,
+        "series_order": 3
+      }
+    ]
+  },
+  "outputs": {
+    "type": "plot",
+    "specs":[
+      {
+        "name": "v_out",
+        "model_order": 0,
+        "reference_order": 2,
+        "plot_range": [
+          800,
+          1100
+        ]
+      },
+      {
+        "name": "i_in",
+        "model_order": 1,
+        "reference_order": 0,
+        "plot_range": [
+          500,
+          600
+        ]
+      },
+      {
+        "name": "i_cross",
+        "model_order": 2,
+        "reference_order": 1,
+        "plot_range": [
+          500,
+          600
+        ]
+      }
+    ]
+  },
+  "states": [],
+  "model": {
+    "target_path": "bus_model_cross.cpp",
+    "target_name": "bus_model_cross",
+    "sampling_frequency": 50e3
+  },
+  "plot_interval": [0, 1],
+  "run_length": 50001,
+  "parameters": [
+    {
+      "name": "f_sw",
+      "order": 0,
+      "value": 25e3
+    },
+    {
+      "name": "r_in",
+      "order": 1,
+      "value": 12e-3
+    },
+    {
+      "name": "v_0",
+      "order": 2,
+      "value": 1000
+    },
+    {
+      "name": "p_load",
+      "order": 3,
+      "value": 400e3
+    }
+  ]
+}

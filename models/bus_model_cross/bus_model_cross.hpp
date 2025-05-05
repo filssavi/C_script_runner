@@ -1,0 +1,21 @@
+#ifndef BUS_MODEL_HPP
+#define BUS_MODEL_HPP
+
+#include <vector>
+
+
+struct model_parameters{
+  float f_sw;
+  float r_in;
+  float v_0;
+  float p_l;
+};
+
+
+extern "C" std::vector<float> bus_model_cross(const std::vector<float>&inputs, std::vector<float>&state, const std::vector<float> &parameters);
+void bus(float i_out, float v_in, int fault, float &v_out, float &i_in, model_parameters &params);
+
+
+
+
+#endif //BUS_MODEL_HPP
