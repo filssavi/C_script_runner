@@ -48,13 +48,27 @@ namespace c_script_engine {
                     data.push_back(distribution(gen));
                 }
             }
-        } else {
+        } else if(in["type"] == "series") {
             type = series_input;
             if(!d.contains(name)) {
                 std::cout << "Error: input series "<< name << " does not exist!" << std::endl;
                 exit(1);
             }
             data = d.at(name);
+        }else if(in["type"] == "step") {
+
+            float initial_value = in["values"][0];
+            float final_value = in["values"][1];
+            int step_time = in["time"];
+            for(auto n = 0; n<n_steps; n++) {
+                if(n < step_time)
+                    data.push_back(initial_value);
+                else
+                    data.push_back(final_value);
+            }
+        } else {
+            std::cout << "Error: input type " << in["type"] << " not supported!" << std::endl;
+            exit(1);
         }
     }
 }
