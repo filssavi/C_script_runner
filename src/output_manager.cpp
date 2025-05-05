@@ -23,16 +23,19 @@ namespace c_script_engine{
         for(auto &[out_name, out_data]:output_values) {
             sciplot::Plot2D p;
 
-            p.drawCurve(x, out_data).lineWidth(1).label("run");
+            auto trace_name = out_name;
+            std::replace(trace_name.begin(), trace_name.end(), '_', ' ');
+
+            p.drawCurve(x, out_data).lineWidth(1).label( trace_name+"_{run}");
 
             auto opt_output = model_output::get_output_by_name(outputs, out_name);
             if(!opt_output.has_value()) {
                 continue;
             }
-            auto output = opt_output.value();
+            const auto& output = opt_output.value();
             if(reference_outputs.contains(output.name)) {
                 auto ref = reference_outputs.at(output.name);
-                p.drawCurve(x, ref).lineWidth(1).label("Reference");
+                p.drawCurve(x, ref).lineWidth(1).label(trace_name+ "_{ref}");
             } else {
                 std::cout << "Reference data for " << output.name << " not found" << std::endl;
             }
