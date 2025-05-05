@@ -121,11 +121,12 @@ namespace c_script_engine {
                     if(i_m.is_overridden(ep)) {
                         input_values.push_back(i_m.get_value(ep));
                     }else {
-                        try {
-                            auto input = runner_input::get_input_at_position(inputs[c.name], in.input_index, current_step);
-                            input_values.push_back(input);
-                        } catch(std::runtime_error &e) {
-                            std::cout << "Cant Find input " << in.name << " at index: " << std::to_string(in.input_index) << " for component " << c.name << std::endl;
+
+                        auto input = runner_input::get_input_at_position(inputs[c.name], in.input_index, current_step);
+                        if(input.has_value()) {
+                            input_values.push_back(input.value());
+                        } else {
+                            std::cout << "Cant Find input " << in.name << " at step: " << std::to_string(current_step) << " for component " << c.name << std::endl;
                             std::exit(1);
                         }
                     }

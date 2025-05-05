@@ -26,16 +26,17 @@ namespace c_script_engine {
     struct runner_input {
         std::vector<double> data;
         uint32_t position;
-        static double get_input_at_position(const std::vector<runner_input> &inputs, uint32_t position, uint32_t step);
+        static std::optional<double> get_input_at_position(const std::vector<runner_input> &inputs, uint32_t position, uint32_t step);
     };
 
-    inline double runner_input::get_input_at_position(const std::vector<runner_input> &inputs, uint32_t pos, uint32_t step) {
+    inline std::optional<double> runner_input::get_input_at_position(const std::vector<runner_input> &inputs, uint32_t pos, uint32_t step) {
         for(const auto &[data, position]:inputs){
             if(position == pos) {
+                if(data.size() <= step) return{};
                 return data.at(step);
-            };
+            }
         }
-        throw std::runtime_error("runner_input::get_input_at_position: position out of range");
+        return{};
     }
 }
 #endif //RUNNER_TARGET_HPP

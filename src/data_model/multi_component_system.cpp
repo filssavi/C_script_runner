@@ -71,6 +71,10 @@ namespace c_script_engine {
                 }
             }
         } else {
+            if(!models.contains(comp)) {
+                std::cout<<"Component "<<comp<<" not found for output: " << s <<std::endl;
+                exit(1);
+            }
             for(auto &in: models.at(comp).outputs) {
                 if(in.name == port) {
                     order = in.output_index;
