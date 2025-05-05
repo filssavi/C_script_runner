@@ -67,7 +67,7 @@
       "value": 1000
     },
     {
-      "name": "mv_dab_b.i_out",
+      "name": "mv_dab_a.i_out",
       "type": "constant",
       "value": 50
     },
