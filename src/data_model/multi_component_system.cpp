@@ -20,7 +20,7 @@ namespace c_script_engine {
             c. type = model["type"];
             c.sampling_frequency = model["sampling_frequency"];
             sampling_frequency = c.sampling_frequency; // todo: make this simulator multi_step capable
-            models[c.name] = cache.get_component(c.type);
+            models[c.name] = cache.get_component(c.type, n_steps);
             components.push_back(c);
         }
         for(auto &conn: spec["connections"]) {

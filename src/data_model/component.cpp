@@ -14,61 +14,75 @@
 #include "data_model/component.hpp"
 namespace c_script_engine {
     component::component(const std::filesystem::path &path) {
+        std::ifstream spec_stream(path);
 
+        nlohmann::json comp;
+        spec_stream >> comp;
+
+        auto base_path = path.parent_path().string();
+        construct_component(comp,comp["run_length"], base_path);
+
+    }
+
+    component::component(const std::filesystem::path &path, uint32_t n_steps_override) {
 
         std::ifstream spec_stream(path);
 
         nlohmann::json comp;
         spec_stream >> comp;
 
-        if (!comp["model"].contains("target_name")) {
+        auto base_path = path.parent_path().string();
+        construct_component(comp, n_steps_override, base_path);
+    }
+
+    void component::construct_component(const nlohmann::json &specs, uint32_t n_steps_override, const std::string &base_path) {
+
+        if (!specs["model"].contains("target_name")) {
             std::cout<<"Target name not specified"<<std::endl;
             exit(1);
         }
-        if (!comp["model"].contains("target_path")) {
+        if (!specs["model"].contains("target_path")) {
             std::cout<<"Target path not specified"<<std::endl;
             exit(1);
         }
 
-        std::string target_path = comp["model"]["target_path"];
+        std::string target_path = specs["model"]["target_path"];
 
-        auto base_path = path.parent_path().string();
-        model.path = base_path + "/lib" + std::filesystem::path(comp["model"]["target_path"]).replace_extension().string() + ".so";
+        model.path = base_path + "/lib" + std::filesystem::path(specs["model"]["target_path"]).replace_extension().string() + ".so";
 
 
-        model.name = comp["model"]["target_name"];
+        model.name = specs["model"]["target_name"];
 
-        name = comp["model"]["target_name"];
-        sampling_frequency = comp["model"]["sampling_frequency"];
-        n_steps = comp["run_length"];
+        name = specs["model"]["target_name"];
+        sampling_frequency = specs["model"]["sampling_frequency"];
+        n_steps = n_steps_override;
 
-        for (const auto &s : comp["states"]) {
+        for (const auto &s : specs["states"]) {
             auto dbg = s.dump(4);
             states.emplace_back(s);
         }
 
-        const auto inputs_path = get_full_path(comp["inputs"]["series_file"], base_path);
+        const auto inputs_path = get_full_path(specs["inputs"]["series_file"], base_path);
 
         auto input_data = csv_interface::parse_file(inputs_path);
-        for (auto &in:comp["inputs"]["specs"]) {
-            model_input i(in, input_data, comp["run_length"]);
+        for (auto &in:specs["inputs"]["specs"]) {
+            model_input i(in, input_data, n_steps);
             inputs.push_back(i);
         }
 
 
-        reference_path = get_full_path(comp["reference_outputs"], base_path);
-        for (auto &out:comp["outputs"]["specs"]) {
+        reference_path = get_full_path(specs["reference_outputs"], base_path);
+        for (auto &out:specs["outputs"]["specs"]) {
             model_output o(out);
             outputs.emplace_back(o);
         }
 
-        for (auto &param:comp["parameters"]) {
+        for (auto &param:specs["parameters"]) {
             model_parameter p(param);
             parameters.emplace_back(p);
         }
 
-        plot_interval = {comp["plot_interval"][0],comp["plot_interval"][1]};
-
+        plot_interval = {specs["plot_interval"][0],specs["plot_interval"][1]};
     }
 
 

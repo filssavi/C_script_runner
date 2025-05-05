@@ -37,7 +37,8 @@ namespace c_script_engine {
     public:
         component() = default;
         component(const std::filesystem::path &path);
-        void parse_specifications(const nlohmann::json& specs, const std::string &base_path);
+        component(const std::filesystem::path &path, uint32_t n_steps_override);
+        void construct_component(const nlohmann::json& specs, uint32_t n_steps_override, const std::string &base_path);
 
         static void validate_path(const std::string &p);
         static std::string get_full_path(const std::string &filename, const std::string &base_path);

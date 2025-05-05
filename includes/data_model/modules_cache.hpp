@@ -70,6 +70,7 @@ namespace c_script_engine {
 
         component_metadata get_module_metadata(const std::string& name) const {return components.at(name);}
         component get_component(const std::string &name) const;
+        component get_component(const std::string &name, uint32_t n_steps) const;
         system_metadata get_system_metadata(const std::string& name) const {return systems.at(name);}
 
         bool is_system(const std::string& name) const {return systems.contains(name);}

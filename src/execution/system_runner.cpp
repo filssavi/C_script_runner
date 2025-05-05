@@ -25,7 +25,7 @@ namespace c_script_engine {
                 std::cout << "Error: component "<< component_inst.type << "not found" <<std::endl;
             }
             auto component_metadata = c.get_module_metadata(component_inst.type);
-            components[component_inst.name] = c.get_component(component_inst.type);
+            components[component_inst.name] = c.get_component(component_inst.type, system.n_steps);
             if (component_metadata.needs_rebuilding) {
                 builder::build_module(component_metadata);
                 c.clear_rebuild_flag(component_metadata.name);
@@ -36,9 +36,7 @@ namespace c_script_engine {
             auto exec_path = base_path + "/lib" + path.filename().replace_extension().string() + ".so";
             targets[component_inst.name] = load_dll(exec_path, component_metadata.name);
 
-            component comp(component_metadata.specs_path);
-
-            for(auto &i:comp.inputs) {
+            for(auto &i:components[component_inst.name].inputs) {
                 bool overridden = false;
                 for(auto &ov:sys.inputs_overloads) {
                     auto split_point = ov.name.find('.');
@@ -56,7 +54,7 @@ namespace c_script_engine {
                 }
             }
 
-            for(auto &s:comp.states) {
+            for(auto &s:components[component_inst.name].states) {
                 bool overridden = false;
                 for(auto &ov:sys.states_overloads) {
                     auto split_point = ov.name.find('.');

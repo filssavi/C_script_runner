@@ -167,6 +167,20 @@ namespace c_script_engine {
         return component(path);
     }
 
+    component modules_cache::get_component(const std::string &name, uint32_t n_steps) const {
+        if(! components.contains(name)) {
+            std::cout << "ERROR: could not find component " << name << "\n";
+            exit(1);
+        }
+        auto path = components.at(name).specs_path;
+        if(!std::filesystem::exists(path)) {
+            std::cout << "ERROR: could not find specs for component " << name << "\n";
+            std::cout << path << " not found" << std::endl;
+            exit(1);
+        }
+        return component(path, n_steps);
+    }
+
     void modules_cache::clear_cache() {
         std::filesystem::remove(settings_store::instance().get_path("modules_cache"));
     }
