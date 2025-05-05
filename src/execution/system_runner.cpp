@@ -117,16 +117,17 @@ namespace c_script_engine {
 
         for (int current_step = 0; current_step<system.n_steps; current_step++) {
             for(auto &c:system.components) {
-                std::vector<float> input_values;
+                bool stop = c.name == "hv_bus_b";
+                auto input_values = std::vector<float>(components[c.name].inputs.size(), 0);
                 for(auto &in:components[c.name].inputs) {
                     endpoint_descriptor ep = {c.name ,in.name, in.input_index};
                     if(i_m.is_overridden(ep)) {
-                        input_values.push_back(i_m.get_value(ep));
+                        input_values[in.input_index] = i_m.get_value(ep);
                     }else {
 
                         auto input = runner_input::get_input_at_position(inputs[c.name], in.input_index, current_step);
                         if(input.has_value()) {
-                            input_values.push_back(input.value());
+                            input_values[in.input_index] = input.value();
                         } else {
                             std::cout << "Cant Find input " << in.name << " at step: " << std::to_string(current_step) << " for component " << c.name << std::endl;
                             std::exit(1);
