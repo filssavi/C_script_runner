@@ -21,7 +21,7 @@ std::vector<float> bus_model_cross(const std::vector<float>&inputs, std::vector<
     params.p_l = parameters[1];
     params.mode = parameters[2];
 
-    std::vector<float> outputs(3, 0);
+    std::vector<float> outputs(4, 0);
 
     // OUTPUT
 

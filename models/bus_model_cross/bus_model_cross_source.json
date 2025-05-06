@@ -55,7 +55,7 @@
       },
       {
         "name": "v_cross",
-        "model_order": 2,
+        "model_order": 3,
         "plot_range": [
           0,
           5000
