@@ -151,6 +151,19 @@ namespace c_script_engine {
     }
 
     void system_runner::process_output(const std::string &output_file) {
+
+        for(auto &[name, component]:components) {
+            for(auto &in_metadata : component.inputs) {
+                auto endpoint = name + "." + in_metadata.name;
+                for(auto &in:inputs[name]) {
+                    if(in.position ==in_metadata.input_index) {
+                        outputs[name][endpoint] = in.data;
+                    }
+                }
+
+            }
+        }
+
         std::unordered_map<std::string, std::vector<double>> raw_outputs;
         std::vector<model_output> specs;
         for(auto &[module, outputs_map] :outputs) {
