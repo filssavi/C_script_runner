@@ -117,7 +117,6 @@ namespace c_script_engine {
 
         for (int current_step = 0; current_step<system.n_steps; current_step++) {
             for(auto &c:system.components) {
-                bool stop = c.name == "hv_bus_b";
                 auto input_values = std::vector<float>(components[c.name].inputs.size(), 0);
                 for(auto &in:components[c.name].inputs) {
                     endpoint_descriptor ep = {c.name ,in.name, in.input_index};

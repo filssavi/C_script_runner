@@ -16,6 +16,11 @@
       "name": "mv_dab_a",
       "type": "sd_dab",
       "sampling_frequency": 25e3
+    },
+    {
+      "name": "mv_dab_b",
+      "type": "sd_dab",
+      "sampling_frequency": 25e3
     }
   ],
   "connections": [
@@ -34,6 +39,14 @@
     {
       "source": "mv_dab_a.i_in",
       "destination": "hv_bus_a.i_out"
+    },
+    {
+      "source": "hv_bus_b.v_out",
+      "destination": "mv_dab_b.v_in"
+    },
+    {
+      "source": "mv_dab_b.i_in",
+      "destination": "hv_bus_b.i_out"
     }
   ],
   "inputs": [
@@ -63,11 +76,14 @@
       }
     },
     {
-      "name": "hv_bus_b.i_out",
+      "name": "mv_dab_b.i_out",
       "type": "random",
       "distribution": {
         "name": "gaussian",
-        "parameters": [30.0, 6],
+        "parameters": [
+          30.0,
+          6
+        ],
         "seed": 22
       }
     }
@@ -76,7 +92,11 @@
   "outputs": [
     "hv_bus_a.i_in",
     "hv_bus_b.i_in",
-    "mv_dab_a.v_out"
+    "mv_dab_a.v_out",
+    "mv_dab_b.v_out",
+    "hv_bus_b.v_out",
+    "mv_dab_b.i_in",
+    "hv_bus_a.v_cross"
   ],
   "run_length": 50001,
   "parameters": []
