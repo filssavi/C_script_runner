@@ -181,7 +181,7 @@
       "type": "random",
       "distribution": {
         "name": "gaussian",
-        "parameters": [70.0, 4],
+        "parameters": [60.0, 4],
         "seed": 54
       }
     },
@@ -191,7 +191,7 @@
       "distribution": {
         "name": "gaussian",
         "parameters": [
-          30.0,
+          60.0,
           6
         ],
         "seed": 22
