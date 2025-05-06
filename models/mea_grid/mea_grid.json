@@ -21,6 +21,16 @@
       "name": "mv_dab_b",
       "type": "sd_dab",
       "sampling_frequency": 25e3
+    },
+    {
+      "name": "mv_bus_a",
+      "type": "bus_model_cross_source",
+      "sampling_frequency": 50e3
+    },
+    {
+      "name": "mv_bus_b",
+      "type": "bus_model_cross_sink",
+      "sampling_frequency": 50e3
     }
   ],
   "connections": [
@@ -47,13 +57,43 @@
     {
       "source": "mv_dab_b.i_in",
       "destination": "hv_bus_b.i_out"
+    },
+    {
+      "source": "mv_bus_a.v_cross",
+      "destination": "mv_bus_b.v_cross"
+    },
+    {
+      "source": "mv_bus_b.i_cross",
+      "destination": "mv_bus_a.i_cross"
+    },
+    {
+      "source": "mv_dab_a.v_out",
+      "destination": "mv_bus_a.v_in"
+    },
+    {
+      "source": "mv_dab_b.v_out",
+      "destination": "mv_bus_b.v_in"
+    },
+    {
+      "source": "mv_bus_a.i_in",
+      "destination": "mv_dab_a.i_out"
+    },
+    {
+      "source": "mv_bus_b.i_in",
+      "destination": "mv_dab_b.i_out"
     }
   ],
   "inputs": [
     {
-      "name": "hv_bus_b.fault",
+      "name": "mv_bus_b.fault",
       "type": "step",
       "time": 12500,
+      "values": [0, 1]
+    },
+    {
+      "name": "hv_bus_b.fault",
+      "type": "step",
+      "time": 22500,
       "values": [0, 1]
     },
     {
@@ -67,7 +107,7 @@
       "value": 1000
     },
     {
-      "name": "mv_dab_a.i_out",
+      "name": "mv_bus_a.i_out",
       "type": "random",
       "distribution": {
         "name": "gaussian",
@@ -76,7 +116,7 @@
       }
     },
     {
-      "name": "mv_dab_b.i_out",
+      "name": "mv_bus_b.i_out",
       "type": "random",
       "distribution": {
         "name": "gaussian",
@@ -96,8 +136,29 @@
     "mv_dab_b.v_out",
     "hv_bus_b.v_out",
     "mv_dab_b.i_in",
-    "hv_bus_a.v_cross"
+    "hv_bus_a.v_cross",
+    "mv_bus_a.v_out",
+    "mv_bus_b.v_out",
+    "mv_bus_a.i_in",
+    "mv_bus_b.i_in"
   ],
   "run_length": 50001,
-  "parameters": []
+  "parameters": [
+    {
+      "name": "mv_bus_a.v_0",
+      "value": 250
+    },
+    {
+      "name": "mv_bus_a.p_load",
+      "value": 20e3
+    },
+    {
+      "name": "mv_bus_b.v_0",
+      "value": 250
+    },
+    {
+      "name": "mv_bus_b.p_load",
+      "value": 20e3
+    }
+  ]
 }
