@@ -36,6 +36,10 @@ namespace c_script_engine {
             auto exec_path = base_path + "/lib" + path.filename().replace_extension().string() + ".so";
             targets[component_inst.name] = load_dll(exec_path, component_metadata.name);
 
+            for(const auto &[source, destination]:sys.connections) {
+                i_m.add_connection(source, destination, 0);
+            }
+
             for(auto &i:components[component_inst.name].inputs) {
                 bool overridden = false;
                 for(auto &ov:sys.inputs_overloads) {
@@ -52,7 +56,7 @@ namespace c_script_engine {
                 if(!overridden) {
                     inputs[component_inst.name].emplace_back(i.data, i.input_index);
                 }
-                if(inputs[component_inst.name].back().data.size() != sys.n_steps) {
+                if(inputs[component_inst.name].back().data.size() != sys.n_steps && !i_m.is_overridden({component_inst.name, i.name, i.input_index})) {
                     std::cout << "Error: input " << i.name << " of component " << component_inst.name << " has size " << inputs[component_inst.name].back().data.size() << " but system has " << sys.n_steps << " steps" << std::endl;
                     std::exit(1);
                 }
@@ -79,9 +83,7 @@ namespace c_script_engine {
 
         }
 
-        for(const auto &[source, destination]:sys.connections) {
-            i_m.add_connection(source, destination, 0);
-        }
+
         for(auto &o:sys.outputs_overloads) {
             outputs[o.component][o.port] = std::vector<double>(sys.n_steps, 0);
         }
