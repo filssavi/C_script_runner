@@ -41,6 +41,16 @@
       "name": "lv_dab_b",
       "type": "sd_dab",
       "sampling_frequency": 25e3
+    },
+    {
+      "name": "lv_bus_a",
+      "type": "bus_model_cross_source",
+      "sampling_frequency": 50e3
+    },
+    {
+      "name": "lv_bus_b",
+      "type": "bus_model_cross_sink",
+      "sampling_frequency": 50e3
     }
   ],
   "connections": [
@@ -107,6 +117,30 @@
     {
       "source": "lv_dab_b.i_in",
       "destination": "mv_bus_b.i_out"
+    },
+    {
+      "source": "lv_dab_a.v_out",
+      "destination": "lv_bus_a.v_in"
+    },
+    {
+      "source": "lv_dab_b.v_out",
+      "destination": "lv_bus_b.v_in"
+    },
+    {
+      "source": "lv_bus_a.i_in",
+      "destination": "lv_dab_a.i_out"
+    },
+    {
+      "source": "lv_bus_b.i_in",
+      "destination": "lv_dab_b.i_out"
+    },
+    {
+      "source": "lv_bus_a.v_cross",
+      "destination": "lv_bus_b.v_cross"
+    },
+    {
+      "source": "lv_bus_b.i_cross",
+      "destination": "lv_bus_a.i_cross"
     }
   ],
   "inputs": [
@@ -143,7 +177,7 @@
       "value": 28
     },
     {
-      "name": "lv_dab_a.i_out",
+      "name": "lv_bus_a.i_out",
       "type": "random",
       "distribution": {
         "name": "gaussian",
@@ -152,7 +186,7 @@
       }
     },
     {
-      "name": "lv_dab_b.i_out",
+      "name": "lv_bus_b.i_out",
       "type": "random",
       "distribution": {
         "name": "gaussian",
@@ -197,7 +231,11 @@
     "lv_dab_a.v_out",
     "lv_dab_b.v_out",
     "lv_dab_a.i_in",
-    "lv_dab_b.i_in"
+    "lv_dab_b.i_in",
+    "lv_bus_a.v_out",
+    "lv_bus_b.v_out",
+    "lv_bus_a.i_in",
+    "lv_bus_b.i_in"
   ],
   "run_length": 50001,
   "parameters": [
@@ -248,6 +286,22 @@
     {
       "name": "lv_dab_a.l_dab",
       "value": 16e-6
+    },
+    {
+      "name": "lv_bus_a.v_0",
+      "value": 28
+    },
+    {
+      "name": "lv_bus_a.p_load",
+      "value": 2e3
+    },
+    {
+      "name": "lv_bus_b.v_0",
+      "value": 28
+    },
+    {
+      "name": "lv_bus_b.p_load",
+      "value": 2e3
     }
   ]
 }
