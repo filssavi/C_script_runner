@@ -32,9 +32,14 @@ namespace c_script_engine {
             type = random_input;
             std::array<float, 2> distribution_parameters = in["distribution"]["parameters"];
             distribution_type_t distribution_type = distribution_type_map[in["distribution"]["name"]];
+            std::mt19937 gen;
+            if(in["distribution"].contains("seed")) {
+                gen = std::mt19937(in["distribution"]["seed"]);
+            } else {
+                std::random_device rd{};
+                gen = std::mt19937(rd());
 
-            std::random_device rd{};
-            std::mt19937 gen{rd()};
+            }
             if(distribution_type == normal) {
 
                 std::normal_distribution distribution(distribution_parameters[0], distribution_parameters[1]);
@@ -48,6 +53,7 @@ namespace c_script_engine {
                     data.push_back(distribution(gen));
                 }
             }
+            int i = 0;
         } else if(in["type"] == "series") {
             type = series_input;
             if(!d.contains(name)) {
