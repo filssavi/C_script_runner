@@ -31,6 +31,16 @@
       "name": "mv_bus_b",
       "type": "bus_model_cross_sink",
       "sampling_frequency": 50e3
+    },
+    {
+      "name": "lv_dab_a",
+      "type": "sd_dab",
+      "sampling_frequency": 25e3
+    },
+    {
+      "name": "lv_dab_b",
+      "type": "sd_dab",
+      "sampling_frequency": 25e3
     }
   ],
   "connections": [
@@ -81,6 +91,22 @@
     {
       "source": "mv_bus_b.i_in",
       "destination": "mv_dab_b.i_out"
+    },
+    {
+      "source": "mv_bus_a.v_out",
+      "destination": "lv_dab_b.v_in"
+    },
+    {
+      "source": "mv_bus_b.v_out",
+      "destination": "lv_dab_b.v_in"
+    },
+    {
+      "source": "lv_dab_a.i_in",
+      "destination": "mv_bus_a.i_out"
+    },
+    {
+      "source": "lv_dab_b.i_in",
+      "destination": "mv_bus_b.i_out"
     }
   ],
   "inputs": [
@@ -107,7 +133,17 @@
       "value": 1000
     },
     {
-      "name": "mv_bus_a.i_out",
+      "name": "lv_dab_a.v_ref",
+      "type": "constant",
+      "value": 28
+    },
+    {
+      "name": "lv_dab_b.v_ref",
+      "type": "constant",
+      "value": 28
+    },
+    {
+      "name": "lv_dab_a.i_out",
       "type": "random",
       "distribution": {
         "name": "gaussian",
@@ -116,7 +152,7 @@
       }
     },
     {
-      "name": "mv_bus_b.i_out",
+      "name": "lv_dab_b.i_out",
       "type": "random",
       "distribution": {
         "name": "gaussian",
@@ -128,7 +164,24 @@
       }
     }
   ],
-  "states": [],
+  "states": [
+    {
+      "name": "lv_dab_b.mem_v_cap_out_past",
+      "initial_value": 28
+    },
+    {
+      "name": "lv_dab_b.mem_v_cap_in_past",
+      "initial_value": 250
+    },
+    {
+      "name": "lv_dab_a.mem_v_cap_out_past",
+      "initial_value": 28
+    },
+    {
+      "name": "lv_dab_a.mem_v_cap_in_past",
+      "initial_value": 250
+    }
+  ],
   "outputs": [
     "hv_bus_a.i_in",
     "hv_bus_b.i_in",
@@ -140,7 +193,11 @@
     "mv_bus_a.v_out",
     "mv_bus_b.v_out",
     "mv_bus_a.i_in",
-    "mv_bus_b.i_in"
+    "mv_bus_b.i_in",
+    "lv_dab_a.v_out",
+    "lv_dab_b.v_out",
+    "lv_dab_a.i_in",
+    "lv_dab_b.i_in"
   ],
   "run_length": 50001,
   "parameters": [
@@ -159,6 +216,38 @@
     {
       "name": "mv_bus_b.p_load",
       "value": 20e3
+    },
+    {
+      "name": "lv_dab_a.v_pri0",
+      "value": 250
+    },
+    {
+      "name": "lv_dab_a.v_sec0",
+      "value": 28
+    },
+    {
+      "name": "lv_dab_b.v_pri0",
+      "value": 250
+    },
+    {
+      "name": "lv_dab_b.v_sec0",
+      "value": 28
+    },
+    {
+      "name": "lv_dab_b.n_ps",
+      "value": 8.92
+    },
+    {
+      "name": "lv_dab_a.n_ps",
+      "value": 8.92
+    },
+    {
+      "name": "lv_dab_b.l_dab",
+      "value": 16e-6
+    },
+    {
+      "name": "lv_dab_a.l_dab",
+      "value": 16e-6
     }
   ]
 }
