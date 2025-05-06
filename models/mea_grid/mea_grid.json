@@ -32,8 +32,8 @@
       "destination": "mv_dab_a.v_in"
     },
     {
-      "source": "mv_dab_a.i_out",
-      "destination": "hv_bus_a.i_in"
+      "source": "mv_dab_a.i_in",
+      "destination": "hv_bus_a.i_out"
     }
   ],
   "inputs": [
@@ -64,8 +64,12 @@
     },
     {
       "name": "hv_bus_b.i_out",
-      "type": "constant",
-      "value": 20
+      "type": "random",
+      "distribution": {
+        "name": "gaussian",
+        "parameters": [30.0, 6],
+        "seed": 22
+      }
     }
   ],
   "states": [],

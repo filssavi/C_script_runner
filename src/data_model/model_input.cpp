@@ -53,7 +53,6 @@ namespace c_script_engine {
                     data.push_back(distribution(gen));
                 }
             }
-            int i = 0;
         } else if(in["type"] == "series") {
             type = series_input;
             if(!d.contains(name)) {

@@ -17,11 +17,9 @@ std::vector<float> bus_model_cross(const std::vector<float>&inputs, std::vector<
 
 
     model_parameters params;
-    params.f_sw = 1/parameters[0];
-    params.r_in = parameters[1];
-    params.v_0 = parameters[2];
-    params.p_l = parameters[3];
-    params.mode = parameters[4];
+    params.v_0 = parameters[0];
+    params.p_l = parameters[1];
+    params.mode = parameters[2];
 
     std::vector<float> outputs(3, 0);
 

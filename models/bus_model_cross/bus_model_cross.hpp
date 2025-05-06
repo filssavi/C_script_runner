@@ -5,8 +5,6 @@
 
 
 struct model_parameters{
-  float f_sw;
-  float r_in;
   float v_0;
   float p_l;
   int mode;

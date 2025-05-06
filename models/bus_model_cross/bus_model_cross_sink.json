@@ -66,28 +66,18 @@
   "run_length": 50001,
   "parameters": [
     {
-      "name": "f_sw",
-      "order": 0,
-      "value": 25e3
-    },
-    {
-      "name": "r_in",
-      "order": 1,
-      "value": 12e-3
-    },
-    {
       "name": "v_0",
-      "order": 2,
+      "order": 0,
       "value": 1000
     },
     {
       "name": "p_load",
-      "order": 3,
+      "order": 1,
       "value": 400e3
     },
     {
       "name": "mode",
-      "order": 4,
+      "order": 2,
       "value": 1
     }
   ]
