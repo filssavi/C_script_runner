@@ -154,10 +154,10 @@ namespace c_script_engine {
 
         for(auto &[name, component]:components) {
             for(auto &in_metadata : component.inputs) {
-                auto endpoint = name + "." + in_metadata.name;
                 for(auto &in:inputs[name]) {
                     if(in.position ==in_metadata.input_index) {
-                        outputs[name][endpoint] = in.data;
+                        outputs[name][in_metadata.name] = in.data;
+                        break;
                     }
                 }
 
