@@ -20,6 +20,10 @@ namespace c_script_engine {
 
         cache = c;
 
+        for(const auto &[source, destination]:sys.connections) {
+            i_m.add_connection(source, destination, 0);
+        }
+
         for(auto &component_inst:sys.components) {
             if(!c.contains(component_inst.type)) {
                 std::cout << "Error: component "<< component_inst.type << "not found" <<std::endl;
@@ -35,10 +39,6 @@ namespace c_script_engine {
             auto base_path = path.parent_path().string();
             auto exec_path = base_path + "/lib" + path.filename().replace_extension().string() + ".so";
             targets[component_inst.name] = load_dll(exec_path, component_metadata.name);
-
-            for(const auto &[source, destination]:sys.connections) {
-                i_m.add_connection(source, destination, 0);
-            }
 
             for(auto &i:components[component_inst.name].inputs) {
                 bool overridden = false;

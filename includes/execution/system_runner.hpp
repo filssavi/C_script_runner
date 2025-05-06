@@ -19,6 +19,8 @@
 
 #include <dlfcn.h>
 
+#include <unordered_set>
+
 #include "utils/builder.hpp"
 #include "data_model/multi_component_system.hpp"
 #include "data_model/component.hpp"
@@ -38,6 +40,7 @@ namespace c_script_engine {
         void set_output_type(const output_type &type){out_mgr.out_type = type;}
 
     private:
+
         component get_component(const std::string &name);
         interconnect_manger i_m;
         std::unordered_map<std::string, target_cscript_t> targets;

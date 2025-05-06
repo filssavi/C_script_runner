@@ -25,6 +25,7 @@ namespace c_script_engine {
         for(auto &ic:connections) {
             if(ic.source.component == ep.component && ic.source.port== ep.port) {
                 ic.value = value;
+                return;
             }
         }
     }
@@ -41,12 +42,12 @@ namespace c_script_engine {
     }
 
     bool interconnect_manger::is_overridden(const endpoint_descriptor &ep) {
-        return std::ranges::any_of(
-            connections.begin(),
-            connections.end(),
-            [&](const auto& ic) {
-                return ic.destination.component == ep.component && ic.destination.port == ep.port;
-            });
+        for(auto &ic:connections) {
+            if(ic.destination.component == ep.component && ic.destination.port == ep.port) {
+                return true;
+            }
+        }
+        return false;
     }
 
     bool interconnect_manger::is_overriding(const endpoint_descriptor &ep) {
