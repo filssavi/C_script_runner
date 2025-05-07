@@ -214,6 +214,38 @@
     {
       "name": "lv_dab_a.mem_v_cap_in_past",
       "initial_value": 250
+    },
+    {
+      "name": "mv_bus_a.v_0",
+      "initial_value": 250
+    },
+    {
+      "name": "mv_bus_a.p_load",
+      "initial_value": 20e3
+    },
+    {
+      "name": "mv_bus_b.v_0",
+      "initial_value": 250
+    },
+    {
+      "name": "mv_bus_b.p_load",
+      "initial_value": 20e3
+    },
+    {
+      "name": "lv_bus_a.v_0",
+      "initial_value": 28
+    },
+    {
+      "name": "lv_bus_a.p_load",
+      "initial_value": 2e3
+    },
+    {
+      "name": "lv_bus_b.v_0",
+      "initial_value": 28
+    },
+    {
+      "name": "lv_bus_b.p_load",
+      "initial_value": 2e3
     }
   ],
   "outputs": [
@@ -239,22 +271,6 @@
   ],
   "run_length": 50001,
   "parameters": [
-    {
-      "name": "mv_bus_a.v_0",
-      "value": 250
-    },
-    {
-      "name": "mv_bus_a.p_load",
-      "value": 20e3
-    },
-    {
-      "name": "mv_bus_b.v_0",
-      "value": 250
-    },
-    {
-      "name": "mv_bus_b.p_load",
-      "value": 20e3
-    },
     {
       "name": "lv_dab_a.v_pri0",
       "value": 250
@@ -286,22 +302,6 @@
     {
       "name": "lv_dab_a.l_dab",
       "value": 16e-6
-    },
-    {
-      "name": "lv_bus_a.v_0",
-      "value": 28
-    },
-    {
-      "name": "lv_bus_a.p_load",
-      "value": 2e3
-    },
-    {
-      "name": "lv_bus_b.v_0",
-      "value": 28
-    },
-    {
-      "name": "lv_bus_b.p_load",
-      "value": 2e3
     }
   ]
 }
