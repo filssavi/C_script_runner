@@ -13,8 +13,6 @@ struct model_parameters{
     float r_dab;
     float l_dc;
     float r_dc;
-    float v_pri0;
-    float v_sec0;
     float f_sw;
     float n_ps;
     float l_dab;

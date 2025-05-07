@@ -74,6 +74,16 @@
       "name": "mem_i_in_past",
       "order": 5,
       "initial_value": 0
+    },
+    {
+      "name": "n_ps",
+      "order": 6,
+      "initial_value": 4
+    },
+    {
+      "name": "l_dab",
+      "order": 7,
+      "initial_value": 9e-6
     }
   ],
   "model": {
@@ -115,48 +125,28 @@
       "value": 10e-3
     },
     {
-      "name": "v_pri0",
-      "order": 6,
-      "value": 1000
-    },
-    {
-      "name": "v_sec0",
-      "order": 7,
-      "value": 250
-    },
-    {
       "name": "f_sw",
-      "order": 8,
+      "order": 6,
       "value": 25e3
     },
     {
-      "name": "n_ps",
-      "order": 9,
-      "value": 4
-    },
-    {
-      "name": "l_dab",
-      "order": 10,
-      "value": 9e-6
-    },
-    {
       "name": "c_in",
-      "order": 11,
+      "order": 7,
       "value": 800e-6
     },
     {
       "name": "c_out",
-      "order": 12,
+      "order": 8,
       "value": 2400e-6
     },
     {
       "name": "pi",
-      "order": 13,
+      "order": 9,
       "value": 3.14159265358979323846
     },
     {
       "name": "sqrt2",
-      "order": 14,
+      "order": 10,
       "value": 1.41421356237
     }
   ]

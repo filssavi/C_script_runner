@@ -16,16 +16,15 @@ std::vector<float> sd_dab(const std::vector<float>&inputs, std::vector<float>&st
     p.r_dab = parameters[3];
     p.l_dc = parameters[4];
     p.r_dc = parameters[5];
-    p.v_pri0 = parameters[6];
-    p.v_sec0 = parameters[7];
-    p.f_sw = parameters[8];
-    p.n_ps = parameters[9];
-    p.l_dab = parameters[10];
-    p.c_in = parameters[11];
-    p.c_out = parameters[12];
-    p.pi = parameters[13];
+    p.f_sw = parameters[6];
+    p.c_in = parameters[7];
+    p.c_out = parameters[8];
+    p.pi = parameters[9];
     p.t_sw = 1/p.f_sw;
-    p.sqrt2 = parameters[14];
+    p.sqrt2 = parameters[10];
+
+    p.n_ps = state[6];
+    p.l_dab = state[7];
 
     #define in_v_in inputs[0]
     #define in_i_out inputs[1]
