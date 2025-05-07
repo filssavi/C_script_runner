@@ -15,14 +15,20 @@
 
 #include "data_model/model_state.hpp"
 
+#include <iostream>
+
 
 namespace c_script_engine {
     model_state::model_state(nlohmann::json input) {
+        name = input["name"];
         is_overload = false;
         if(input.contains("order")) order = input["order"];
         else is_overload =  true;
+        if(!input.contains("initial_value")) {
+            std::cout << "Error: Initial value not found in the definition of state " << name << std::endl;
+            exit(1);
+        }
         initial_value = input["initial_value"];
-        name = input["name"];
     }
 
     std::vector<float> model_state::get_state_vector(const std::vector<model_state> &models) {
